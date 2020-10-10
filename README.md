@@ -28,11 +28,17 @@ Details
 
 ### MEDSL: Senate returns by states (1976-)
 
-### MEDSL: House returns by congressional district (1976-) [CODE](https://github.com/jaytimm/uspols/blob/master/medsl.md)
+### MEDSL: House returns by congressional district (1976-)
 
-### DailyKos: Presidential returns by congressional district (2008-) [CODE](https://github.com/jaytimm/uspols/blob/master/daily-kos.md)
+[Code](https://github.com/jaytimm/uspols/blob/master/medsl.md)
 
-### Wikipedia: Presidential returns by state (1864-) [CODE](https://github.com/jaytimm/uspols/blob/master/wikipedia.md)
+### DailyKos: Presidential returns by congressional district (2008-)
+
+[Code](https://github.com/jaytimm/uspols/blob/master/daily-kos.md)
+
+### Wikipedia: Presidential returns by state (1864-)
+
+[Code](https://github.com/jaytimm/uspols/blob/master/wikipedia.md)
 
 ### VoteView: Congressional details
 

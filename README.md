@@ -20,18 +20,30 @@ Election returns:
 
 With the least … , we have made uniform … within and across data sets.
 
-MEDSL: House returns by congressional district (1976-)
-------------------------------------------------------
+Installation
+------------
+
+Details
+-------
+
+### MEDSL: House returns by congressional district (1976-)
 
 ``` r
 #Follow MEDSL convention per at-large Reps as '0'
 library(tidyverse)
+## ── Attaching packages ──────────────────────────── tidyverse 1.3.0 ──
+## ✓ ggplot2 3.3.2     ✓ purrr   0.3.4
+## ✓ tibble  3.0.3     ✓ dplyr   1.0.2
+## ✓ tidyr   1.1.2     ✓ stringr 1.4.0
+## ✓ readr   1.4.0     ✓ forcats 0.5.0
+## ── Conflicts ─────────────────────────────── tidyverse_conflicts() ──
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()
 # medsl_house <- "https://raw.githubusercontent.com/MEDSL/constituency-returns/master/1976-2018-house.csv"
 # read.csv(url(medsl_house))
+```
 
-medsl_house_file <- "1976-2018-house.csv"
-medsl_senate_file <- "1976-2018-senate.csv"
-
+``` r
 medsl_house <- read.csv(paste0(git_dir, medsl_house_file), 
                         na.strings = c("", "NA")) %>%
   ##
@@ -44,21 +56,27 @@ Load data –
 ``` r
 house_returns <- medsl_house %>%
   distinct() %>%
-  mutate(totalvotes = ifelse(state == 'Florida' & year == 2018, totalvotes/2, totalvotes)) %>%
+  mutate(totalvotes = ifelse(state == 'Florida' & year == 2018, 
+                             totalvotes/2, totalvotes)) %>%
   
+  # correct (some) party affiliation NAs -- non-write-ins --
   group_by(state, district, candidate) %>%
   arrange(party) %>%
-  fill(party) %>% # correct (some) party affiliation NAs -- non-write-ins -- 
+  fill(party) %>%  
   
+  # filter to latest version
   group_by_at(vars(-version, -totalvotes)) %>% 
-  filter(version == max(version) & stage == 'gen') %>% ## newest version
+  filter(version == max(version) & stage == 'gen') %>% 
   
+  # agg over votes from multiple parties
   group_by_at(vars(-candidatevotes, -party)) %>% 
-  mutate(fullcandidatevotes = sum(candidatevotes)) %>% ## Zeldin -- could demonstrate -- 
+  mutate(fullcandidatevotes = sum(candidatevotes)) %>%
   filter(candidatevotes == max(candidatevotes)) %>%
   
-  group_by_at(vars(-candidatevotes, -party, -candidate, -fullcandidatevotes, -writein)) %>% 
-  mutate(winner = ifelse(fullcandidatevotes == max(fullcandidatevotes), 'y', 'n')) %>%
+  group_by_at(vars(-candidatevotes, -party, -candidate, 
+                   -fullcandidatevotes, -writein)) %>% 
+  mutate(winner = ifelse(fullcandidatevotes == max(fullcandidatevotes), 
+                         'y', 'n')) %>%
   ungroup() %>%
   select(-candidatevotes)
 ```
@@ -69,30 +87,34 @@ Re-work (slightly) :
 hrs <- house_returns %>%
   filter(writein == FALSE) %>%
   
-      mutate(party = ifelse(grepl('^democrat', party), 'democrat', party)) %>%
-      mutate(party = ifelse(grepl('^republican', party), 'republican', party)) %>%
+      mutate(party = ifelse(grepl('^democrat', party), 
+                            'democrat', party)) %>%
+      mutate(party = ifelse(grepl('^republican', party), 
+                            'republican', party)) %>%
       ## independent + green ? -- 
-      mutate(party = ifelse(!grepl('^republican|^democrat', party), 'other', party)) %>%
+      mutate(party = ifelse(!grepl('^republican|^democrat', party), 
+                            'other', party)) %>%
 
   mutate(candidate = ifelse(winner == 'n', NA, candidate)) %>%
   #mutate(party1 = ifelse(winner == 'n', NA, party)) %>%
   
+  # agg over "other"
   group_by_at(vars(-fullcandidatevotes, -winner)) %>% 
-  summarize(candidatevotes = sum(fullcandidatevotes)) %>% # agg over "other"
+  summarize(candidatevotes = sum(fullcandidatevotes)) %>% 
   ungroup() %>%
   
   fill(candidate) %>%  # fill(party1) %>%
   mutate(candidatevotes = round(candidatevotes/totalvotes *100, 2)) %>%
   
+  # some races more than one dem, eg--
   group_by_at(vars(-candidatevotes)) %>%
-  filter(candidatevotes == max(candidatevotes)) %>% # some races more than one dem, eg--
+  filter(candidatevotes == max(candidatevotes)) %>% 
  
   spread(party, candidatevotes) %>%
   replace(., is.na(.), 0) 
 ```
 
-DailyKos: Presidential returns by congressional district (2008-)
-----------------------------------------------------------------
+### DailyKos: Presidential returns by congressional district (2008-)
 
 ``` r
 url <- 'https://docs.google.com/spreadsheets/d/1oRl7vxEJUUDWJCyrjo62cELJD2ONIVl-D9TSUKiK9jk/edit#gid=1178631925'
@@ -124,8 +146,11 @@ dk <- house3 %>%
   select(-candidate) %>%
   spread(party, percent) %>%
   mutate(district_code = gsub('[A-Z][A-Z]', '00', district_code))
+```
 
-## hand corrections --
+Some hand corrections:
+
+``` r
 dk$winner[dk$state_abbrev == 'FL' & 
             dk$year == 2012 & dk$district_code == '7'] <- 'Obama'
 dk$winner[dk$state_abbrev == 'OH' & 
@@ -134,8 +159,7 @@ dk$winner[dk$state_abbrev == 'NY' &
             dk$year == 2008 & dk$district_code == '22'] <- 'McCain'
 ```
 
-Wikipedia: Presidential returns by state (1864-)
-------------------------------------------------
+### Wikipedia: Presidential returns by state (1864-)
 
 ``` r
 setwd(git_dir)
@@ -162,8 +186,9 @@ for (i in 1:nrow(states)) {
   states_correct[[i]] <- 
     paste0(base_url, gsub(' ', '_', states$NAME[i])) %>%
     xml2::read_html() %>%
-    rvest::html_node(xpath = paste0('//*[@id="mw-content-text"]/div/table[', 
-                                    states$which_table[i],']')) %>%
+    rvest::html_node(
+      xpath = paste0('//*[@id="mw-content-text"]/div/table[', 
+                     states$which_table[i],']')) %>%
     rvest::html_table(fill = TRUE) 
   
   x <- states_correct[[i]][,c(1, 2, 4)]
@@ -175,8 +200,9 @@ for (i in 1:nrow(states)) {
     mutate(candidate = gsub('\\[.*\\]|\\(.*\\)', '', candidate),
            year = gsub("\\D+", "", year),
            year = as.integer(substr(year, 1,4)),
-           vote_share = as.numeric(gsub('^$|-|%', 0, vote_share))    )
-} ## end for loop -- 
+           vote_share = as.numeric(gsub('^$|-|%', 0, vote_share))
+           )
+  } 
 
 names(states_correct) <- states$NAME
 states_correct1 <- states_correct %>%
@@ -274,3 +300,8 @@ full <- bind_rows(states_correct1,
 # write.csv(full, 'pres_elections_state.csv', 
 #           row.names = F)
 ```
+
+### VoteView: Congressional details
+
+Summary
+-------

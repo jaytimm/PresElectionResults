@@ -24,20 +24,8 @@ MEDSL: House returns by congressional district (1976-)
 ------------------------------------------------------
 
 ``` r
-git_dir <- "/home/jtimm/jt_work/GitHub/packages/uspols/data-raw/"
-```
-
-``` r
 #Follow MEDSL convention per at-large Reps as '0'
 library(tidyverse)
-## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.0 ──
-## ✓ ggplot2 3.3.2     ✓ purrr   0.3.4
-## ✓ tibble  3.0.3     ✓ dplyr   1.0.2
-## ✓ tidyr   1.1.2     ✓ stringr 1.4.0
-## ✓ readr   1.4.0     ✓ forcats 0.5.0
-## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-## x dplyr::filter() masks stats::filter()
-## x dplyr::lag()    masks stats::lag()
 # medsl_house <- "https://raw.githubusercontent.com/MEDSL/constituency-returns/master/1976-2018-house.csv"
 # read.csv(url(medsl_house))
 
@@ -110,21 +98,6 @@ DailyKos: Presidential returns by congressional district (2008-)
 url <- 'https://docs.google.com/spreadsheets/d/1oRl7vxEJUUDWJCyrjo62cELJD2ONIVl-D9TSUKiK9jk/edit#gid=1178631925'
 
 house <- gsheet::gsheet2tbl(url) %>% janitor::clean_names()
-## Warning: Missing column names filled in: 'X5' [5], 'X7' [7], 'X16' [16],
-## 'X18' [18], 'X20' [20], 'X22' [22], 'X24' [24], 'X26' [26], 'X28' [28],
-## 'X29' [29], 'X30' [30], 'X31' [31], 'X32' [32], 'X34' [34], 'X35' [35],
-## 'X36' [36], 'X37' [37], 'X38' [38], 'X40' [40], 'X41' [41], 'X42' [42],
-## 'X43' [43], 'X44' [44], 'X47' [47], 'X48' [48], 'X49' [49], 'X51' [51],
-## 'X52' [52], 'X54' [54], 'X55' [55], 'X57' [57], 'X58' [58], 'X60' [60],
-## 'X61' [61], 'X62' [62], 'X64' [64], 'X65' [65], 'X66' [66], 'X68' [68],
-## 'X70' [70], 'X71' [71], 'X72' [72], 'X74' [74], 'X75' [75], 'X76' [76],
-## 'X77' [77], 'X78' [78], 'X79' [79], 'X81' [81], 'X82' [82], 'X83' [83],
-## 'X84' [84], 'X85' [85], 'X86' [86], 'X88' [88], 'X89' [89], 'X90' [90],
-## 'X91' [91], 'X92' [92], 'X93' [93], 'X95' [95], 'X96' [96], 'X97' [97],
-## 'X98' [98], 'X99' [99], 'X100' [100]
-## Warning: Duplicated column names deduplicated: '2016 President' => '2016
-## President_1' [50], '2012 President' => '2012 President_1' [53], '2008 President'
-## => '2008 President_1' [56]
 start_prez <- min(grep('president', colnames(house)))
 end_prez <-  min(grep('house', colnames(house))) - 1
 house3 <- house[3:nrow(house), c(2, start_prez:end_prez)]
@@ -153,9 +126,12 @@ dk <- house3 %>%
   mutate(district_code = gsub('[A-Z][A-Z]', '00', district_code))
 
 ## hand corrections --
-dk$winner[dk$state_abbrev == 'FL' & dk$year == 2012 & dk$district_code == '7'] <- 'Obama'
-dk$winner[dk$state_abbrev == 'OH' & dk$year == 2008 & dk$district_code == '10'] <- 'Obama'
-dk$winner[dk$state_abbrev == 'NY' & dk$year == 2008 & dk$district_code == '22'] <- 'McCain'
+dk$winner[dk$state_abbrev == 'FL' & 
+            dk$year == 2012 & dk$district_code == '7'] <- 'Obama'
+dk$winner[dk$state_abbrev == 'OH' & 
+            dk$year == 2008 & dk$district_code == '10'] <- 'Obama'
+dk$winner[dk$state_abbrev == 'NY' & 
+            dk$year == 2008 & dk$district_code == '22'] <- 'McCain'
 ```
 
 Wikipedia: Presidential returns by state (1864-)
@@ -201,202 +177,6 @@ for (i in 1:nrow(states)) {
            year = as.integer(substr(year, 1,4)),
            vote_share = as.numeric(gsub('^$|-|%', 0, vote_share))    )
 } ## end for loop -- 
-## Warning: Problem with `mutate()` input `vote_share`.
-## ℹ NAs introduced by coercion
-## ℹ Input `vote_share` is `as.numeric(gsub("^$|-|%", 0, vote_share))`.
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-## Warning: Problem with `mutate()` input `vote_share`.
-## ℹ NAs introduced by coercion
-## ℹ Input `vote_share` is `as.numeric(gsub("^$|-|%", 0, vote_share))`.
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-## Warning: Problem with `mutate()` input `vote_share`.
-## ℹ NAs introduced by coercion
-## ℹ Input `vote_share` is `as.numeric(gsub("^$|-|%", 0, vote_share))`.
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-## Warning: Problem with `mutate()` input `vote_share`.
-## ℹ NAs introduced by coercion
-## ℹ Input `vote_share` is `as.numeric(gsub("^$|-|%", 0, vote_share))`.
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-## Warning: Problem with `mutate()` input `vote_share`.
-## ℹ NAs introduced by coercion
-## ℹ Input `vote_share` is `as.numeric(gsub("^$|-|%", 0, vote_share))`.
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-## Warning: Problem with `mutate()` input `vote_share`.
-## ℹ NAs introduced by coercion
-## ℹ Input `vote_share` is `as.numeric(gsub("^$|-|%", 0, vote_share))`.
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-## Warning: Problem with `mutate()` input `vote_share`.
-## ℹ NAs introduced by coercion
-## ℹ Input `vote_share` is `as.numeric(gsub("^$|-|%", 0, vote_share))`.
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-## Warning: Problem with `mutate()` input `vote_share`.
-## ℹ NAs introduced by coercion
-## ℹ Input `vote_share` is `as.numeric(gsub("^$|-|%", 0, vote_share))`.
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-## Warning: Problem with `mutate()` input `vote_share`.
-## ℹ NAs introduced by coercion
-## ℹ Input `vote_share` is `as.numeric(gsub("^$|-|%", 0, vote_share))`.
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-## Warning: Problem with `mutate()` input `vote_share`.
-## ℹ NAs introduced by coercion
-## ℹ Input `vote_share` is `as.numeric(gsub("^$|-|%", 0, vote_share))`.
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-## Warning: Problem with `mutate()` input `vote_share`.
-## ℹ NAs introduced by coercion
-## ℹ Input `vote_share` is `as.numeric(gsub("^$|-|%", 0, vote_share))`.
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-## Warning: Problem with `mutate()` input `vote_share`.
-## ℹ NAs introduced by coercion
-## ℹ Input `vote_share` is `as.numeric(gsub("^$|-|%", 0, vote_share))`.
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-## Warning: Problem with `mutate()` input `vote_share`.
-## ℹ NAs introduced by coercion
-## ℹ Input `vote_share` is `as.numeric(gsub("^$|-|%", 0, vote_share))`.
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-## Warning: Problem with `mutate()` input `vote_share`.
-## ℹ NAs introduced by coercion
-## ℹ Input `vote_share` is `as.numeric(gsub("^$|-|%", 0, vote_share))`.
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-## Warning: Problem with `mutate()` input `vote_share`.
-## ℹ NAs introduced by coercion
-## ℹ Input `vote_share` is `as.numeric(gsub("^$|-|%", 0, vote_share))`.
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-## Warning: Problem with `mutate()` input `vote_share`.
-## ℹ NAs introduced by coercion
-## ℹ Input `vote_share` is `as.numeric(gsub("^$|-|%", 0, vote_share))`.
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-## Warning: Problem with `mutate()` input `vote_share`.
-## ℹ NAs introduced by coercion
-## ℹ Input `vote_share` is `as.numeric(gsub("^$|-|%", 0, vote_share))`.
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-## Warning: Problem with `mutate()` input `vote_share`.
-## ℹ NAs introduced by coercion
-## ℹ Input `vote_share` is `as.numeric(gsub("^$|-|%", 0, vote_share))`.
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-## Warning: Problem with `mutate()` input `vote_share`.
-## ℹ NAs introduced by coercion
-## ℹ Input `vote_share` is `as.numeric(gsub("^$|-|%", 0, vote_share))`.
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-## Warning: Problem with `mutate()` input `vote_share`.
-## ℹ NAs introduced by coercion
-## ℹ Input `vote_share` is `as.numeric(gsub("^$|-|%", 0, vote_share))`.
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-## Warning: Problem with `mutate()` input `vote_share`.
-## ℹ NAs introduced by coercion
-## ℹ Input `vote_share` is `as.numeric(gsub("^$|-|%", 0, vote_share))`.
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-## Warning: Problem with `mutate()` input `vote_share`.
-## ℹ NAs introduced by coercion
-## ℹ Input `vote_share` is `as.numeric(gsub("^$|-|%", 0, vote_share))`.
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-## Warning: Problem with `mutate()` input `vote_share`.
-## ℹ NAs introduced by coercion
-## ℹ Input `vote_share` is `as.numeric(gsub("^$|-|%", 0, vote_share))`.
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-## Warning: Problem with `mutate()` input `vote_share`.
-## ℹ NAs introduced by coercion
-## ℹ Input `vote_share` is `as.numeric(gsub("^$|-|%", 0, vote_share))`.
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-## Warning: Problem with `mutate()` input `vote_share`.
-## ℹ NAs introduced by coercion
-## ℹ Input `vote_share` is `as.numeric(gsub("^$|-|%", 0, vote_share))`.
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-## Warning: Problem with `mutate()` input `vote_share`.
-## ℹ NAs introduced by coercion
-## ℹ Input `vote_share` is `as.numeric(gsub("^$|-|%", 0, vote_share))`.
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-## Warning: Problem with `mutate()` input `vote_share`.
-## ℹ NAs introduced by coercion
-## ℹ Input `vote_share` is `as.numeric(gsub("^$|-|%", 0, vote_share))`.
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-## Warning: Problem with `mutate()` input `vote_share`.
-## ℹ NAs introduced by coercion
-## ℹ Input `vote_share` is `as.numeric(gsub("^$|-|%", 0, vote_share))`.
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-## Warning: Problem with `mutate()` input `vote_share`.
-## ℹ NAs introduced by coercion
-## ℹ Input `vote_share` is `as.numeric(gsub("^$|-|%", 0, vote_share))`.
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-## Warning: Problem with `mutate()` input `vote_share`.
-## ℹ NAs introduced by coercion
-## ℹ Input `vote_share` is `as.numeric(gsub("^$|-|%", 0, vote_share))`.
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-## Warning: Problem with `mutate()` input `vote_share`.
-## ℹ NAs introduced by coercion
-## ℹ Input `vote_share` is `as.numeric(gsub("^$|-|%", 0, vote_share))`.
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-## Warning: Problem with `mutate()` input `vote_share`.
-## ℹ NAs introduced by coercion
-## ℹ Input `vote_share` is `as.numeric(gsub("^$|-|%", 0, vote_share))`.
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-## Warning: Problem with `mutate()` input `vote_share`.
-## ℹ NAs introduced by coercion
-## ℹ Input `vote_share` is `as.numeric(gsub("^$|-|%", 0, vote_share))`.
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-## Warning: Problem with `mutate()` input `vote_share`.
-## ℹ NAs introduced by coercion
-## ℹ Input `vote_share` is `as.numeric(gsub("^$|-|%", 0, vote_share))`.
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-## Warning: Problem with `mutate()` input `vote_share`.
-## ℹ NAs introduced by coercion
-## ℹ Input `vote_share` is `as.numeric(gsub("^$|-|%", 0, vote_share))`.
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-## Warning: Problem with `mutate()` input `vote_share`.
-## ℹ NAs introduced by coercion
-## ℹ Input `vote_share` is `as.numeric(gsub("^$|-|%", 0, vote_share))`.
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-## Warning: Problem with `mutate()` input `vote_share`.
-## ℹ NAs introduced by coercion
-## ℹ Input `vote_share` is `as.numeric(gsub("^$|-|%", 0, vote_share))`.
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-## Warning: Problem with `mutate()` input `vote_share`.
-## ℹ NAs introduced by coercion
-## ℹ Input `vote_share` is `as.numeric(gsub("^$|-|%", 0, vote_share))`.
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-## Warning: Problem with `mutate()` input `vote_share`.
-## ℹ NAs introduced by coercion
-## ℹ Input `vote_share` is `as.numeric(gsub("^$|-|%", 0, vote_share))`.
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-## Warning: Problem with `mutate()` input `vote_share`.
-## ℹ NAs introduced by coercion
-## ℹ Input `vote_share` is `as.numeric(gsub("^$|-|%", 0, vote_share))`.
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-## Warning: Problem with `mutate()` input `vote_share`.
-## ℹ NAs introduced by coercion
-## ℹ Input `vote_share` is `as.numeric(gsub("^$|-|%", 0, vote_share))`.
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-## Warning: Problem with `mutate()` input `vote_share`.
-## ℹ NAs introduced by coercion
-## ℹ Input `vote_share` is `as.numeric(gsub("^$|-|%", 0, vote_share))`.
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-## Warning: Problem with `mutate()` input `vote_share`.
-## ℹ NAs introduced by coercion
-## ℹ Input `vote_share` is `as.numeric(gsub("^$|-|%", 0, vote_share))`.
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-## Warning: Problem with `mutate()` input `vote_share`.
-## ℹ NAs introduced by coercion
-## ℹ Input `vote_share` is `as.numeric(gsub("^$|-|%", 0, vote_share))`.
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-## Warning: Problem with `mutate()` input `vote_share`.
-## ℹ NAs introduced by coercion
-## ℹ Input `vote_share` is `as.numeric(gsub("^$|-|%", 0, vote_share))`.
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-## Warning: Problem with `mutate()` input `vote_share`.
-## ℹ NAs introduced by coercion
-## ℹ Input `vote_share` is `as.numeric(gsub("^$|-|%", 0, vote_share))`.
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-## Warning: Problem with `mutate()` input `vote_share`.
-## ℹ NAs introduced by coercion
-## ℹ Input `vote_share` is `as.numeric(gsub("^$|-|%", 0, vote_share))`.
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-## Warning: Problem with `mutate()` input `vote_share`.
-## ℹ NAs introduced by coercion
-## ℹ Input `vote_share` is `as.numeric(gsub("^$|-|%", 0, vote_share))`.
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-## Warning: Problem with `mutate()` input `vote_share`.
-## ℹ NAs introduced by coercion
-## ℹ Input `vote_share` is `as.numeric(gsub("^$|-|%", 0, vote_share))`.
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
 
 names(states_correct) <- states$NAME
 states_correct1 <- states_correct %>%
@@ -458,10 +238,6 @@ returns_ca1 <- rbind(x, y) %>%
          state_name = 'California') %>%
   filter(candidate != 'TBD')  %>%
   select(state_name, year, candidate, vote_share)
-## Warning: Problem with `mutate()` input `vote_share`.
-## ℹ NAs introduced by coercion
-## ℹ Input `vote_share` is `as.numeric(gsub("%", "", vote_share))`.
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
 ```
 
 ``` r
@@ -491,8 +267,6 @@ full <- bind_rows(states_correct1,
   left_join(states_full) %>%
   select(STATEFP:state_abbrev, NAME:winner) %>%
   rename(GEOID = STATEFP, state = NAME)
-## Joining, by = c("year", "candidate")
-## Joining, by = "NAME"
 
 # setwd(pdir)
 # #saveRDS(pres, 'pres_1864.rds')

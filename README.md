@@ -252,7 +252,8 @@ uspols::uspols_dk_pres %>%
 
 ### § Wikipedia: Presidential returns by state (1864-)
 
-[Code](https://github.com/jaytimm/uspols/blob/master/wikipedia.md)
+[Code](https://github.com/jaytimm/uspols/blob/master/wikipedia.md) \|
+Thoughts, et.
 
 ``` r
 uspols::uspols_wiki_pres %>%

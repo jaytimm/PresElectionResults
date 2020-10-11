@@ -36,9 +36,9 @@ library(uspols)
 Details
 -------
 
-### MEDSL: Senate returns by states (1976-)
+### § MEDSL: Senate returns by states (1976-)
 
-### MEDSL: House returns by congressional district (1976-)
+### § MEDSL: House returns by congressional district (1976-)
 
 [Code](https://github.com/jaytimm/uspols/blob/master/medsl.md)
 
@@ -232,7 +232,7 @@ uspols::uspols_medsl_house %>%
 </tbody>
 </table>
 
-### DailyKos: Presidential returns by congressional district (2008-)
+### § DailyKos: Presidential returns by congressional district (2008-)
 
 [Code](https://github.com/jaytimm/uspols/blob/master/daily-kos.md)
 
@@ -250,7 +250,7 @@ uspols::uspols_dk_pres %>%
 | AL            | 01             | 2012 | Romney | 37.4     | 61.8       |
 | AL            | 01             | 2016 | Trump  | 34.1     | 63.5       |
 
-### Wikipedia: Presidential returns by state (1864-)
+### § Wikipedia: Presidential returns by state (1864-)
 
 [Code](https://github.com/jaytimm/uspols/blob/master/wikipedia.md)
 
@@ -268,7 +268,7 @@ uspols::uspols_wiki_pres %>%
 ## 6 45    SC           South Caro…  1920 James M. Cox           96.0 Democ…      1
 ```
 
-### Lawmaker Twitter handles: Congresses 115 & 116
+### § Lawmaker Twitter handles: Congresses 115 & 116
 
 [Code](https://github.com/jaytimm/twitter-and-us-lawmakers/blob/master/twitter-handles.md)
 
@@ -287,4 +287,4 @@ uspols::uspols_twitter_handles %>% head()
 ## #   bioname <chr>, party_name <chr>, born <int>
 ```
 
-### VoteView: Congressional details
+### § VoteView: Congressional details

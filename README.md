@@ -42,6 +42,196 @@ Details
 
 [Code](https://github.com/jaytimm/uspols/blob/master/medsl.md)
 
+``` r
+uspols::uspols_medsl_house %>%
+  head() %>%
+  select(year, GEOID, candidate, democrat:republican) %>%
+  knitr::kable()
+```
+
+<table>
+<colgroup>
+<col style="width: 4%" />
+<col style="width: 4%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 4%" />
+<col style="width: 4%" />
+<col style="width: 4%" />
+<col style="width: 3%" />
+<col style="width: 4%" />
+<col style="width: 4%" />
+<col style="width: 3%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 4%" />
+<col style="width: 2%" />
+<col style="width: 3%" />
+<col style="width: 14%" />
+<col style="width: 4%" />
+<col style="width: 3%" />
+<col style="width: 5%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">state</th>
+<th style="text-align: left;">state_po</th>
+<th style="text-align: right;">state_fips</th>
+<th style="text-align: right;">state_cen</th>
+<th style="text-align: right;">state_ic</th>
+<th style="text-align: left;">office</th>
+<th style="text-align: right;">district</th>
+<th style="text-align: left;">stage</th>
+<th style="text-align: left;">special</th>
+<th style="text-align: left;">writein</th>
+<th style="text-align: left;">mode</th>
+<th style="text-align: right;">totalvotes</th>
+<th style="text-align: left;">unofficial</th>
+<th style="text-align: right;">version</th>
+<th style="text-align: right;">year</th>
+<th style="text-align: left;">GEOID</th>
+<th style="text-align: left;">candidate</th>
+<th style="text-align: right;">democrat</th>
+<th style="text-align: right;">other</th>
+<th style="text-align: right;">republican</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Alabama</td>
+<td style="text-align: left;">AL</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">63</td>
+<td style="text-align: right;">41</td>
+<td style="text-align: left;">US House</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">gen</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: left;">total</td>
+<td style="text-align: right;">157170</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">20171005</td>
+<td style="text-align: right;">1976</td>
+<td style="text-align: left;">0101</td>
+<td style="text-align: left;">Jack Edwards</td>
+<td style="text-align: right;">37.48</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">62.52</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Alabama</td>
+<td style="text-align: left;">AL</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">63</td>
+<td style="text-align: right;">41</td>
+<td style="text-align: left;">US House</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">gen</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: left;">total</td>
+<td style="text-align: right;">156362</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">20171005</td>
+<td style="text-align: right;">1976</td>
+<td style="text-align: left;">0102</td>
+<td style="text-align: left;">William L. “Bill” Dickinson</td>
+<td style="text-align: right;">42.39</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">57.60</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Alabama</td>
+<td style="text-align: left;">AL</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">63</td>
+<td style="text-align: right;">41</td>
+<td style="text-align: left;">US House</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">gen</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: left;">total</td>
+<td style="text-align: right;">108048</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">20171005</td>
+<td style="text-align: right;">1976</td>
+<td style="text-align: left;">0103</td>
+<td style="text-align: left;">Bill Nichols</td>
+<td style="text-align: right;">98.97</td>
+<td style="text-align: right;">1.03</td>
+<td style="text-align: right;">0.00</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Alabama</td>
+<td style="text-align: left;">AL</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">63</td>
+<td style="text-align: right;">41</td>
+<td style="text-align: left;">US House</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: left;">gen</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: left;">total</td>
+<td style="text-align: right;">176022</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">20171005</td>
+<td style="text-align: right;">1976</td>
+<td style="text-align: left;">0104</td>
+<td style="text-align: left;">Tom Bevill</td>
+<td style="text-align: right;">80.38</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">19.62</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Alabama</td>
+<td style="text-align: left;">AL</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">63</td>
+<td style="text-align: right;">41</td>
+<td style="text-align: left;">US House</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: left;">gen</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: left;">total</td>
+<td style="text-align: right;">113560</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">20171005</td>
+<td style="text-align: right;">1976</td>
+<td style="text-align: left;">0105</td>
+<td style="text-align: left;">Ronnie G. Flippo</td>
+<td style="text-align: right;">99.99</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.00</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Alabama</td>
+<td style="text-align: left;">AL</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">63</td>
+<td style="text-align: right;">41</td>
+<td style="text-align: left;">US House</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: left;">gen</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: left;">total</td>
+<td style="text-align: right;">162518</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">20171005</td>
+<td style="text-align: right;">1976</td>
+<td style="text-align: left;">0106</td>
+<td style="text-align: left;">John H. Buchanan, Jr.</td>
+<td style="text-align: right;">42.69</td>
+<td style="text-align: right;">0.63</td>
+<td style="text-align: right;">56.68</td>
+</tr>
+</tbody>
+</table>
+
 ### DailyKos: Presidential returns by congressional district (2008-)
 
 [Code](https://github.com/jaytimm/uspols/blob/master/daily-kos.md)
@@ -78,7 +268,7 @@ uspols::uspols_wiki_pres %>%
 ## 6 45    SC           South Caro…  1920 James M. Cox           96.0 Democ…      1
 ```
 
-### Twitter: Lawmaker handles
+### Lawmaker Twitter handles: Congresses 115 & 116
 
 [Code](https://github.com/jaytimm/twitter-and-us-lawmakers/blob/master/twitter-handles.md)
 

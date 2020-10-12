@@ -21,6 +21,8 @@ states <- states_full %>%
   mutate(which_table = ifelse(NAME %in% c('New York', 'Missouri'), 3, 2)) 
 ```
 
+This piece gets the bulk of historical election returns.
+
 ``` r
 states_correct <- list()
 for (i in 1:nrow(states)) {
@@ -50,6 +52,9 @@ states_correct1 <- states_correct %>%
   bind_rows(.id = 'state_name')  %>%
   filter(candidate != 'TBD')
 ```
+
+Election results for two states, California and Pennsylvania, are
+presented differently.
 
 ``` r
 ##### PA -- 
@@ -108,11 +113,14 @@ returns_ca1 <- rbind(x, y) %>%
 ```
 
 ``` r
-setwd(git_dir)
 ## hand corrections on the names --
 #pres <- write.csv(returns_ca1, 'ca_pres_1864xx.csv')
+setwd(git_dir)
 returns_ca2 <- read.csv('ca_pres_1864.csv')
 ```
+
+Lastly, we aggregate our different tables into a single … a full + clean
+version –
 
 ``` r
 ###
@@ -127,17 +135,21 @@ full <- bind_rows(states_correct1,
   left_join(pres %>% select(-electoral_votes)) %>%
   arrange(desc(vote_share)) %>%
   group_by(state_name, year) %>%
-  mutate(winner = row_number()) %>%
   ungroup()%>%
   rename(NAME = state_name) %>%
   
   left_join(states_full) %>%
-  select(STATEFP:state_abbrev, NAME:winner) %>%
-  rename(GEOID = STATEFP, state = NAME)
+  select(year, state_abbrev, candidate:party) 
+```
 
-# setwd(pdir)
-# #saveRDS(pres, 'pres_1864.rds')
-# #saveRDS(full, 'pres_elections_state.rds')
-# write.csv(full, 'pres_elections_state.csv', 
-#           row.names = F)
+thoughts re-structure – modified for most frequent application –
+
+``` r
+full1 <- full %>%
+  group_by(state_abbrev, year) %>%   
+  mutate(winner = candidate[which.max(vote_share)],
+         party = tolower(party)) %>%
+  ungroup() %>%
+  select(-candidate) %>%
+  spread(party, vote_share)
 ```

@@ -52,188 +52,14 @@ uspols::uspols_medsl_house %>%
   head() %>% knitr::kable()
 ```
 
-<table>
-<colgroup>
-<col style="width: 2%" />
-<col style="width: 4%" />
-<col style="width: 4%" />
-<col style="width: 5%" />
-<col style="width: 5%" />
-<col style="width: 4%" />
-<col style="width: 4%" />
-<col style="width: 4%" />
-<col style="width: 3%" />
-<col style="width: 4%" />
-<col style="width: 14%" />
-<col style="width: 4%" />
-<col style="width: 3%" />
-<col style="width: 5%" />
-<col style="width: 5%" />
-<col style="width: 4%" />
-<col style="width: 3%" />
-<col style="width: 4%" />
-<col style="width: 3%" />
-<col style="width: 5%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: right;">year</th>
-<th style="text-align: left;">state</th>
-<th style="text-align: left;">state_po</th>
-<th style="text-align: right;">state_fips</th>
-<th style="text-align: right;">state_cen</th>
-<th style="text-align: right;">state_ic</th>
-<th style="text-align: left;">office</th>
-<th style="text-align: right;">district</th>
-<th style="text-align: left;">stage</th>
-<th style="text-align: left;">special</th>
-<th style="text-align: left;">candidate</th>
-<th style="text-align: left;">writein</th>
-<th style="text-align: left;">mode</th>
-<th style="text-align: right;">totalvotes</th>
-<th style="text-align: left;">unofficial</th>
-<th style="text-align: right;">version</th>
-<th style="text-align: left;">GEOID</th>
-<th style="text-align: right;">democrat</th>
-<th style="text-align: right;">other</th>
-<th style="text-align: right;">republican</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: right;">1976</td>
-<td style="text-align: left;">Alabama</td>
-<td style="text-align: left;">AL</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">63</td>
-<td style="text-align: right;">41</td>
-<td style="text-align: left;">US House</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: left;">gen</td>
-<td style="text-align: left;">FALSE</td>
-<td style="text-align: left;">Jack Edwards</td>
-<td style="text-align: left;">FALSE</td>
-<td style="text-align: left;">total</td>
-<td style="text-align: right;">157170</td>
-<td style="text-align: left;">FALSE</td>
-<td style="text-align: right;">20171005</td>
-<td style="text-align: left;">0101</td>
-<td style="text-align: right;">37.48</td>
-<td style="text-align: right;">0.00</td>
-<td style="text-align: right;">62.52</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">1976</td>
-<td style="text-align: left;">Alabama</td>
-<td style="text-align: left;">AL</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">63</td>
-<td style="text-align: right;">41</td>
-<td style="text-align: left;">US House</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: left;">gen</td>
-<td style="text-align: left;">FALSE</td>
-<td style="text-align: left;">William L. “Bill” Dickinson</td>
-<td style="text-align: left;">FALSE</td>
-<td style="text-align: left;">total</td>
-<td style="text-align: right;">156362</td>
-<td style="text-align: left;">FALSE</td>
-<td style="text-align: right;">20171005</td>
-<td style="text-align: left;">0102</td>
-<td style="text-align: right;">42.39</td>
-<td style="text-align: right;">0.00</td>
-<td style="text-align: right;">57.60</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">1976</td>
-<td style="text-align: left;">Alabama</td>
-<td style="text-align: left;">AL</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">63</td>
-<td style="text-align: right;">41</td>
-<td style="text-align: left;">US House</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: left;">gen</td>
-<td style="text-align: left;">FALSE</td>
-<td style="text-align: left;">Bill Nichols</td>
-<td style="text-align: left;">FALSE</td>
-<td style="text-align: left;">total</td>
-<td style="text-align: right;">108048</td>
-<td style="text-align: left;">FALSE</td>
-<td style="text-align: right;">20171005</td>
-<td style="text-align: left;">0103</td>
-<td style="text-align: right;">98.97</td>
-<td style="text-align: right;">1.03</td>
-<td style="text-align: right;">0.00</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">1976</td>
-<td style="text-align: left;">Alabama</td>
-<td style="text-align: left;">AL</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">63</td>
-<td style="text-align: right;">41</td>
-<td style="text-align: left;">US House</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: left;">gen</td>
-<td style="text-align: left;">FALSE</td>
-<td style="text-align: left;">Tom Bevill</td>
-<td style="text-align: left;">FALSE</td>
-<td style="text-align: left;">total</td>
-<td style="text-align: right;">176022</td>
-<td style="text-align: left;">FALSE</td>
-<td style="text-align: right;">20171005</td>
-<td style="text-align: left;">0104</td>
-<td style="text-align: right;">80.38</td>
-<td style="text-align: right;">0.00</td>
-<td style="text-align: right;">19.62</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">1976</td>
-<td style="text-align: left;">Alabama</td>
-<td style="text-align: left;">AL</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">63</td>
-<td style="text-align: right;">41</td>
-<td style="text-align: left;">US House</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: left;">gen</td>
-<td style="text-align: left;">FALSE</td>
-<td style="text-align: left;">Ronnie G. Flippo</td>
-<td style="text-align: left;">FALSE</td>
-<td style="text-align: left;">total</td>
-<td style="text-align: right;">113560</td>
-<td style="text-align: left;">FALSE</td>
-<td style="text-align: right;">20171005</td>
-<td style="text-align: left;">0105</td>
-<td style="text-align: right;">99.99</td>
-<td style="text-align: right;">0.00</td>
-<td style="text-align: right;">0.00</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">1976</td>
-<td style="text-align: left;">Alabama</td>
-<td style="text-align: left;">AL</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">63</td>
-<td style="text-align: right;">41</td>
-<td style="text-align: left;">US House</td>
-<td style="text-align: right;">6</td>
-<td style="text-align: left;">gen</td>
-<td style="text-align: left;">FALSE</td>
-<td style="text-align: left;">John H. Buchanan, Jr.</td>
-<td style="text-align: left;">FALSE</td>
-<td style="text-align: left;">total</td>
-<td style="text-align: right;">162518</td>
-<td style="text-align: left;">FALSE</td>
-<td style="text-align: right;">20171005</td>
-<td style="text-align: left;">0106</td>
-<td style="text-align: right;">42.69</td>
-<td style="text-align: right;">0.63</td>
-<td style="text-align: right;">56.68</td>
-</tr>
-</tbody>
-</table>
+|  year| state\_abbrev | district\_code | winner                      |  democrat|  republican|  other|
+|-----:|:--------------|:---------------|:----------------------------|---------:|-----------:|------:|
+|  1976| AL            | 01             | Jack Edwards                |     37.48|       62.52|   0.00|
+|  1976| AL            | 02             | William L. “Bill” Dickinson |     42.39|       57.60|   0.00|
+|  1976| AL            | 03             | Bill Nichols                |     98.97|        0.00|   1.03|
+|  1976| AL            | 04             | Tom Bevill                  |     80.38|       19.62|   0.00|
+|  1976| AL            | 05             | Ronnie G. Flippo            |     99.99|        0.00|   0.00|
+|  1976| AL            | 06             | John H. Buchanan, Jr.       |     42.69|       56.68|   0.63|
 
 ### § DailyKos: Presidential returns by congressional district (2008-)
 
@@ -244,14 +70,14 @@ uspols::uspols_dk_pres %>%
   head() %>% knitr::kable()
 ```
 
-| state\_abbrev | district\_code | year | winner | democrat | republican |
-|:--------------|:---------------|:-----|:-------|:---------|:-----------|
-| AK            | 00             | 2008 | McCain | 38.1     | 59.7       |
-| AK            | 00             | 2012 | Romney | 41.2     | 55.3       |
-| AK            | 00             | 2016 | Trump  | 37.6     | 52.8       |
-| AL            | 01             | 2008 | McCain | 38.5     | 60.9       |
-| AL            | 01             | 2012 | Romney | 37.4     | 61.8       |
-| AL            | 01             | 2016 | Trump  | 34.1     | 63.5       |
+|  year| state\_abbrev | district\_code | winner | democrat | republican |
+|-----:|:--------------|:---------------|:-------|:---------|:-----------|
+|  2008| AK            | 00             | McCain | 38.1     | 59.7       |
+|  2012| AK            | 00             | Romney | 41.2     | 55.3       |
+|  2016| AK            | 00             | Trump  | 37.6     | 52.8       |
+|  2008| AL            | 01             | McCain | 38.5     | 60.9       |
+|  2012| AL            | 01             | Romney | 37.4     | 61.8       |
+|  2016| AL            | 01             | Trump  | 34.1     | 63.5       |
 
 ### § Wikipedia: Presidential returns by state (1864-)
 
@@ -263,14 +89,14 @@ uspols::uspols_wiki_pres %>%
   head() %>% knitr::kable()
 ```
 
-| GEOID | state\_abbrev | state          |  year| candidate             |  vote\_share| party    |  winner|
-|:------|:--------------|:---------------|-----:|:----------------------|------------:|:---------|-------:|
-| 45    | SC            | South Carolina |  1936| Franklin D. Roosevelt |        98.57| Democrat |       1|
-| 45    | SC            | South Carolina |  1932| Franklin D. Roosevelt |        98.03| Democrat |       1|
-| 28    | MS            | Mississippi    |  1936| Franklin D. Roosevelt |        97.06| Democrat |       1|
-| 45    | SC            | South Carolina |  1916| Woodrow Wilson        |        96.71| Democrat |       1|
-| 45    | SC            | South Carolina |  1924| John W. Davis         |        96.56| Democrat |       1|
-| 45    | SC            | South Carolina |  1920| James M. Cox          |        96.05| Democrat |       1|
+|  year| state\_abbrev | winner              |  democrat|  republican|
+|-----:|:--------------|:--------------------|---------:|-----------:|
+|  1864| CA            | Abraham Lincoln     |     41.40|       58.60|
+|  1864| CT            | Abraham Lincoln     |     48.60|       51.40|
+|  1864| DE            | George B. McClellan |     51.80|       48.20|
+|  1864| IA            | Abraham Lincoln     |     36.92|       63.08|
+|  1864| IL            | Abraham Lincoln     |     45.60|       54.40|
+|  1864| IN            | Abraham Lincoln     |     46.50|       53.50|
 
 ### § Lawmaker Twitter handles: Congresses 115 & 116
 

@@ -70,14 +70,14 @@ uspols::uspols_dk_pres %>%
   head() %>% knitr::kable()
 ```
 
-|  year| state\_abbrev | district\_code | winner | democrat | republican |
-|-----:|:--------------|:---------------|:-------|:---------|:-----------|
-|  2008| AK            | 00             | McCain | 38.1     | 59.7       |
-|  2012| AK            | 00             | Romney | 41.2     | 55.3       |
-|  2016| AK            | 00             | Trump  | 37.6     | 52.8       |
-|  2008| AL            | 01             | McCain | 38.5     | 60.9       |
-|  2012| AL            | 01             | Romney | 37.4     | 61.8       |
-|  2016| AL            | 01             | Trump  | 34.1     | 63.5       |
+|  year| state\_abbrev | district\_code | winner       | democrat | republican |
+|-----:|:--------------|:---------------|:-------------|:---------|:-----------|
+|  2008| AK            | 00             | John McCain  | 38.1     | 59.7       |
+|  2012| AK            | 00             | Mitt Romney  | 41.2     | 55.3       |
+|  2016| AK            | 00             | Donald Trump | 37.6     | 52.8       |
+|  2008| AL            | 01             | John McCain  | 38.5     | 60.9       |
+|  2012| AL            | 01             | Mitt Romney  | 37.4     | 61.8       |
+|  2016| AL            | 01             | Donald Trump | 34.1     | 63.5       |
 
 ### § Wikipedia: Presidential returns by state (1864-)
 

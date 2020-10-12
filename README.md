@@ -3,7 +3,7 @@ uspols
 
 A simple collection of American political data, including federal
 election returns and Twitter details for US lawmakers, aggregated from
-existing resources as an **R data package**.
+existing resources as an **R data package**. v
 
 Election returns:
 

@@ -1,29 +1,24 @@
 uspols
 ======
 
-A simple and transparently constructed/aggregated collection of American
-political data, including federal election returns and Twitter details
-about American lawmakers.
+A simple collection of American political data, including federal
+election returns and Twitter details for US lawmakers, aggregated from
+existing resources as an **R data package**.
 
 Election returns:
 
--   for congressional races for both chambers (from 1976 onward) made
-    available via [MEDSL](). We have ever so slightly massaged these
-    data for …. House results by congressional districts; Senate returns
-    by state.
+-   House and Senate returns by congressional district and state,
+    respectively, (from 1976 onward) made available via [MEDSL]().
 
 -   Presidential returns by congressional district for 2008, 2012, and
     2016 elections via [The DailyKos]().
 
--   Presidential returns by state for elections since 1864 scraped from
+-   Presidential returns by state for elections since 1864, scraped from
     Wikipedia.
 
-With the least … , we have made uniform … within and across data sets.
-
-The formats presented here are the ones I like t … but code-links get
-back to iriginal data sources, so users can tweak things to their
-liking. I am not familiar with the conventions (if any exist) of sharing
-election return data. ??
+Formats have been tweaked ever so slightly for a uniform output across
+data sets. Links to R code demonstrate all details of work-flow from raw
+data to package table.
 
 Installation
 ------------

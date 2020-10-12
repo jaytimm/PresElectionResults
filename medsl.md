@@ -8,23 +8,26 @@ library(tidyverse)
 ```
 
 ``` r
-medsl_house <- read.csv(paste0(git_dir, medsl_house_file), 
-                        na.strings = c("", "NA")) %>%
-  ##
-  mutate(GEOID = paste0(stringr::str_pad (state_fips,2, pad = 0),
-                        stringr::str_pad (district,2, pad = 0))) 
+medsl_house <- read.csv(paste0(git_dir, medsl_house_file), na.strings = c("", "NA"))
+medsl_senate <- read.csv(paste0(git_dir, medsl_senate_file), na.strings = c("", "NA"))
 ```
 
 Load data –
 
 ``` r
-house_returns <- medsl_house %>%
+returns <- medsl_house %>%
+  #medsl_senate %>%
   distinct() %>%
   mutate(totalvotes = ifelse(state == 'Florida' & year == 2018, 
-                             totalvotes/2, totalvotes)) %>%
+                             totalvotes/2, totalvotes),
+         
+         #Florida 24th, 2016 --
+         totalvotes = ifelse(totalvotes == 0, 1, totalvotes),
+         candidatevotes = ifelse(candidatevotes == 0, 1, candidatevotes)) %>%
   
   # correct (some) party affiliation NAs -- non-write-ins --
-  group_by(state, district, candidate) %>%
+  group_by(state, district, candidate) %>% # house
+  #  group_by(state, candidate) %>% # senate
   arrange(party) %>%
   fill(party) %>%  
   
@@ -39,8 +42,6 @@ house_returns <- medsl_house %>%
   
   group_by_at(vars(-candidatevotes, -party, -candidate, 
                    -fullcandidatevotes, -writein)) %>% 
-  mutate(winner = ifelse(fullcandidatevotes == max(fullcandidatevotes), 
-                         'y', 'n')) %>%
   ungroup() %>%
   select(-candidatevotes)
 ```
@@ -48,8 +49,8 @@ house_returns <- medsl_house %>%
 Re-work (slightly) :
 
 ``` r
-hrs <- house_returns %>%
-  filter(writein == FALSE) %>%
+hrs <- returns %>%
+  filter(writein == FALSE & unofficial == FALSE) %>%
   
       mutate(party = ifelse(grepl('^democrat', party), 
                             'democrat', party)) %>%
@@ -59,21 +60,20 @@ hrs <- house_returns %>%
       mutate(party = ifelse(!grepl('^republican|^democrat', party), 
                             'other', party)) %>%
 
-  mutate(candidate = ifelse(winner == 'n', NA, candidate)) %>%
-  #mutate(party1 = ifelse(winner == 'n', NA, party)) %>%
-  
   # agg over "other"
-  group_by_at(vars(-fullcandidatevotes, -winner)) %>% 
+  group_by_at(vars(-fullcandidatevotes)) %>% 
   summarize(candidatevotes = sum(fullcandidatevotes)) %>% 
   ungroup() %>%
   
-  fill(candidate) %>%  # fill(party1) %>%
   mutate(candidatevotes = round(candidatevotes/totalvotes *100, 2)) %>%
   
   # some races more than one dem, eg--
-  group_by_at(vars(-candidatevotes)) %>%
-  filter(candidatevotes == max(candidatevotes)) %>% 
- 
-  spread(party, candidatevotes) %>%
-  replace(., is.na(.), 0) 
+  group_by_at(vars(-candidate, -candidatevotes)) %>%
+  arrange(desc(candidatevotes)) %>%
+  slice(1) %>%
+  #filter(candidatevotes == max(candidatevotes)) %>% 
+  ungroup() 
 ```
+
+A simple clean – for uniform output and get rid of some less useful
+columns –

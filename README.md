@@ -303,9 +303,10 @@ uspols::uspols_twitter_handles %>% head() %>% knitr::kable()
 
 ### § Geometries: DailyKos
 
-[Link](https://docs.google.com/spreadsheets/d/1LrBXlqrtSZwyYOkpEEXFwQggvtR0bHHTxs9kq4kjOjw/edit#gid=1250379179).
+Made available by the DailyKos
+[here](https://docs.google.com/spreadsheets/d/1LrBXlqrtSZwyYOkpEEXFwQggvtR0bHHTxs9kq4kjOjw/edit#gid=1250379179).
 
-#### Congressional districts
+#### Congressional districts:
 
 ``` r
 library(sf)
@@ -329,12 +330,13 @@ uspols::sf_HexCDv21 %>%
         axis.title.x=element_blank(),
         axis.title.y=element_blank(),
         legend.position = 'none') +
-labs(title = "Equal-area US Congressional District geometry by DailyKos")
+labs(title = "Equal-area US Congressional District geometry",
+     caption = "Source: DailyKos")
 ```
 
 ![](figure-markdown_github/unnamed-chunk-8-1.png)
 
-#### States twice –
+#### States:
 
 ``` r
 uspols::sf_TileOutv10 %>% 
@@ -357,7 +359,8 @@ uspols::sf_TileOutv10 %>%
         axis.title.x=element_blank(),
         axis.title.y=element_blank(),
         legend.position = 'none') +
-labs(title = "Equal-area US State geometry by DailyKos")
+labs(title = "Equal-area US State geometry",
+     caption = "Source: DailyKos")
 ```
 
 ![](figure-markdown_github/unnamed-chunk-9-1.png)

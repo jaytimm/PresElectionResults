@@ -301,12 +301,7 @@ uspols::uspols_twitter_handles %>% head() %>% knitr::kable()
 
 ------------------------------------------------------------------------
 
-### § Geometries: DailyKos
-
-Made available by the DailyKos
-[here](https://docs.google.com/spreadsheets/d/1LrBXlqrtSZwyYOkpEEXFwQggvtR0bHHTxs9kq4kjOjw/edit#gid=1250379179).
-
-#### Congressional districts:
+### § DailyKos: Simple feature geometries
 
 ``` r
 library(sf)

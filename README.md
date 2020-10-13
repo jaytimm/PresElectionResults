@@ -152,7 +152,7 @@ uspols::uspols_medsl_house %>%
 
 ``` r
 uspols::uspols_dk_pres %>%
-  head() %>% knitr::kable()
+  head() %>% knitr::kable() 
 ```
 
 |  year| state\_abbrev | district\_code | winner       | party\_win | democrat | republican |

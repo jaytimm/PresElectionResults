@@ -339,8 +339,6 @@ labs(title = "Equal-area US Congressional District geometry",
 
 ![](figure-markdown_github/unnamed-chunk-8-1.png)
 
-#### States:
-
 ``` r
 uspols::sf_TileOutv10 %>% 
   ggplot() + 

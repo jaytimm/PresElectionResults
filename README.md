@@ -6,9 +6,11 @@ election returns and Twitter details for US lawmakers, aggregated from
 existing resources as an **R data package**.
 
 > -   House and Senate returns by congressional district and state,
->     respectively, (from 1976 onward) made available via [MEDSL]().  
+>     respectively, (from 1976 onward) made available via
+>     [MEDSL](https://github.com/MEDSL).  
 > -   Presidential returns by congressional district for 2008, 2012, and
->     2016 elections via [The DailyKos]().
+>     2016 elections via [The
+>     DailyKos](https://www.dailykos.com/stories/2018/2/21/1742660/-The-ultimate-Daily-Kos-Elections-guide-to-all-of-our-data-sets#1).
 > -   Presidential returns by state for elections since 1864, scraped
 >     from Wikipedia.
 
@@ -150,7 +152,9 @@ uspols::uspols_medsl_house %>%
 
 ### § DailyKos: Presidential returns by congressional district (2008-)
 
-[Code](https://github.com/jaytimm/uspols/blob/master/daily-kos.md)
+[Code](https://github.com/jaytimm/uspols/blob/master/daily-kos.md) \|
+[DailyKos
+dataset](https://docs.google.com/spreadsheets/d/1zLNAuRqPauss00HDz4XbTH2HqsCzMe0pR8QmD1K8jk8/edit#gid=0)
 
 ``` r
 uspols::uspols_dk_pres %>%

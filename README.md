@@ -146,7 +146,7 @@ uspols::uspols_medsl_house %>%
 </tbody>
 </table>
 
-<br>
+------------------------------------------------------------------------
 
 ### § DailyKos: Presidential returns by congressional district (2008-)
 
@@ -166,7 +166,7 @@ uspols::uspols_dk_pres %>%
 |  2012| AL            | 01             | Mitt Romney  | republican | 37.4     | 61.8       |
 |  2016| AL            | 01             | Donald Trump | republican | 34.1     | 63.5       |
 
-<br>
+------------------------------------------------------------------------
 
 ### § Wikipedia: Presidential returns by state (1864-)
 
@@ -186,7 +186,7 @@ uspols::uspols_wiki_pres %>%
 |  1864| IL            | statewide      | Abraham Lincoln     | republican |     45.60|       54.40|
 |  1864| IN            | statewide      | Abraham Lincoln     | republican |     46.50|       53.50|
 
-<br>
+------------------------------------------------------------------------
 
 ### § Lawmaker Twitter handles: Congresses 115 & 116
 
@@ -299,15 +299,16 @@ uspols::uspols_twitter_handles %>% head() %>% knitr::kable()
 </tbody>
 </table>
 
-<br>
+------------------------------------------------------------------------
 
 ### § Geometries: DailyKos
 
 [Link](https://docs.google.com/spreadsheets/d/1LrBXlqrtSZwyYOkpEEXFwQggvtR0bHHTxs9kq4kjOjw/edit#gid=1250379179).
 
+#### Congressional districts
+
 ``` r
 library(sf)
-
 uspols::sf_HexCDv21 %>%
   ggplot() + 
   geom_sf(aes(fill = state),
@@ -327,12 +328,36 @@ uspols::sf_HexCDv21 %>%
         axis.text.y=element_blank(),
         axis.title.x=element_blank(),
         axis.title.y=element_blank(),
-        legend.position = 'none')   
+        legend.position = 'none') +
+labs(title = "Equal-area US Congressional District geometry by DailyKos")
 ```
 
 ![](figure-markdown_github/unnamed-chunk-8-1.png)
 
+#### States twice –
+
 ``` r
-# labs(title = "2016 Trump Margins by Congressional District",
-#        caption = 'Source: Daily Kos')
+uspols::sf_TileOutv10 %>% 
+  ggplot() + 
+  geom_sf(aes(fill = state),
+           color = 'white') +
+  geom_sf(data = uspols::sf_TileInv10, 
+          fill = NA, 
+          show.legend = F, 
+          color="gray", 
+          lwd=.5) +
+  ggsflabel::geom_sf_text(data = uspols::sf_TileInv10,
+                          aes(label = state_abbrev), 
+                          size = 3,
+                          color='black') +
+  # scale_fill_distiller(palette = "RdBu", direction=-1) +
+  theme_minimal()+
+  theme(axis.text.x=element_blank(),
+        axis.text.y=element_blank(),
+        axis.title.x=element_blank(),
+        axis.title.y=element_blank(),
+        legend.position = 'none') +
+labs(title = "Equal-area US State geometry by DailyKos")
 ```
+
+![](figure-markdown_github/unnamed-chunk-9-1.png)

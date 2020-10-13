@@ -39,26 +39,26 @@ sfs <- lapply(fnames, function(x) {
 
 names(sfs) <- fnames
 
-sf_HexCDv21 <- sfs$HexCDv21 %>%
+xsf_HexCDv21 <- sfs$HexCDv21 %>%
   rename(state_abbrev = STATEAB,
          state = STATENAME) %>%
   mutate(district_code = gsub('[A-Z][A-Z]', 0, CDLABEL),
          district_code = stringr::str_pad (district_code, 2, pad = 0)) %>%
   select(GEOID, state, state_abbrev, district_code)
 
-sf_HexSTv20 <- sfs$HexSTv20 %>%
+xsf_HexSTv20 <- sfs$HexSTv20 %>%
   rename(state_abbrev = STATEAB, state = STATENAME)
 
-sf_TileInv10 <- sfs$TileInv10 %>% select(5:7) %>%
+xsf_TileInv10 <- sfs$TileInv10 %>% select(5:7) %>%
   rename(state_abbrev = State, state = StateName)
 
-sf_TileOutv10 <- sfs$TileOutv10 %>% select(5:7) %>%
+xsf_TileOutv10 <- sfs$TileOutv10 %>% select(5:7) %>%
   rename(state_abbrev = State, state = StateName)
 
 setwd('/home/jtimm/jt_work/GitHub/packages/uspols')
-usethis::use_data(sf_HexCDv21, overwrite=TRUE)
-usethis::use_data(sf_HexSTv20, overwrite=TRUE)
-usethis::use_data(sf_TileInv10, overwrite=TRUE)
-usethis::use_data(sf_TileOutv10, overwrite=TRUE)
+usethis::use_data(xsf_HexCDv21, overwrite=TRUE)
+usethis::use_data(xsf_HexSTv20, overwrite=TRUE)
+usethis::use_data(xsf_TileInv10, overwrite=TRUE)
+usethis::use_data(xsf_TileOutv10, overwrite=TRUE)
 
 

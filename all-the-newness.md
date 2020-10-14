@@ -25,79 +25,11 @@ res <- Rvoteview::voteview_search("impeachment") %>%
 res %>%
   select(-id) %>%
   mutate(article = c('-', 'I', 'II', 'II', 'I')) %>%
-  arrange(date, article)%>% 
-  knitr::kable()
+  arrange(date, article) %>% 
+  #knitr::kable()
+  kableExtra::kbl(format = 'latex' ) %>%
+  kableExtra::kable_classic(full_width = T) #html_font = "Cambria"
 ```
-
-<table>
-<colgroup>
-<col style="width: 6%" />
-<col style="width: 6%" />
-<col style="width: 66%" />
-<col style="width: 11%" />
-<col style="width: 2%" />
-<col style="width: 2%" />
-<col style="width: 4%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;">date</th>
-<th style="text-align: left;">bill_number</th>
-<th style="text-align: left;">text</th>
-<th style="text-align: left;">question</th>
-<th style="text-align: right;">yea</th>
-<th style="text-align: right;">nay</th>
-<th style="text-align: left;">article</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">1999-02-12</td>
-<td style="text-align: left;">SRES44</td>
-<td style="text-align: left;">A resolution relating to the censure of William Jefferson Clinton.</td>
-<td style="text-align: left;">On the Motion</td>
-<td style="text-align: right;">43</td>
-<td style="text-align: right;">56</td>
-<td style="text-align: left;">-</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">1999-02-12</td>
-<td style="text-align: left;">HRES611</td>
-<td style="text-align: left;">A resolution impeaching William Jefferson Clinton, President of the United States, for high crimes and misdemeanors.</td>
-<td style="text-align: left;">Guilty or Not Guilty</td>
-<td style="text-align: right;">50</td>
-<td style="text-align: right;">51</td>
-<td style="text-align: left;">I</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">1999-02-12</td>
-<td style="text-align: left;">HRES611</td>
-<td style="text-align: left;">A resolution impeaching William Jefferson Clinton, President of the United States, for high crimes and misdemeanors.</td>
-<td style="text-align: left;">Guilty or Not Guilty</td>
-<td style="text-align: right;">45</td>
-<td style="text-align: right;">56</td>
-<td style="text-align: left;">II</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">2020-02-05</td>
-<td style="text-align: left;">HRES755</td>
-<td style="text-align: left;">A resolution impeaching Donald John Trump, President of the United States, for high crimes and misdemeanors.</td>
-<td style="text-align: left;">Guilty or Not Guilty</td>
-<td style="text-align: right;">47</td>
-<td style="text-align: right;">53</td>
-<td style="text-align: left;">I</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">2020-02-05</td>
-<td style="text-align: left;">HRES755</td>
-<td style="text-align: left;">A resolution impeaching Donald John Trump, President of the United States, for high crimes and misdemeanors.</td>
-<td style="text-align: left;">Guilty or Not Guilty</td>
-<td style="text-align: right;">48</td>
-<td style="text-align: right;">52</td>
-<td style="text-align: left;">II</td>
-</tr>
-</tbody>
-</table>
 
 Here we look at how the 15 US Senators – members of both the 106th &
 116th congresses – voted on Article I from the 2020 trial and Article II
@@ -106,43 +38,6 @@ of the 1999 trial.
 ``` r
 votes <- Rvoteview::voteview_download(res$id)
 ```
-
-``` r
-sens <- Rvoteview:: member_search(chamber= 'Senate', 
-                                  congress = c(106, 116))  ## re-do this piece --         
-
-vs <- votes$votes.long %>% 
-  inner_join(sens %>% 
-               mutate(icpsr = as.character(icpsr))) %>%
-  filter(vname %in% c('RS1060018', 'RS1160461')) %>%
-  select(bioname, state_abbrev, 
-         congress, party_name, vote) %>%
-  mutate(vote = ifelse(vote == 1, 'Yea', 'Nay')) %>%
-  spread(congress, vote) %>%
-  filter(complete.cases(.)) %>%
-  arrange(party_name, `106`) 
-
-vs %>%
-  knitr::kable()
-```
-
-| bioname                             | state\_abbrev | party\_name      | 106 | 116 |
-|:------------------------------------|:--------------|:-----------------|:----|:----|
-| DURBIN, Richard Joseph              | IL            | Democratic Party | Nay | Yea |
-| FEINSTEIN, Dianne                   | CA            | Democratic Party | Nay | Yea |
-| LEAHY, Patrick Joseph               | VT            | Democratic Party | Nay | Yea |
-| MURRAY, Patty                       | WA            | Democratic Party | Nay | Yea |
-| REED, John F. (Jack)                | RI            | Democratic Party | Nay | Yea |
-| SCHUMER, Charles Ellis (Chuck)      | NY            | Democratic Party | Nay | Yea |
-| WYDEN, Ronald Lee                   | OR            | Democratic Party | Nay | Yea |
-| COLLINS, Susan Margaret             | ME            | Republican Party | Nay | Nay |
-| CRAPO, Michael Dean                 | ID            | Republican Party | Yea | Nay |
-| ENZI, Michael B.                    | WY            | Republican Party | Yea | Nay |
-| GRASSLEY, Charles Ernest            | IA            | Republican Party | Yea | Nay |
-| INHOFE, James Mountain              | OK            | Republican Party | Yea | Nay |
-| McCONNELL, Addison Mitchell (Mitch) | KY            | Republican Party | Yea | Nay |
-| ROBERTS, Charles Patrick (Pat)      | KS            | Republican Party | Yea | Nay |
-| SHELBY, Richard C.                  | AL            | Republican Party | Yea | Nay |
 
 ################ 
 
@@ -162,7 +57,7 @@ last_dem <- uspols::uspols_wiki_pres %>%
 candidate since LBJ.
 
 ``` r
-x <- last_dem %>%
+last_sum <- last_dem %>%
   group_by(year, party_win, winner) %>%
   summarise(n = n()) %>%
   ungroup() %>%
@@ -252,7 +147,8 @@ style="     color: rgba(187, 223, 39, 1) !important;font-size: 20px;">;)</span>
 library(sf)
 
 uspols::xsf_TileOutv10 %>% 
-  left_join(last_dem, by ='state_abbrev') %>%
+  left_join(last_dem %>%
+              filter(party_win == 'democrat'), by ='state_abbrev') %>%
   
   ggplot() + 
   geom_sf(aes(fill = label),
@@ -448,49 +344,48 @@ context
 <tbody>
 <tr>
 <td style="text-align:left;">
-text12144
+text2197
 </td>
 <td style="text-align:left;">
-… a less power be presumed to be vested in the \|\| federal government
-\|\| , which has been formed to remedy their weakness ? …
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-text26525
-</td>
-<td style="text-align:left;">
-… of France , residing in your state , that the \|\| federal government
-\|\| , respecting his nation , and attentive to the safety …
+… with the appointments of Comptroler of the treasury under the \|\|
+federal Government \|\| , is now on his way to Phila . in …
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-text20598
+text1215
 </td>
 <td style="text-align:left;">
-… these , formed the State Governments , the other the \|\| Federal
-Government \|\| . The powers of the Government had been further divided
-…
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-text10725
-</td>
-<td style="text-align:left;">
-… Months were not adequate to the Bare Maintainance of the \|\| Federal
-Government \|\| , on the most economical establishment , and in time …
+… family . Our Rulers continue as obstinately opposed to the \|\|
+Federal Government \|\| as ever , and I have no Idea that they …
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-text14759
+text354
 </td>
 <td style="text-align:left;">
-… therefrom . To you alone have I declared that the \|\| Federal
-government \|\| , far from manifesting any regard for our generous
-conduct …
+… my opinion . As to the general measures of the \|\| federal government
+\|\| , when I have seen them attacked artfully and insidiously …
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+text1454
+</td>
+<td style="text-align:left;">
+… the Providence district , could hold that office under the \|\|
+Federal Government \|\| ; - and the Governour has great influence among
+the …
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+text20968
+</td>
+<td style="text-align:left;">
+… which have led to the formation and establishment of a \|\| Federal
+Government \|\| , we esteem your acceptance of the Office of President …
 </td>
 </tr>
 <tr>
@@ -498,19 +393,19 @@ conduct …
 text11513
 </td>
 <td style="text-align:left;">
-… to conciliate the Affections and Esteem for the National or \|\|
-Federal Government \|\| . We therefore , take the Liberty of
-recommending to …
+… before named may be continued after the Organization of the \|\|
+Federal Government \|\| within this State in the Offices which they now
+respectively …
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-text1317
+text10560
 </td>
 <td style="text-align:left;">
-… that there was of their committing the Consideration of the \|\|
-Federal Government \|\| to the People in the way prescribed by The Grand
-…
+… office I am desirous of continuing in it under the \|\| federal
+Government \|\| , wishing for the Satisfaction of contributing my part
+of …
 </td>
 </tr>
 </tbody>

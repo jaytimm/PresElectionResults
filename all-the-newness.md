@@ -367,15 +367,21 @@ ffc_washington <- readRDS(gfiles[8])
 ah <- ffc_washington %>% 
   filter(grepl('No popular Government was ever without its Catalines', og_text))
 
-ah1 <- strsplit(ah$og_text, 'absurdity refutes itself.\n')[[1]][2]
-ah2 <- strsplit(ah1, 'Objection the 15')[[1]][1]
+ah1 <- strsplit(ah$og_text, 'Yet it would not be difficult to lay the finger upon some of their party who may justly be suspected.')[[1]][2]
 
-ah3 <- gsub('When a man unprincipled', '**When a man unprincipled', ah2)
-ah3 <- gsub('whirlwind', 'whirlwind**', ah3)
-ah3 <- gsub('\n\n', '\n', ah3)
-ah3 <- gsub('\n', '\n>\n', ah3)
-ah3 <- paste('>', gsub(' *(\n*)*$', '\\1', ah3))
+ah2 <- strsplit(ah1, 'It has aptly been observed that Cato was the Tory-Cæsar the whig of his day. ')[[1]][1]
 ```
+
+> When a man unprincipled in private life desperate in his fortune, bold
+> in his temper, possessed of considerable talents, having the advantage
+> of military habits—despotic in his ordinary demeanour—known to have
+> scoffed in private at the principles of liberty—when such a man is
+> seen to mount the hobby horse of popularity—to join in the cry of
+> danger to liberty—to take every opportunity of embarrassing the
+> General Government & bringing it under suspicion—to flatter and fall
+> in with all the non sense of the zealots of the day—It may justly be
+> suspected that his object is to throw things into confusion that he
+> may “ride the storm and direct the whirlwind.”
 
 1.  search using `quicknews` –
 
@@ -407,35 +413,76 @@ quicknews::qnews_search_contexts(qorp = qorp,
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">text20390</td>
-<td style="text-align: left;">… up the report of a select committee recommending that the <code>federal government</code> grant a loan to a project to survey the coast …</td>
+<td style="text-align: left;">text1171</td>
+<td style="text-align: left;">… united in any one opinion besides that , of a <code>federal Government</code> being necessary : this was not only an avowed , …</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">text19833</td>
-<td style="text-align: left;">… and a memorial from the Massachusetts legislature proposing that the <code>federal government</code> assume that state’s debt . Mr . Madison observed , …</td>
+<td style="text-align: left;">text19117</td>
+<td style="text-align: left;">… by the Constitution or by itself . And if the <code>federal Government</code> should lose its proper equilibrium within itself , I am …</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">text11199</td>
-<td style="text-align: left;">… in which you have appeared at the head of the <code>federal government</code> , the credit of the american nation has been established …</td>
+<td style="text-align: left;">text19731</td>
+<td style="text-align: left;">… reasons for keeping great departments of power separate ( 65 <code>Federal Governments</code> See Federalist Vol . 1 . pg - The Governments …</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">text18968</td>
-<td style="text-align: left;">… relation to troops raised after the establishment of the present <code>federal government</code> ; and therefore the law of the 30 of April …</td>
+<td style="text-align: left;">text26305</td>
+<td style="text-align: left;">… price on account of the contingency of the seat of <code>federal government</code> coming there - and , as I have said above …</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">text22450</td>
-<td style="text-align: left;">… [ will ] I apprehend produce a stand against the <code>federal government</code> . In this case the public paper will tumble precipitately …</td>
+<td style="text-align: left;">text20598</td>
+<td style="text-align: left;">… these , formed the State Governments , the other the <code>Federal Government</code> . The powers of the Government had been further divided …</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">text11561</td>
-<td style="text-align: left;">… fav’or , to the appointment of such office under the <code>Federal Government</code> , as your Excellency may think suitable to my capacity …</td>
+<td style="text-align: left;">text10790</td>
+<td style="text-align: left;">… . We contemplate the day of our accession to the <code>Federal Government</code> , now , near at hand . At the election …</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">text10298</td>
-<td style="text-align: left;">… length arrived when there appears a prospect of an efficient <code>federal government</code> , under which , Officers are to be appointed by …</td>
+<td style="text-align: left;">text19974</td>
+<td style="text-align: left;">… 1792 ] By the Bank Act of 1791 , the <code>federal government</code> paid $ 2 million , from funds previously borrowed at …</td>
 </tr>
 </tbody>
 </table>
+
+TO DO –
+-------
+
+Age and the house – ?? controlling for average lifespan –
+
+Split ticket and delegations – split delegations could go way back via
+VoteView – do not need margins –
+
+Pre Margins by state – deep historical + facet –
+
+``` r
+uspols::xsf_TileOutv10 %>%
+  left_join(uspols::uspols_wiki_pres %>%
+              filter(year > 1955) %>%
+              mutate(margins = republican - democrat)) %>% 
+  ggplot() + 
+  geom_sf(aes(fill = margins),
+           color = 'white') +
+  geom_sf(data = uspols::xsf_TileInv10, 
+          fill = NA, 
+          show.legend = F, 
+          color = NA, 
+          lwd=.5) +
+  ggsflabel::geom_sf_text(data = uspols::xsf_TileInv10,
+                          aes(label = state_abbrev),
+                          size = 1.25,
+                          color='black') +
+  scale_fill_distiller(palette = "RdBu", direction=-1) +
+  facet_wrap(~year) +
+  theme_minimal()+
+  theme(axis.text.x=element_blank(),
+        axis.text.y=element_blank(),
+        axis.title.x=element_blank(),
+        axis.title.y=element_blank(),
+        legend.position = 'none') +
+labs(title = "Equal-area US State geometry",
+     caption = "Source: DailyKos")
+```
+
+![](all-the-newness_files/figure-markdown_github/unnamed-chunk-19-1.png)
 
 References
 ----------

@@ -12,6 +12,10 @@ Article I and against Article II in the 2020 impeachment trial of
 President Trump.)
 
 ``` r
+options(knitr.table.format = "latex")
+```
+
+``` r
 library(tidyverse)
 
 res <- Rvoteview::voteview_search("impeachment") %>%
@@ -22,14 +26,174 @@ res <- Rvoteview::voteview_search("impeachment") %>%
 ```
 
 ``` r
+library(kableExtra)
+```
+
+    ## 
+    ## Attaching package: 'kableExtra'
+
+    ## The following object is masked from 'package:dplyr':
+    ## 
+    ##     group_rows
+
+``` r
 res %>%
   select(-id) %>%
   mutate(article = c('-', 'I', 'II', 'II', 'I')) %>%
   arrange(date, article) %>% 
   #knitr::kable()
-  kableExtra::kbl(format = 'latex' ) %>%
+  kableExtra::kbl() %>%
   kableExtra::kable_classic(full_width = T) #html_font = "Cambria"
 ```
+
+<table class=" lightable-classic" style='font-family: "Arial Narrow", "Source Sans Pro", sans-serif; margin-left: auto; margin-right: auto;'>
+<thead>
+<tr>
+<th style="text-align:left;">
+date
+</th>
+<th style="text-align:left;">
+bill\_number
+</th>
+<th style="text-align:left;">
+text
+</th>
+<th style="text-align:left;">
+question
+</th>
+<th style="text-align:right;">
+yea
+</th>
+<th style="text-align:right;">
+nay
+</th>
+<th style="text-align:left;">
+article
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+1999-02-12
+</td>
+<td style="text-align:left;">
+SRES44
+</td>
+<td style="text-align:left;">
+A resolution relating to the censure of William Jefferson Clinton.
+</td>
+<td style="text-align:left;">
+On the Motion
+</td>
+<td style="text-align:right;">
+43
+</td>
+<td style="text-align:right;">
+56
+</td>
+<td style="text-align:left;">
+
+-   </td>
+    </tr>
+    <tr>
+    <td style="text-align:left;">
+    1999-02-12
+    </td>
+    <td style="text-align:left;">
+    HRES611
+    </td>
+    <td style="text-align:left;">
+    A resolution impeaching William Jefferson Clinton, President of the
+    United States, for high crimes and misdemeanors.
+    </td>
+    <td style="text-align:left;">
+    Guilty or Not Guilty
+    </td>
+    <td style="text-align:right;">
+    50
+    </td>
+    <td style="text-align:right;">
+    51
+    </td>
+    <td style="text-align:left;">
+    I
+    </td>
+    </tr>
+    <tr>
+    <td style="text-align:left;">
+    1999-02-12
+    </td>
+    <td style="text-align:left;">
+    HRES611
+    </td>
+    <td style="text-align:left;">
+    A resolution impeaching William Jefferson Clinton, President of the
+    United States, for high crimes and misdemeanors.
+    </td>
+    <td style="text-align:left;">
+    Guilty or Not Guilty
+    </td>
+    <td style="text-align:right;">
+    45
+    </td>
+    <td style="text-align:right;">
+    56
+    </td>
+    <td style="text-align:left;">
+    II
+    </td>
+    </tr>
+    <tr>
+    <td style="text-align:left;">
+    2020-02-05
+    </td>
+    <td style="text-align:left;">
+    HRES755
+    </td>
+    <td style="text-align:left;">
+    A resolution impeaching Donald John Trump, President of the United
+    States, for high crimes and misdemeanors.
+    </td>
+    <td style="text-align:left;">
+    Guilty or Not Guilty
+    </td>
+    <td style="text-align:right;">
+    47
+    </td>
+    <td style="text-align:right;">
+    53
+    </td>
+    <td style="text-align:left;">
+    I
+    </td>
+    </tr>
+    <tr>
+    <td style="text-align:left;">
+    2020-02-05
+    </td>
+    <td style="text-align:left;">
+    HRES755
+    </td>
+    <td style="text-align:left;">
+    A resolution impeaching Donald John Trump, President of the United
+    States, for high crimes and misdemeanors.
+    </td>
+    <td style="text-align:left;">
+    Guilty or Not Guilty
+    </td>
+    <td style="text-align:right;">
+    48
+    </td>
+    <td style="text-align:right;">
+    52
+    </td>
+    <td style="text-align:left;">
+    II
+    </td>
+    </tr>
+    </tbody>
+    </table>
 
 Here we look at how the 15 US Senators – members of both the 106th &
 116th congresses – voted on Article I from the 2020 trial and Article II
@@ -66,82 +230,6 @@ last_sum <- last_dem %>%
 
 So, roughly 1/5 of the country (here, of total states) hasn’t voted for
 a Democrat since LBJ –
-
-``` r
-sometext <- strsplit(paste0(
-  "You can even try to make some crazy things like this paragraph. ", 
-  "It may seem like a useless feature right now but it's so cool ",
-  "and nobody can resist. ;)"
-), " ")[[1]]
-text_formatted <- paste(
-  kableExtra::text_spec(sometext, 
-                        color = kableExtra::spec_color(1:length(sometext), end = 0.9),
-                        font_size = kableExtra::spec_font_size(1:length(sometext), begin = 5, end = 20)),
-  collapse = " ")
-
-# To display the text, type `r text_formatted` outside of the chunk
-```
-
-<span
-style="     color: rgba(68, 1, 84, 1) !important;font-size: 5px;">You</span>
-<span
-style="     color: rgba(71, 13, 96, 1) !important;font-size: 6px;">can</span>
-<span
-style="     color: rgba(72, 24, 106, 1) !important;font-size: 6px;">even</span>
-<span
-style="     color: rgba(72, 34, 116, 1) !important;font-size: 7px;">try</span>
-<span
-style="     color: rgba(71, 45, 122, 1) !important;font-size: 7px;">to</span>
-<span
-style="     color: rgba(69, 54, 129, 1) !important;font-size: 8px;">make</span>
-<span
-style="     color: rgba(66, 64, 134, 1) !important;font-size: 8px;">some</span>
-<span
-style="     color: rgba(62, 73, 137, 1) !important;font-size: 9px;">crazy</span>
-<span
-style="     color: rgba(59, 81, 139, 1) !important;font-size: 9px;">things</span>
-<span
-style="     color: rgba(55, 90, 140, 1) !important;font-size: 10px;">like</span>
-<span
-style="     color: rgba(51, 98, 141, 1) !important;font-size: 10px;">this</span>
-<span
-style="     color: rgba(48, 106, 142, 1) !important;font-size: 11px;">paragraph.</span>
-<span
-style="     color: rgba(44, 113, 142, 1) !important;font-size: 11px;">It</span>
-<span
-style="     color: rgba(41, 121, 142, 1) !important;font-size: 12px;">may</span>
-<span
-style="     color: rgba(38, 129, 142, 1) !important;font-size: 12px;">seem</span>
-<span
-style="     color: rgba(35, 136, 142, 1) !important;font-size: 13px;">like</span>
-<span
-style="     color: rgba(33, 144, 141, 1) !important;font-size: 13px;">a</span>
-<span
-style="     color: rgba(31, 150, 139, 1) !important;font-size: 14px;">useless</span>
-<span
-style="     color: rgba(31, 158, 137, 1) !important;font-size: 14px;">feature</span>
-<span
-style="     color: rgba(33, 165, 133, 1) !important;font-size: 15px;">right</span>
-<span
-style="     color: rgba(38, 173, 129, 1) !important;font-size: 15px;">now</span>
-<span
-style="     color: rgba(48, 180, 124, 1) !important;font-size: 16px;">but</span>
-<span
-style="     color: rgba(59, 187, 117, 1) !important;font-size: 16px;">it’s</span>
-<span
-style="     color: rgba(74, 193, 109, 1) !important;font-size: 17px;">so</span>
-<span
-style="     color: rgba(90, 200, 100, 1) !important;font-size: 17px;">cool</span>
-<span
-style="     color: rgba(108, 205, 90, 1) !important;font-size: 18px;">and</span>
-<span
-style="     color: rgba(127, 211, 78, 1) !important;font-size: 18px;">nobody</span>
-<span
-style="     color: rgba(145, 215, 66, 1) !important;font-size: 19px;">can</span>
-<span
-style="     color: rgba(166, 219, 53, 1) !important;font-size: 19px;">resist.</span>
-<span
-style="     color: rgba(187, 223, 39, 1) !important;font-size: 20px;">;)</span>
 
 ``` r
 library(sf)
@@ -344,68 +432,67 @@ context
 <tbody>
 <tr>
 <td style="text-align:left;">
-text2197
+text5203
 </td>
 <td style="text-align:left;">
-… with the appointments of Comptroler of the treasury under the \|\|
-federal Government \|\| , is now on his way to Phila . in …
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-text1215
-</td>
-<td style="text-align:left;">
-… family . Our Rulers continue as obstinately opposed to the \|\|
-Federal Government \|\| as ever , and I have no Idea that they …
+… people of this State wou’d be perfectly Satisfied with the \|\|
+federal Government \|\| , if not misrepresented . I wish it were in …
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-text354
+text16356
 </td>
 <td style="text-align:left;">
-… my opinion . As to the general measures of the \|\| federal government
-\|\| , when I have seen them attacked artfully and insidiously …
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-text1454
-</td>
-<td style="text-align:left;">
-… the Providence district , could hold that office under the \|\|
-Federal Government \|\| ; - and the Governour has great influence among
-the …
+… who are friends to royalty , & enemies to the \|\| federal government
+\|\| . My information upon this head cannot be doubted . …
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-text20968
+text7502
 </td>
 <td style="text-align:left;">
-… which have led to the formation and establishment of a \|\| Federal
-Government \|\| , we esteem your acceptance of the Office of President …
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-text11513
-</td>
-<td style="text-align:left;">
-… before named may be continued after the Organization of the \|\|
-Federal Government \|\| within this State in the Offices which they now
-respectively …
+… most violent and ill-grounded invectives against the members of the
+\|\| federal government \|\| , as purely intended to keep alive among
+the people …
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-text10560
+text21673
 </td>
 <td style="text-align:left;">
-… office I am desirous of continuing in it under the \|\| federal
-Government \|\| , wishing for the Satisfaction of contributing my part
-of …
+… or Polly . The bill for the removal of the \|\| federal government
+\|\| to Philadelphia for 10 . years and then to Georgetown …
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+text11202
+</td>
+<td style="text-align:left;">
+… which they fought and bled . The Operation of the \|\| Federal
+Government \|\| , according to the existing Laws , will immediately
+prove …
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+text19091
+</td>
+<td style="text-align:left;">
+… earth can do ; and the greatest opponents to a \|\| federal government
+\|\| admit the state legislatures to be sure guardians of the …
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+text22526
+</td>
+<td style="text-align:left;">
+… the laws of every state for the use of the \|\| federal government
+\|\| , is extremely important . I must therefore ask the …
 </td>
 </tr>
 </tbody>

@@ -26,174 +26,89 @@ res <- Rvoteview::voteview_search("impeachment") %>%
 ```
 
 ``` r
-library(kableExtra)
-```
-
-    ## 
-    ## Attaching package: 'kableExtra'
-
-    ## The following object is masked from 'package:dplyr':
-    ## 
-    ##     group_rows
-
-``` r
+#library(kableExtra)
 res %>%
   select(-id) %>%
   mutate(article = c('-', 'I', 'II', 'II', 'I')) %>%
   arrange(date, article) %>% 
-  #knitr::kable()
-  kableExtra::kbl() %>%
-  kable_styling(font_size = 11)
+  knitr::kable() %>%
+  #kableExtra::kbl() %>%
+  kableExtra::kable_styling(font_size = 11)
 ```
 
-<table class="table" style="font-size: 11px; margin-left: auto; margin-right: auto;">
+    ## Warning in kableExtra::kable_styling(., font_size = 11): Please specify format
+    ## in kable. kableExtra can customize either HTML or LaTeX outputs. See https://
+    ## haozhu233.github.io/kableExtra/ for details.
+
+<table>
+<colgroup>
+<col style="width: 6%" />
+<col style="width: 6%" />
+<col style="width: 66%" />
+<col style="width: 11%" />
+<col style="width: 2%" />
+<col style="width: 2%" />
+<col style="width: 4%" />
+</colgroup>
 <thead>
-<tr>
-<th style="text-align:left;">
-date
-</th>
-<th style="text-align:left;">
-bill\_number
-</th>
-<th style="text-align:left;">
-text
-</th>
-<th style="text-align:left;">
-question
-</th>
-<th style="text-align:right;">
-yea
-</th>
-<th style="text-align:right;">
-nay
-</th>
-<th style="text-align:left;">
-article
-</th>
+<tr class="header">
+<th style="text-align: left;">date</th>
+<th style="text-align: left;">bill_number</th>
+<th style="text-align: left;">text</th>
+<th style="text-align: left;">question</th>
+<th style="text-align: right;">yea</th>
+<th style="text-align: right;">nay</th>
+<th style="text-align: left;">article</th>
 </tr>
 </thead>
 <tbody>
-<tr>
-<td style="text-align:left;">
-1999-02-12
-</td>
-<td style="text-align:left;">
-SRES44
-</td>
-<td style="text-align:left;">
-A resolution relating to the censure of William Jefferson Clinton.
-</td>
-<td style="text-align:left;">
-On the Motion
-</td>
-<td style="text-align:right;">
-43
-</td>
-<td style="text-align:right;">
-56
-</td>
-<td style="text-align:left;">
-
--   </td>
-    </tr>
-    <tr>
-    <td style="text-align:left;">
-    1999-02-12
-    </td>
-    <td style="text-align:left;">
-    HRES611
-    </td>
-    <td style="text-align:left;">
-    A resolution impeaching William Jefferson Clinton, President of the
-    United States, for high crimes and misdemeanors.
-    </td>
-    <td style="text-align:left;">
-    Guilty or Not Guilty
-    </td>
-    <td style="text-align:right;">
-    50
-    </td>
-    <td style="text-align:right;">
-    51
-    </td>
-    <td style="text-align:left;">
-    I
-    </td>
-    </tr>
-    <tr>
-    <td style="text-align:left;">
-    1999-02-12
-    </td>
-    <td style="text-align:left;">
-    HRES611
-    </td>
-    <td style="text-align:left;">
-    A resolution impeaching William Jefferson Clinton, President of the
-    United States, for high crimes and misdemeanors.
-    </td>
-    <td style="text-align:left;">
-    Guilty or Not Guilty
-    </td>
-    <td style="text-align:right;">
-    45
-    </td>
-    <td style="text-align:right;">
-    56
-    </td>
-    <td style="text-align:left;">
-    II
-    </td>
-    </tr>
-    <tr>
-    <td style="text-align:left;">
-    2020-02-05
-    </td>
-    <td style="text-align:left;">
-    HRES755
-    </td>
-    <td style="text-align:left;">
-    A resolution impeaching Donald John Trump, President of the United
-    States, for high crimes and misdemeanors.
-    </td>
-    <td style="text-align:left;">
-    Guilty or Not Guilty
-    </td>
-    <td style="text-align:right;">
-    47
-    </td>
-    <td style="text-align:right;">
-    53
-    </td>
-    <td style="text-align:left;">
-    I
-    </td>
-    </tr>
-    <tr>
-    <td style="text-align:left;">
-    2020-02-05
-    </td>
-    <td style="text-align:left;">
-    HRES755
-    </td>
-    <td style="text-align:left;">
-    A resolution impeaching Donald John Trump, President of the United
-    States, for high crimes and misdemeanors.
-    </td>
-    <td style="text-align:left;">
-    Guilty or Not Guilty
-    </td>
-    <td style="text-align:right;">
-    48
-    </td>
-    <td style="text-align:right;">
-    52
-    </td>
-    <td style="text-align:left;">
-    II
-    </td>
-    </tr>
-    </tbody>
-    </table>
+<tr class="odd">
+<td style="text-align: left;">1999-02-12</td>
+<td style="text-align: left;">SRES44</td>
+<td style="text-align: left;">A resolution relating to the censure of William Jefferson Clinton.</td>
+<td style="text-align: left;">On the Motion</td>
+<td style="text-align: right;">43</td>
+<td style="text-align: right;">56</td>
+<td style="text-align: left;">-</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1999-02-12</td>
+<td style="text-align: left;">HRES611</td>
+<td style="text-align: left;">A resolution impeaching William Jefferson Clinton, President of the United States, for high crimes and misdemeanors.</td>
+<td style="text-align: left;">Guilty or Not Guilty</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">51</td>
+<td style="text-align: left;">I</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1999-02-12</td>
+<td style="text-align: left;">HRES611</td>
+<td style="text-align: left;">A resolution impeaching William Jefferson Clinton, President of the United States, for high crimes and misdemeanors.</td>
+<td style="text-align: left;">Guilty or Not Guilty</td>
+<td style="text-align: right;">45</td>
+<td style="text-align: right;">56</td>
+<td style="text-align: left;">II</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">2020-02-05</td>
+<td style="text-align: left;">HRES755</td>
+<td style="text-align: left;">A resolution impeaching Donald John Trump, President of the United States, for high crimes and misdemeanors.</td>
+<td style="text-align: left;">Guilty or Not Guilty</td>
+<td style="text-align: right;">47</td>
+<td style="text-align: right;">53</td>
+<td style="text-align: left;">I</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">2020-02-05</td>
+<td style="text-align: left;">HRES755</td>
+<td style="text-align: left;">A resolution impeaching Donald John Trump, President of the United States, for high crimes and misdemeanors.</td>
+<td style="text-align: left;">Guilty or Not Guilty</td>
+<td style="text-align: right;">48</td>
+<td style="text-align: right;">52</td>
+<td style="text-align: left;">II</td>
+</tr>
+</tbody>
+</table>
 
 Here we look at how the 15 US Senators – members of both the 106th &
 116th congresses – voted on Article I from the 2020 trial and Article II
@@ -612,66 +527,67 @@ context
 <tbody>
 <tr>
 <td style="text-align:left;">
-text19744
+text19212
 </td>
 <td style="text-align:left;">
-… rights of the people ; over the authorities of the \|\| confederal
-government \|\| ; and over both the rights and the authorities of …
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-text10463
-</td>
-<td style="text-align:left;">
-… appears altogether impracticable , in the present state of the \|\|
-Federal Government \|\| , to make the Interest or honor of the Union …
+… the case . With respect , however , to the \|\| federal government
+\|\| , there is one consideration that shews , in a …
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-text27175
+text19979
 </td>
 <td style="text-align:left;">
-… banks and public funds . 5 . Officers of the \|\| federal government
-\|\| with some exceptions . 6 . Office-hunters , willing to …
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-text26525
-</td>
-<td style="text-align:left;">
-… of France , residing in your state , that the \|\| federal government
-\|\| , respecting his nation , and attentive to the safety …
+… \] Further debate focused on the issue of whether the \|\| federal
+government \|\| should pay the states or the individual creditors of the
+…
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-text18107
+text21084
 </td>
 <td style="text-align:left;">
-… , believing that the most essential truth relating to our \|\| federal
-Government \|\| & political interests will sooner or later come to be …
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-text18043
-</td>
-<td style="text-align:left;">
-… that the United States , under the operation of the \|\| Federal
-Government \|\| , have experienced a most rapid aggrandizement and
-prosperity , …
+… doubted , after the Organisation and Operation of their New \|\|
+Federal Government \|\| , Which We experience to have given already
+great Strength …
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-text1800
+text7502
 </td>
 <td style="text-align:left;">
-… by Enlightening the minds of a few people . The \|\| Federal
-Government \|\| seems to have been formed much after the Manner of …
+… blush for their virulent censures of the executive of the \|\| federal
+government \|\| , for an opposition to the measures of a foreign …
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+text22410
+</td>
+<td style="text-align:left;">
+… the President for carrying into effect the establishment of the \|\|
+federal government \|\| there . In all cases where it is permitted , …
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+text18381
+</td>
+<td style="text-align:left;">
+… Territory are taking measures to become a member of the \|\| Federal
+Government \|\| by the name of the State of Tennessee . If …
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+text26305
+</td>
+<td style="text-align:left;">
+… price on account of the contingency of the seat of \|\| federal
+government \|\| coming there - and , as I have said above …
 </td>
 </tr>
 </tbody>

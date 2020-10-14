@@ -33,10 +33,10 @@ res %>%
   arrange(date, article) %>% 
   knitr::kable() %>%
   #kableExtra::kbl() %>%
-  kableExtra::kable_styling(font_size = 11)
+  kableExtra::kable_styling(font_size = 9)
 ```
 
-    ## Warning in kableExtra::kable_styling(., font_size = 11): Please specify format
+    ## Warning in kableExtra::kable_styling(., font_size = 9): Please specify format
     ## in kable. kableExtra can customize either HTML or LaTeX outputs. See https://
     ## haozhu233.github.io/kableExtra/ for details.
 
@@ -149,13 +149,14 @@ a Democrat since LBJ –
 ``` r
 last_sum %>% 
   select(-party_win) %>%
-  kableExtra::kbl() %>% #, caption = "Group Rows"
-  kableExtra::kable_paper("striped", full_width = T) %>%
+  knitr::kable() %>%
+  # kableExtra::kbl() %>% #, caption = "Group Rows"
+  # kableExtra::kable_paper("striped", full_width = T) %>%
   kableExtra::pack_rows("Democrat", 1, 7) %>%
   kableExtra::pack_rows("Republican", 8, 10)
 ```
 
-<table class=" lightable-paper lightable-striped" style='font-family: "Arial Narrow", arial, helvetica, sans-serif; margin-left: auto; margin-right: auto;'>
+<table>
 <thead>
 <tr>
 <th style="text-align:right;">
@@ -527,49 +528,29 @@ context
 <tbody>
 <tr>
 <td style="text-align:left;">
-text19212
+text11543
 </td>
 <td style="text-align:left;">
-… the case . With respect , however , to the \|\| federal government
-\|\| , there is one consideration that shews , in a …
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-text19979
-</td>
-<td style="text-align:left;">
-… \] Further debate focused on the issue of whether the \|\| federal
-government \|\| should pay the states or the individual creditors of the
-…
+… been equally good Wiggs and Firm for the Establishing the \|\| Federal
+Government \|\| . It is wished by our Friends that Benjamin Bourne …
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-text21084
+text19091
 </td>
 <td style="text-align:left;">
-… doubted , after the Organisation and Operation of their New \|\|
-Federal Government \|\| , Which We experience to have given already
-great Strength …
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-text7502
-</td>
-<td style="text-align:left;">
-… blush for their virulent censures of the executive of the \|\| federal
-government \|\| , for an opposition to the measures of a foreign …
+… earth can do ; and the greatest opponents to a \|\| federal government
+\|\| admit the state legislatures to be sure guardians of the …
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-text22410
+text19237
 </td>
 <td style="text-align:left;">
-… the President for carrying into effect the establishment of the \|\|
-federal government \|\| there . In all cases where it is permitted , …
+… to the place most proper for the seat of the \|\| federal government
+\|\| , I presume we shall all agree , that a …
 </td>
 </tr>
 <tr>
@@ -583,11 +564,30 @@ Government \|\| by the name of the State of Tennessee . If …
 </tr>
 <tr>
 <td style="text-align:left;">
-text26305
+text11368
 </td>
 <td style="text-align:left;">
-… price on account of the contingency of the seat of \|\| federal
-government \|\| coming there - and , as I have said above …
+… worthy sensible man , and a good friend to the \|\| federal government
+\|\| ; that he was principally concerned in the bringing forward …
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+text5721
+</td>
+<td style="text-align:left;">
+… peculiar Satisfaction with which I anticipated the effects of the \|\|
+Federal Government \|\| ( and which has been amply verified in the
+administration …
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+text11561
+</td>
+<td style="text-align:left;">
+… fav’or , to the appointment of such office under the \|\| Federal
+Government \|\| , as your Excellency may think suitable to my capacity …
 </td>
 </tr>
 </tbody>

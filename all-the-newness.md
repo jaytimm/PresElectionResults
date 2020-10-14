@@ -257,7 +257,7 @@ vvo <- Rvoteview::download_metadata(type = 'members', chamber = 'house') %>%
   filter(congress > 66 & chamber != 'President')
 ```
 
-    ## [1] "/tmp/RtmpJ36nPK/Hall_members.csv"
+    ## [1] "/tmp/RtmpGYbl6q/Hall_members.csv"
 
 ``` r
 house <- vvo %>%
@@ -420,32 +420,32 @@ quicknews::qnews_search_contexts(qorp = qorp,
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">text22393</td>
-<td style="text-align: left;">… recieve nominations of the several officers necessary to put the <code>federal government</code> into motion in that state . For this purpose I …</td>
+<td style="text-align: left;">text19525</td>
+<td style="text-align: left;">… , and to place it in the hands of the <code>federal government</code> : or whether we examine the nature and construction of …</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">text1436</td>
-<td style="text-align: left;">… body of State Creditors constantly opposing the proceedings of the <code>Federal Government</code> &amp; preventing the collection of the Impost . - . …</td>
+<td style="text-align: left;">text7502</td>
+<td style="text-align: left;">… blush for their virulent censures of the executive of the <code>federal government</code> , for an opposition to the measures of a foreign …</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">text10264</td>
-<td style="text-align: left;">… a number of Gentlemen now about the seat of the <code>Federal Government</code> subject still to be either ⟨ a ⟩ mended or …</td>
+<td style="text-align: left;">text19577</td>
+<td style="text-align: left;">… by a charter proposal . JM apparently suggests that the <code>federal government</code> lacks the power to establish banks . …</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">text1141</td>
-<td style="text-align: left;">… many people , than the adoption or establishment of the <code>federal Government</code> . - Many pious people wish the name of the …</td>
+<td style="text-align: left;">text19833</td>
+<td style="text-align: left;">… and a memorial from the Massachusetts legislature proposing that the <code>federal government</code> assume that state’s debt . Mr . Madison observed , …</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">text454</td>
-<td style="text-align: left;">… not their influence be dangerous and perhaps fatal to the <code>Federal Government</code> ? I am fearful that the antifederal party in Congress …</td>
+<td style="text-align: left;">text14757</td>
+<td style="text-align: left;">… of these United States consists in their Republican form of <code>Federal Government</code> ; as the only legitimate source of this Government is …</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">text1182</td>
-<td style="text-align: left;">… in favour of it’s the insurgents - But to the <code>federal government</code> he has been openly and avowedly its opponent - and …</td>
+<td style="text-align: left;">text12010</td>
+<td style="text-align: left;">… united States having rendered it expedient to resort to the <code>federal Government</code> for such prudent regulations as may best tend to secure …</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">text1339</td>
-<td style="text-align: left;">… goes to new york to Solicit an Appointment Under the <code>federal government</code> . He has fought - and suffered for his Country …</td>
+<td style="text-align: left;">text16580</td>
+<td style="text-align: left;">… must be convinced , from the recent conduct of the <code>federal government</code> towards him in regard to a most atrocious official calumny …</td>
 </tr>
 </tbody>
 </table>
@@ -578,6 +578,100 @@ house %>%
 ![](all-the-newness_files/figure-markdown_github/unnamed-chunk-20-1.png)
 
 ### Profiling congressional districts via census data
+
+``` r
+tidycensus::census_api_key("b508704c99f3ae9bc5b5e7c41e3dd77e59d52722")
+```
+
+    ## To install your API key for use in future sessions, run this function with `install = TRUE`.
+
+``` r
+Sys.getenv("CENSUS_API_KEY")
+```
+
+    ## [1] "b508704c99f3ae9bc5b5e7c41e3dd77e59d52722"
+
+``` r
+library(tigris); options(tigris_use_cache = TRUE, tigris_class = "sf")
+```
+
+    ## To enable 
+    ## caching of data, set `options(tigris_use_cache = TRUE)` in your R script or .Rprofile.
+
+``` r
+nonx <- c('78', '69', '66', '72', '60', '15', '02')
+
+states <- tigris::states(cb = TRUE) %>%
+  data.frame() %>%
+  select(STATEFP, STUSPS) %>%
+  rename(state_code = STATEFP, state_abbrev = STUSPS)
+```
+
+``` r
+x <- tidycensus::load_variables(year = '2019', dataset = "acs1/profile")
+```
+
+``` r
+#Define census query
+variable_list <-  c(bachelors_higher = 'DP02_0068P',
+                    foreign_born = 'DP02_0093P',
+                    hispanic = 'DP05_0071P',
+                    median_income = 'DP03_0062',
+                    unemployed = 'DP03_0005P',
+                    white = 'DP05_0077P',
+                    black = 'DP05_0078P',
+                    over_65 = 'DP05_0024P',
+                    hs_higher = 'DP02_0067P',
+                    non_english_home = 'DP02_0113P',
+                    computer_home = 'DP02_0152P',
+                    internet_home = 'DP02_0153P')
+
+
+#Pull some general dems from profile tables
+gen <-  tidycensus::get_acs(geography = 'congressional district',
+                            variables = variable_list,
+                            year = 2019,
+                            survey = 'acs1',
+                            geometry = F) %>%
+  mutate(state_code = substr(GEOID, 1, 2),
+         district_code = substr(GEOID, 3, 4)) %>%
+  left_join(states, by = c('state_code')) %>%
+  select(state_abbrev, district_code, variable, estimate, moe)
+```
+
+    ## Getting data from the 2019 1-year ACS
+
+    ## The one-year ACS provides data for geographies with populations of 65,000 and greater.
+
+    ## Using the ACS Data Profile
+
+``` r
+base_viz <- gen %>% 
+  ggplot( aes(estimate, fill = variable)) +
+  geom_density(alpha = 0.65,
+               color = 'darkgray',
+               adjust = 1) +
+  scale_fill_manual(values = 
+                      colorRampPalette(ggthemes::economist_pal()(8))(12)) +
+  facet_wrap(~variable, scale = 'free', nrow = 4)+
+  theme_minimal() +
+  theme(legend.position = "none",
+        axis.text.y=element_blank(),
+        axis.title.x=element_blank(),
+        axis.title.y=element_blank())
+
+nm02 <- gen %>% 
+  filter(state_abbrev == 'NM' & district_code == '02') 
+
+base_viz + 
+  geom_vline (data = nm02, 
+              aes(xintercept=estimate),
+              linetype = 2) +
+  labs(title = "A demographic profile of New Mexico's 2nd District",
+       subtitle = 'American Community Survey, 1-Year Estimates, 2019')
+```
+
+![](all-the-newness_files/figure-markdown_github/unnamed-chunk-25-1.png)
 
 References
 ----------

@@ -186,21 +186,19 @@ last_dem %>%
   ungroup() %>%
   arrange(party_win, desc(n)) %>%
   filter(party_win == 'democrat') %>% 
+  ggplot(aes(x = reorder(label,n), 
+             y = n, 
+             fill = label, 
+             label = n)) + 
   
-      ggplot(aes(x = reorder(label,n), 
-               y = n, 
-               fill = label, 
-               label = n)) + 
-  
-    geom_col(width=.65, color = 'lightgray') +  
-    geom_text(size = 3, nudge_y = .5) +
-    coord_flip()+
-    #labs(title = "Roll call results for legislation referencing HEALTH CARE") +
-    theme_minimal()+
-    ggthemes::scale_fill_economist()+
-    xlab('') + ylab('') +
-    theme(legend.position = "none")+
-    facet_wrap(~party_win, ncol = 2) 
+  geom_col(width=.65, color = 'lightgray') +  
+  geom_text(size = 3, nudge_y = .5) +
+  coord_flip()+
+  #labs(title = "Last Democrats") +
+  theme_minimal()+
+  ggthemes::scale_fill_economist()+
+  xlab('') + ylab('') +
+  theme(legend.position = "none")
 ```
 
 ![](all-the-newness_files/figure-markdown_github/unnamed-chunk-8-1.png)
@@ -253,11 +251,12 @@ Rvoteview: House composition
 *Obviously do this the once* –
 
 ``` r
-vvo <- Rvoteview::download_metadata(type = 'members', chamber = 'house') %>%
+vvo <- Rvoteview::download_metadata(type = 'members', 
+                                    chamber = 'house') %>%
   filter(congress > 66 & chamber != 'President')
 ```
 
-    ## [1] "/tmp/RtmpnEDAtz/Hall_members.csv"
+    ## [1] "/tmp/RtmpJjfkjs/Hall_members.csv"
 
 ``` r
 house <- vvo %>%
@@ -420,32 +419,32 @@ quicknews::qnews_search_contexts(qorp = qorp,
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">text19974</td>
-<td style="text-align: left;">… 1792 ] By the Bank Act of 1791 , the <code>federal government</code> paid $ 2 million , from funds previously borrowed at …</td>
+<td style="text-align: left;">text10463</td>
+<td style="text-align: left;">… appears altogether impracticable , in the present state of the <code>Federal Government</code> , to make the Interest or honor of the Union …</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">text1268</td>
-<td style="text-align: left;">… as well as upon the successful Operations of Your new <code>Federal Government</code> , and your Appointment to the very distinguished Post You …</td>
+<td style="text-align: left;">text9681</td>
+<td style="text-align: left;">… the War of Independence were to be assumed by the <code>federal government</code> under terms of a plan established by " An Act …</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">text423</td>
-<td style="text-align: left;">… the persons holding such office to an opposition of the <code>Federal Government</code> is it not placing a very dangerous weapon in the …</td>
+<td style="text-align: left;">text19333</td>
+<td style="text-align: left;">… a masterly Stroke of Policy , and will establishe The <code>Federal Government</code> in the Hearts of the People . The Resources of …</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">text20224</td>
-<td style="text-align: left;">… when paying heavy taxes , before the institution of the <code>federal government</code> , at the amount of the taxes themselves . Their …</td>
+<td style="text-align: left;">text9511</td>
+<td style="text-align: left;">… western Settlements . That these considerations ought to make the <code>Federal Government</code> take ( he thinks ) the most decisive steps as …</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">text10400</td>
-<td style="text-align: left;">… prays to be continued in the same Office under the <code>Federal Government</code> , Or be appointed one of the land or Tide …</td>
+<td style="text-align: left;">text19690</td>
+<td style="text-align: left;">… Checks devised in Democracies marking self-distrust , " and " <code>Federal Governments</code> " ) were never printed in the National Gazette , …</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">text1208</td>
-<td style="text-align: left;">… preserved in places most remote from the seat of the <code>Federal government</code> , as well as at the centre . And the …</td>
+<td style="text-align: left;">text1378</td>
+<td style="text-align: left;">… would keep a Day of Thanksgiving on hearing that the <code>Federal Government</code> was dissolved , and some of the principle officers carred …</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">text4480</td>
-<td style="text-align: left;">… of Kean’s decision to remain in the service of the <code>Federal Government</code> in spite of his appointment as cashier of the Bank …</td>
+<td style="text-align: left;">text6804</td>
+<td style="text-align: left;">… designs of its enemies , and to rally round the <code>Federal government</code> as a Standard where our most precious interests are well …</td>
 </tr>
 </tbody>
 </table>
@@ -503,20 +502,19 @@ splits <- uspols::uspols_wiki_pres %>%
 splits %>%
   group_by(year) %>%
   summarize(per_split = round(mean(split)*100, 1)) %>%
+  ggplot(aes(x = year, 
+             y = per_split, 
+             label = per_split)) + 
   
-        ggplot(aes(x = year, 
-               y = per_split, 
-               label = per_split)) + 
-  
-    geom_col(width = 2.75, fill = 'steelblue',  color = 'lightgray') +  
-    geom_text(size = 3, nudge_y = 1) +
-    labs(title = "Senator-President Splits") +
-    theme_minimal()+
-    ggthemes::scale_fill_stata() +
-    scale_x_continuous(breaks=seq(1976,2016,4)) +
+  geom_col(width = 2.75, 
+           fill = 'steelblue',  
+           color = 'lightgray') +  
+  geom_text(size = 3, nudge_y = 1) +
+  labs(title = "Senator-President Splits") +
+  theme_minimal()+
   ylab('') + xlab('') +
-    theme(legend.position = "none",
-          axis.text.x = element_text(angle = 45, hjust = 1))
+  theme(legend.position = "none",
+        axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
 ![](all-the-newness_files/figure-markdown_github/unnamed-chunk-18-1.png)
@@ -562,7 +560,8 @@ Age – briefly –
 ``` r
 house %>%
   mutate(age = year - born) %>%
-  filter (party_code %in% c('100', '200'), year > 1995) %>% ## 100 == democrat --
+  filter (party_code %in% c('100', '200'), year > 1995) %>% 
+  ## 100 == democrat --
   ggplot(aes(age, 
              fill = party_code)) +
 
@@ -623,12 +622,6 @@ gen <-  tidycensus::get_acs(geography = 'congressional district',
   left_join(states, by = c('state_code')) %>%
   select(state_abbrev, district_code, variable, estimate, moe)
 ```
-
-    ## Getting data from the 2019 1-year ACS
-
-    ## The one-year ACS provides data for geographies with populations of 65,000 and greater.
-
-    ## Using the ACS Data Profile
 
 ``` r
 base_viz <- gen %>% 
@@ -708,12 +701,9 @@ white_ed <- tidycensus::get_acs(geography = 'congressional district',
   mutate(state_code = substr(GEOID, 1, 2),
          district_code = substr(GEOID, 3, 4))  %>%
   left_join(states, by = c('state_code')) %>%
-  select(GEOID, state_code, state_abbrev, district_code, group, per, estimate)
+  select(GEOID, state_code, state_abbrev, 
+         district_code, group, per, estimate)
 ```
-
-    ## Getting data from the 2019 1-year ACS
-
-    ## The one-year ACS provides data for geographies with populations of 65,000 and greater.
 
 ``` r
 uscds <- tigris::congressional_districts(cb = TRUE) %>%
@@ -755,27 +745,24 @@ samp_n <- sample(unique(white_ed $GEOID), 12)
 
 white_ed %>%
   filter(GEOID %in% samp_n) %>%
-    ggplot(aes(area = per,
-               fill = group,
-               label = group,
-               subgroup = group))+
-      treemapify::geom_treemap(alpha=.8)+
-      treemapify::geom_treemap_subgroup_border(color = 'white') +
-
-      treemapify::geom_treemap_text(colour = "black", 
-                        place = "topleft", 
-                        reflow = T,
-                        size = 8)+
-      #ggthemes::scale_fill_economist()+ 
-      #scale_fill_brewer(palette = 'Paired') +
-  #scale_fill_distiller(palette = "BrBG", direction = 1) +
+  ggplot(aes(area = per,
+             fill = group,
+             label = gsub('_', '-', toupper(group)),
+             subgroup = group))+
+  treemapify::geom_treemap(alpha=.8)+
+  treemapify::geom_treemap_subgroup_border(color = 'white') +
+  treemapify::geom_treemap_text(colour = "black", 
+                                place = "topleft", 
+                                reflow = T,
+                                size = 8) +
   
-  scale_fill_manual(values = c('#7b3294', '#c2a5cf', '#008837', '#a6dba0'))+
+  scale_fill_manual(values = c('#7b3294', '#c2a5cf', 
+                               '#008837', '#a6dba0'))+
   theme_minimal() +
-      facet_wrap(~paste0(state_abbrev, '-', district_code)) +
-      theme(legend.position = "none") + 
-      labs(title = "Educational attainment profiles",
-           caption = 'Source: ACS 1-Year estimates, 2019, Table C15002')
+  facet_wrap(~paste0(state_abbrev, '-', district_code)) +
+  theme(legend.position = "none") + 
+  labs(title = "Educational attainment profiles",
+       caption = 'Source: ACS 1-Year estimates, 2019, Table C15002')
 ```
 
 ![](all-the-newness_files/figure-markdown_github/unnamed-chunk-30-1.png)

@@ -256,7 +256,7 @@ vvo <- Rvoteview::download_metadata(type = 'members',
   filter(congress > 66 & chamber != 'President')
 ```
 
-    ## [1] "/tmp/RtmpJjfkjs/Hall_members.csv"
+    ## [1] "/tmp/RtmpAV461p/Hall_members.csv"
 
 ``` r
 house <- vvo %>%
@@ -389,6 +389,8 @@ ah2 <- strsplit(ah1, 'It has aptly been observed that Cato was the Tory-Cæsar t
 > suspected that his object is to throw things into confusion that he
 > may “ride the storm and direct the whirlwind.”
 
+### Search -
+
 1.  search using `quicknews` –
 
 ``` r
@@ -419,32 +421,32 @@ quicknews::qnews_search_contexts(qorp = qorp,
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">text10463</td>
-<td style="text-align: left;">… appears altogether impracticable , in the present state of the <code>Federal Government</code> , to make the Interest or honor of the Union …</td>
+<td style="text-align: left;">text2588</td>
+<td style="text-align: left;">… those of the several States , &amp; to support the <code>federal Government</code> ; it is a very important Question how far it …</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">text9681</td>
-<td style="text-align: left;">… the War of Independence were to be assumed by the <code>federal government</code> under terms of a plan established by " An Act …</td>
+<td style="text-align: left;">text11998</td>
+<td style="text-align: left;">… as great a claim to protection as any under the <code>Federal Government</code> . A great proportion of us served our country through …</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">text19333</td>
-<td style="text-align: left;">… a masterly Stroke of Policy , and will establishe The <code>Federal Government</code> in the Hearts of the People . The Resources of …</td>
+<td style="text-align: left;">text20142</td>
+<td style="text-align: left;">… &amp; to indulge his Curiosity at the Seat of The <code>Federal Government</code> . Having a good property both here , and in …</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">text9511</td>
-<td style="text-align: left;">… western Settlements . That these considerations ought to make the <code>Federal Government</code> take ( he thinks ) the most decisive steps as …</td>
+<td style="text-align: left;">text10795</td>
+<td style="text-align: left;">… in the late Convention of this State for Ratifying the <code>Federal Government</code> - is a man of Industry respectable abilities and firm …</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">text19690</td>
-<td style="text-align: left;">… Checks devised in Democracies marking self-distrust , " and " <code>Federal Governments</code> " ) were never printed in the National Gazette , …</td>
+<td style="text-align: left;">text25757</td>
+<td style="text-align: left;">… anxious to receive a communication from the officers of the <code>Federal Government</code> on the Subject . I have dispatched a messenger to …</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">text1378</td>
-<td style="text-align: left;">… would keep a Day of Thanksgiving on hearing that the <code>Federal Government</code> was dissolved , and some of the principle officers carred …</td>
+<td style="text-align: left;">text1782</td>
+<td style="text-align: left;">… the implied insult offered to the good sense of the <code>federal government</code> in the newspaper ( &amp; as supposed ministerial ) paragraph …</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">text6804</td>
-<td style="text-align: left;">… designs of its enemies , and to rally round the <code>Federal government</code> as a Standard where our most precious interests are well …</td>
+<td style="text-align: left;">text5203</td>
+<td style="text-align: left;">… people of this State wou’d be perfectly Satisfied with the <code>federal Government</code> , if not misrepresented . I wish it were in …</td>
 </tr>
 </tbody>
 </table>
@@ -579,13 +581,6 @@ house %>%
 ### Profiling congressional districts via census data
 
 ``` r
-tidycensus::census_api_key("b508704c99f3ae9bc5b5e7c41e3dd77e59d52722")
-Sys.getenv("CENSUS_API_KEY")
-```
-
-    ## [1] "b508704c99f3ae9bc5b5e7c41e3dd77e59d52722"
-
-``` r
 library(tigris); options(tigris_use_cache = TRUE, tigris_class = "sf")
 nonx <- c('78', '69', '66', '72', '60', '15', '02')
 
@@ -645,9 +640,8 @@ base_viz +
   geom_vline (data = nm02, 
               aes(xintercept=estimate),
               linetype = 2) +
-  labs(title = "A demographic profile",
-       subtitle = "New Mexico's 2nd District", 
-       caption = 'Source: American Community Survey, 1-Year Estimates, 2019')
+  labs(title = "A 2019 demographic profile",
+       subtitle = "New Mexico's 2nd District")
 ```
 
 ![](all-the-newness_files/figure-markdown_github/unnamed-chunk-25-1.png)
@@ -710,6 +704,9 @@ uscds <- tigris::congressional_districts(cb = TRUE) %>%
   select(GEOID) %>%
   mutate(state_code = substr(GEOID, 1, 2),
          district_code = substr(GEOID, 3, 4)) 
+
+laea <- sf::st_crs("+proj=laea +lat_0=30 +lon_0=-95") # Lambert equal area
+uscds  <- sf::st_transform(uscds , laea)
 ```
 
 White working map — via equal-area –

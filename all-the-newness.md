@@ -235,12 +235,12 @@ a Democrat since LBJ –
 last_sum %>% 
   select(-party_win) %>%
   kableExtra::kbl() %>% #, caption = "Group Rows"
-  kableExtra::kable_paper("striped", full_width = F) %>%
+  kableExtra::kable_paper("striped", full_width = T) %>%
   kableExtra::pack_rows("Democrat", 1, 7) %>%
   kableExtra::pack_rows("Republican", 8, 10)
 ```
 
-<table class=" lightable-paper lightable-striped" style='font-family: "Arial Narrow", arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;'>
+<table class=" lightable-paper lightable-striped" style='font-family: "Arial Narrow", arial, helvetica, sans-serif; margin-left: auto; margin-right: auto;'>
 <thead>
 <tr>
 <th style="text-align:right;">
@@ -612,67 +612,67 @@ context
 <tbody>
 <tr>
 <td style="text-align:left;">
-text3378
+text9423
 </td>
 <td style="text-align:left;">
-… ever this comes into general practice , be without a \|\| federal
-government \|\| and with its fall we shall probably be deprived , …
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-text12025
-</td>
-<td style="text-align:left;">
-… active friend of the late Revolution , & the present \|\| federal
-Government \|\| , and that although I have not had the honor …
+… Sept . 1789 , a post he retained until the \|\| federal government
+\|\| moved to Philadelphia in 1790 . In 1786 he married …
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-text16356
+text1221
 </td>
 <td style="text-align:left;">
-… who are friends to royalty , & enemies to the \|\| federal government
-\|\| . My information upon this head cannot be doubted . …
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-text16278
-</td>
-<td style="text-align:left;">
-… have never ceased to contemplate ) the existence of a \|\| Federal
-Government \|\| , Federal laws , Federal Judiciary , and Federal
-Officers …
+… in the places most remote from the Seat of the \|\| federal government
+\|\| as well as at the centre . I believe this …
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-text11967
+text12010
 </td>
 <td style="text-align:left;">
-… , in the fullest confidence that the power of the \|\| federal
-Government \|\| will be so applied as to quiet the Apprehension and …
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-text1882
-</td>
-<td style="text-align:left;">
-… deriving peculiarly , nay almost monopolizing the advantages of the
-\|\| federal government \|\| , should say and do so many things against
-it …
+… united States having rendered it expedient to resort to the \|\|
+federal Government \|\| for such prudent regulations as may best tend to
+secure …
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-text10466
+text2383
 </td>
 <td style="text-align:left;">
-… who wishes to be honored with any office under the \|\| federal
-Government \|\| , should make application for it in person , or …
+… - In America was happily set the example of a \|\| Federal Government
+\|\| ; of freedom of religions & of other beneficial novelties …
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+text10795
+</td>
+<td style="text-align:left;">
+… in the late Convention of this State for Ratifying the \|\| Federal
+Government \|\| - is a man of Industry respectable abilities and firm …
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+text18107
+</td>
+<td style="text-align:left;">
+… , believing that the most essential truth relating to our \|\| federal
+Government \|\| & political interests will sooner or later come to be …
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+text26842
+</td>
+<td style="text-align:left;">
+… of independence felt by the courts and officers of the \|\| federal
+government \|\| , and the science and integrity which has generally
+procured …
 </td>
 </tr>
 </tbody>

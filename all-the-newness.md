@@ -232,6 +232,186 @@ So, roughly 1/5 of the country (here, of total states) hasn’t voted for
 a Democrat since LBJ –
 
 ``` r
+last_sum %>% 
+  select(-party_win) %>%
+  kableExtra::kbl() %>% #, caption = "Group Rows"
+  kableExtra::kable_paper("striped", full_width = F) %>%
+  kableExtra::pack_rows("Democrat", 1, 7) %>%
+  kableExtra::pack_rows("Republican", 8, 10)
+```
+
+<table class=" lightable-paper lightable-striped" style='font-family: "Arial Narrow", arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;'>
+<thead>
+<tr>
+<th style="text-align:right;">
+year
+</th>
+<th style="text-align:left;">
+winner
+</th>
+<th style="text-align:right;">
+n
+</th>
+</tr>
+</thead>
+<tbody>
+<tr grouplength="7">
+<td colspan="3" style="border-bottom: 1px solid;">
+<strong>Democrat</strong>
+</td>
+</tr>
+<tr>
+<td style="text-align:right; padding-left:  2em;" indentlevel="1">
+2016
+</td>
+<td style="text-align:left;">
+Hillary Clinton
+</td>
+<td style="text-align:right;">
+21
+</td>
+</tr>
+<tr>
+<td style="text-align:right; padding-left:  2em;" indentlevel="1">
+1964
+</td>
+<td style="text-align:left;">
+Lyndon B. Johnson
+</td>
+<td style="text-align:right;">
+9
+</td>
+</tr>
+<tr>
+<td style="text-align:right; padding-left:  2em;" indentlevel="1">
+1996
+</td>
+<td style="text-align:left;">
+Bill Clinton
+</td>
+<td style="text-align:right;">
+7
+</td>
+</tr>
+<tr>
+<td style="text-align:right; padding-left:  2em;" indentlevel="1">
+2012
+</td>
+<td style="text-align:left;">
+Barack Obama
+</td>
+<td style="text-align:right;">
+6
+</td>
+</tr>
+<tr>
+<td style="text-align:right; padding-left:  2em;" indentlevel="1">
+1976
+</td>
+<td style="text-align:left;">
+Jimmy Carter
+</td>
+<td style="text-align:right;">
+4
+</td>
+</tr>
+<tr>
+<td style="text-align:right; padding-left:  2em;" indentlevel="1">
+1992
+</td>
+<td style="text-align:left;">
+Bill Clinton
+</td>
+<td style="text-align:right;">
+2
+</td>
+</tr>
+<tr>
+<td style="text-align:right; padding-left:  2em;" indentlevel="1">
+2008
+</td>
+<td style="text-align:left;">
+Barack Obama
+</td>
+<td style="text-align:right;">
+2
+</td>
+</tr>
+<tr grouplength="3">
+<td colspan="3" style="border-bottom: 1px solid;">
+<strong>Republican</strong>
+</td>
+</tr>
+<tr>
+<td style="text-align:right; padding-left:  2em;" indentlevel="1">
+2016
+</td>
+<td style="text-align:left;">
+Donald Trump
+</td>
+<td style="text-align:right;">
+30
+</td>
+</tr>
+<tr>
+<td style="text-align:right; padding-left:  2em;" indentlevel="1">
+1988
+</td>
+<td style="text-align:left;">
+George H. W. Bush
+</td>
+<td style="text-align:right;">
+8
+</td>
+</tr>
+<tr>
+<td style="text-align:right; padding-left:  2em;" indentlevel="1">
+1984
+</td>
+<td style="text-align:left;">
+Ronald Reagan
+</td>
+<td style="text-align:right;">
+6
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2004
+</td>
+<td style="text-align:left;">
+George W. Bush
+</td>
+<td style="text-align:right;">
+4
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1972
+</td>
+<td style="text-align:left;">
+Richard Nixon
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2000
+</td>
+<td style="text-align:left;">
+George W. Bush
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+</tbody>
+</table>
+
+``` r
 library(sf)
 
 uspols::xsf_TileOutv10 %>% 
@@ -432,6 +612,52 @@ context
 <tbody>
 <tr>
 <td style="text-align:left;">
+text3378
+</td>
+<td style="text-align:left;">
+… ever this comes into general practice , be without a \|\| federal
+government \|\| and with its fall we shall probably be deprived , …
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+text12025
+</td>
+<td style="text-align:left;">
+… active friend of the late Revolution , & the present \|\| federal
+Government \|\| , and that although I have not had the honor …
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+text16356
+</td>
+<td style="text-align:left;">
+… who are friends to royalty , & enemies to the \|\| federal government
+\|\| . My information upon this head cannot be doubted . …
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+text16278
+</td>
+<td style="text-align:left;">
+… have never ceased to contemplate ) the existence of a \|\| Federal
+Government \|\| , Federal laws , Federal Judiciary , and Federal
+Officers …
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+text11967
+</td>
+<td style="text-align:left;">
+… , in the fullest confidence that the power of the \|\| federal
+Government \|\| will be so applied as to quiet the Apprehension and …
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
 text1882
 </td>
 <td style="text-align:left;">
@@ -442,59 +668,11 @@ it …
 </tr>
 <tr>
 <td style="text-align:left;">
-text26842
+text10466
 </td>
 <td style="text-align:left;">
-… of independence felt by the courts and officers of the \|\| federal
-government \|\| , and the science and integrity which has generally
-procured …
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-text19921
-</td>
-<td style="text-align:left;">
-… was terminated by the regular and effectual establishment of the \|\|
-federal government \|\| in 1788 ; out of the administration of which , …
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-text19690
-</td>
-<td style="text-align:left;">
-… Checks devised in Democracies marking self-distrust , " and " \|\|
-Federal Governments \|\| " ) were never printed in the National Gazette
-, …
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-text10231
-</td>
-<td style="text-align:left;">
-… was a point acknowledged on all parts that the late \|\| federal
-government \|\| could not have existed much longer ; if without some …
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-text3530
-</td>
-<td style="text-align:left;">
-… State will soon appear Conspicuous for its opposition to the \|\|
-Federal Government \|\| . We have scarcely any sensible Independent Man
-in the …
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-text19091
-</td>
-<td style="text-align:left;">
-… or improper . It has been said that in the \|\| federal government
-\|\| they are unnecessary , because the powers are enumerated , …
+… who wishes to be honored with any office under the \|\| federal
+Government \|\| , should make application for it in person , or …
 </td>
 </tr>
 </tbody>

@@ -1,3 +1,28 @@
+ggplot theme for this one:
+
+``` r
+## minimal -- 
+theme_polisci_guide <- function (base_size = 11, 
+                                 base_family = "", 
+                                 base_line_size = base_size/22,
+                                 base_rect_size = base_size/22) {
+  
+  theme_bw(base_size = base_size, 
+           base_family = base_family,
+           base_line_size = base_line_size, 
+           base_rect_size = base_rect_size) %+replace% 
+    
+    theme(axis.ticks = element_blank(), 
+          legend.background = element_blank(),
+          legend.key = element_blank(), 
+          panel.background = element_blank(),
+          panel.border = element_blank(), 
+          strip.background = element_blank(),
+          plot.background = element_blank(), 
+          complete = TRUE)
+}
+```
+
 VoteView: LEgislation & roll calls
 ----------------------------------
 
@@ -26,20 +51,18 @@ res <- Rvoteview::voteview_search("impeachment") %>%
 ```
 
 ``` r
-#library(kableExtra)
 res %>%
-  select(-id) %>%
+  select(-id, -bill_number) %>%
   mutate(article = c('-', 'I', 'II', 'II', 'I')) %>%
   arrange(date, article) %>%
   knitr::kable()
 ```
 
-<table>
+<table style="width:100%;">
 <colgroup>
 <col style="width: 6%" />
-<col style="width: 6%" />
-<col style="width: 66%" />
-<col style="width: 11%" />
+<col style="width: 70%" />
+<col style="width: 12%" />
 <col style="width: 2%" />
 <col style="width: 2%" />
 <col style="width: 4%" />
@@ -47,7 +70,6 @@ res %>%
 <thead>
 <tr class="header">
 <th style="text-align: left;">date</th>
-<th style="text-align: left;">bill_number</th>
 <th style="text-align: left;">text</th>
 <th style="text-align: left;">question</th>
 <th style="text-align: right;">yea</th>
@@ -58,7 +80,6 @@ res %>%
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">1999-02-12</td>
-<td style="text-align: left;">SRES44</td>
 <td style="text-align: left;">A resolution relating to the censure of William Jefferson Clinton.</td>
 <td style="text-align: left;">On the Motion</td>
 <td style="text-align: right;">43</td>
@@ -67,7 +88,6 @@ res %>%
 </tr>
 <tr class="even">
 <td style="text-align: left;">1999-02-12</td>
-<td style="text-align: left;">HRES611</td>
 <td style="text-align: left;">A resolution impeaching William Jefferson Clinton, President of the United States, for high crimes and misdemeanors.</td>
 <td style="text-align: left;">Guilty or Not Guilty</td>
 <td style="text-align: right;">50</td>
@@ -76,7 +96,6 @@ res %>%
 </tr>
 <tr class="odd">
 <td style="text-align: left;">1999-02-12</td>
-<td style="text-align: left;">HRES611</td>
 <td style="text-align: left;">A resolution impeaching William Jefferson Clinton, President of the United States, for high crimes and misdemeanors.</td>
 <td style="text-align: left;">Guilty or Not Guilty</td>
 <td style="text-align: right;">45</td>
@@ -85,7 +104,6 @@ res %>%
 </tr>
 <tr class="even">
 <td style="text-align: left;">2020-02-05</td>
-<td style="text-align: left;">HRES755</td>
 <td style="text-align: left;">A resolution impeaching Donald John Trump, President of the United States, for high crimes and misdemeanors.</td>
 <td style="text-align: left;">Guilty or Not Guilty</td>
 <td style="text-align: right;">47</td>
@@ -94,7 +112,6 @@ res %>%
 </tr>
 <tr class="odd">
 <td style="text-align: left;">2020-02-05</td>
-<td style="text-align: left;">HRES755</td>
 <td style="text-align: left;">A resolution impeaching Donald John Trump, President of the United States, for high crimes and misdemeanors.</td>
 <td style="text-align: left;">Guilty or Not Guilty</td>
 <td style="text-align: right;">48</td>
@@ -168,30 +185,27 @@ states) hasn’t voted for a Democrat since LBJ –
 
 ``` r
 last_dem %>%
-  #filter(party_win == 'democrat') %>%
   group_by(year, party_win, winner) %>%
   summarise(n = n()) %>%
   ungroup() %>%
-  arrange(party_win, desc(n)) %>%
-  mutate(party_win = paste0('`', party_win, '`')) %>%
-  knitr::kable(escape = F)
+  knitr::kable()
 ```
 
-|  year| party\_win   | winner            |    n|
-|-----:|:-------------|:------------------|----:|
-|  2016| `democrat`   | Hillary Clinton   |   21|
-|  1964| `democrat`   | Lyndon B. Johnson |    9|
-|  1996| `democrat`   | Bill Clinton      |    7|
-|  2012| `democrat`   | Barack Obama      |    6|
-|  1976| `democrat`   | Jimmy Carter      |    4|
-|  1992| `democrat`   | Bill Clinton      |    2|
-|  2008| `democrat`   | Barack Obama      |    2|
-|  2016| `republican` | Donald Trump      |   30|
-|  1988| `republican` | George H. W. Bush |    8|
-|  1984| `republican` | Ronald Reagan     |    6|
-|  2004| `republican` | George W. Bush    |    4|
-|  1972| `republican` | Richard Nixon     |    1|
-|  2000| `republican` | George W. Bush    |    1|
+|  year| party\_win | winner            |    n|
+|-----:|:-----------|:------------------|----:|
+|  1964| democrat   | Lyndon B. Johnson |    9|
+|  1972| republican | Richard Nixon     |    1|
+|  1976| democrat   | Jimmy Carter      |    4|
+|  1984| republican | Ronald Reagan     |    6|
+|  1988| republican | George H. W. Bush |    8|
+|  1992| democrat   | Bill Clinton      |    2|
+|  1996| democrat   | Bill Clinton      |    7|
+|  2000| republican | George W. Bush    |    1|
+|  2004| republican | George W. Bush    |    4|
+|  2008| democrat   | Barack Obama      |    2|
+|  2012| democrat   | Barack Obama      |    6|
+|  2016| democrat   | Hillary Clinton   |   21|
+|  2016| republican | Donald Trump      |   30|
 
 ``` r
 library(sf)
@@ -220,7 +234,7 @@ uspols::xsf_TileOutv10 %>%
   labs(title = "Last vote for a Democratic Presidential candidate")
 ```
 
-![](all-the-newness_files/figure-markdown_github/unnamed-chunk-10-1.png)
+![](all-the-newness_files/figure-markdown_github/unnamed-chunk-11-1.png)
 
 ######### 
 
@@ -249,7 +263,9 @@ house <- lapply(c(66:116), function (x)
     mutate(x = length(unique(district_code))) %>%
     ungroup() %>%
     mutate(district_code = ifelse(x==1, 0, district_code)) %>%
-    mutate(district_code = stringr::str_pad (as.numeric(district_code), 2, pad = 0)) 
+    mutate(district_code = 
+             stringr::str_pad (as.numeric(district_code), 
+                               2, pad = 0)) 
 ```
 
 Southern states versus non-Southern states
@@ -281,7 +297,7 @@ house %>%
   labs(title="Republican percentage of House seats, since 1919") 
 ```
 
-![](all-the-newness_files/figure-markdown_github/unnamed-chunk-13-1.png)
+![](all-the-newness_files/figure-markdown_github/unnamed-chunk-14-1.png)
 
 A comparison of ideal points for members of the 111th, 113th & 115th
 Houses & Presidential vote margins for the 2008, 2012 & 2016 elections,
@@ -316,7 +332,7 @@ uspols::uspols_dk_pres %>%
   labs(title="Presidential Election Margins & DW-Nominate scores")
 ```
 
-![](all-the-newness_files/figure-markdown_github/unnamed-chunk-14-1.png)
+![](all-the-newness_files/figure-markdown_github/unnamed-chunk-15-1.png)
 
 ################## 
 
@@ -391,32 +407,32 @@ quicknews::qnews_search_contexts(qorp = qorp,
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">text20598</td>
-<td style="text-align: left;">… be lodged in this or in that Department of the <code>Federal Government</code> . And we find it expressly vested in the Legislative …</td>
+<td style="text-align: left;">text20390</td>
+<td style="text-align: left;">… up the report of a select committee recommending that the <code>federal government</code> grant a loan to a project to survey the coast …</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">text19522</td>
-<td style="text-align: left;">… exemptions should be made by the state governments , the <code>federal government</code> , or both concurrently . JM argued that the bill …</td>
+<td style="text-align: left;">text19833</td>
+<td style="text-align: left;">… and a memorial from the Massachusetts legislature proposing that the <code>federal government</code> assume that state’s debt . Mr . Madison observed , …</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">text15156</td>
-<td style="text-align: left;">… power is derived from the people , and that the <code>Federal Government</code> has been instituted for their happiness , I cannot but …</td>
+<td style="text-align: left;">text11199</td>
+<td style="text-align: left;">… in which you have appeared at the head of the <code>federal government</code> , the credit of the american nation has been established …</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">text22345</td>
-<td style="text-align: left;">… evil any thing so remote as the measures of the <code>federal government</code> . In this city hundreds have made fortunes by speculating …</td>
+<td style="text-align: left;">text18968</td>
+<td style="text-align: left;">… relation to troops raised after the establishment of the present <code>federal government</code> ; and therefore the law of the 30 of April …</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">text10264</td>
-<td style="text-align: left;">… a number of Gentlemen now about the seat of the <code>Federal Government</code> subject still to be either ⟨ a ⟩ mended or …</td>
+<td style="text-align: left;">text22450</td>
+<td style="text-align: left;">… [ will ] I apprehend produce a stand against the <code>federal government</code> . In this case the public paper will tumble precipitately …</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">text19091</td>
-<td style="text-align: left;">… part of our fellow citizens ; the friends of the <code>federal government</code> will evince that spirit of deference and concession for which …</td>
+<td style="text-align: left;">text11561</td>
+<td style="text-align: left;">… fav’or , to the appointment of such office under the <code>Federal Government</code> , as your Excellency may think suitable to my capacity …</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">text10400</td>
-<td style="text-align: left;">… prays to be continued in the same Office under the <code>Federal Government</code> , Or be appointed one of the land or Tide …</td>
+<td style="text-align: left;">text10298</td>
+<td style="text-align: left;">… length arrived when there appears a prospect of an efficient <code>federal government</code> , under which , Officers are to be appointed by …</td>
 </tr>
 </tbody>
 </table>

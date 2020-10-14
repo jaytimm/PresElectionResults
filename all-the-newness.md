@@ -114,7 +114,8 @@ votes <- Rvoteview::voteview_download(res$id)
 
 ``` r
 sens <- Rvoteview:: member_search(chamber= 'Senate', 
-                                  congress = c(106, 116))  ## re-do this piece --         
+                                  congress = c(106, 116))  
+## re-do this piece --         
 
 vs <- votes$votes.long %>% 
   inner_join(sens %>% 
@@ -125,13 +126,12 @@ vs <- votes$votes.long %>%
   mutate(vote = ifelse(vote == 1, 'Yea', 'Nay')) %>%
   spread(congress, vote) %>%
   filter(complete.cases(.)) %>%
-  arrange(party_name, `106`) 
-
-vs1 <- vs  %>% 
-  gridExtra::tableGrob(theme = gridExtra::ttheme_minimal(base_size = 10), 
+  arrange(party_name, `106`) %>% 
+  gridExtra::tableGrob(
+    theme = gridExtra::ttheme_minimal(base_size = 10), 
                        rows = NULL)
 
-gridExtra::grid.arrange(vs1)
+gridExtra::grid.arrange(vs)
 ```
 
 ![](all-the-newness_files/figure-markdown_github/unnamed-chunk-6-1.png)
@@ -155,36 +155,26 @@ candidate since LBJ.
 
 ``` r
 last_sum <- last_dem %>%
-  group_by(year, party_win, winner) %>%
+  filter(party_win == 'democrat') %>%
+  group_by(year, winner) %>%
   summarise(n = n()) %>%
   ungroup() %>%
-  arrange(party_win, desc(n))
+  arrange(desc(n))
 ```
 
 So, roughly 1/5 of the country (here, of total states) hasn’t voted for
 a Democrat since LBJ –
 
 ``` r
-last_sum %>% 
-  select(-party_win)%>%
-  knitr::kable()
+ls1 <- last_sum %>% 
+  gridExtra::tableGrob(
+    theme = gridExtra::ttheme_minimal(base_size = 10), 
+                       rows = NULL)
+
+gridExtra::grid.arrange(ls1)
 ```
 
-|  year| winner            |    n|
-|-----:|:------------------|----:|
-|  2016| Hillary Clinton   |   21|
-|  1964| Lyndon B. Johnson |    9|
-|  1996| Bill Clinton      |    7|
-|  2012| Barack Obama      |    6|
-|  1976| Jimmy Carter      |    4|
-|  1992| Bill Clinton      |    2|
-|  2008| Barack Obama      |    2|
-|  2016| Donald Trump      |   30|
-|  1988| George H. W. Bush |    8|
-|  1984| Ronald Reagan     |    6|
-|  2004| George W. Bush    |    4|
-|  1972| Richard Nixon     |    1|
-|  2000| George W. Bush    |    1|
+![](all-the-newness_files/figure-markdown_github/unnamed-chunk-10-1.png)
 
 ``` r
 library(sf)
@@ -384,32 +374,32 @@ quicknews::qnews_search_contexts(qorp = qorp,
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">text1268</td>
-<td style="text-align: left;">… as well as upon the successful Operations of Your new || Federal Government || , and your Appointment to the very distinguished Post You …</td>
+<td style="text-align: left;">text11505</td>
+<td style="text-align: left;">… office will be continued there after the Organization of the || Federal Government || in this State for the better security of the collection …</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">text5677</td>
-<td style="text-align: left;">… or spirit or both , still professing friendship to the || federal government || . This new assembling of the Committees was it seems …</td>
+<td style="text-align: left;">text9423</td>
+<td style="text-align: left;">… Sept . 1789 , a post he retained until the || federal government || moved to Philadelphia in 1790 . In 1786 he married …</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">text1436</td>
-<td style="text-align: left;">… body of State Creditors constantly opposing the proceedings of the || Federal Government || &amp; preventing the collection of the Impost . - . …</td>
+<td style="text-align: left;">text10560</td>
+<td style="text-align: left;">… office I am desirous of continuing in it under the || federal Government || , wishing for the Satisfaction of contributing my part of …</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">text13616</td>
-<td style="text-align: left;">… action at a great distance from the seat of the || federal government || and the hostile tribes strong and well supplied with arms …</td>
+<td style="text-align: left;">text26305</td>
+<td style="text-align: left;">… price on account of the contingency of the seat of || federal government || coming there - and , as I have said above …</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">text12350</td>
-<td style="text-align: left;">… the people pretty generally disposed to think favourably of the || federal government || although considerable pains had been taken to misrepresent them . …</td>
+<td style="text-align: left;">text22393</td>
+<td style="text-align: left;">… recieve nominations of the several officers necessary to put the || federal government || into motion in that state . For this purpose I …</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">text2383</td>
-<td style="text-align: left;">… - In America was happily set the example of a || Federal Government || ; of freedom of religions &amp; of other beneficial novelties …</td>
+<td style="text-align: left;">text23107</td>
+<td style="text-align: left;">… you Sir are plac’d in a public Station in the || federal Government || , I have taken the Liberty of troubling you with …</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">text11098</td>
-<td style="text-align: left;">… only removed by this States having entered into the New || federal Government || - We have rejoiced at being reunited to the other …</td>
+<td style="text-align: left;">text1335</td>
+<td style="text-align: left;">… of congratulating your zeal on the effectual opperation of the || federal Government || . Its Quick progress to its present stage is a …</td>
 </tr>
 </tbody>
 </table>

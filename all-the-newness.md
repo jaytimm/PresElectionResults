@@ -32,23 +32,24 @@ res %>%
   mutate(article = c('-', 'I', 'II', 'II', 'I')) %>%
   arrange(date, article) %>% 
   #knitr::kable() %>%
-  kableExtra::kbl() %>%
-  kableExtra::kable_styling(font_size = 9)
+  # kableExtra::kbl() %>%
+  # kableExtra::kable_styling(font_size = 9)
+  formattable::formattable()
 ```
 
-<table class="table" style="font-size: 9px; margin-left: auto; margin-right: auto;">
+<table class="table table-condensed">
 <thead>
 <tr>
-<th style="text-align:left;">
+<th style="text-align:right;">
 date
 </th>
-<th style="text-align:left;">
+<th style="text-align:right;">
 bill\_number
 </th>
-<th style="text-align:left;">
+<th style="text-align:right;">
 text
 </th>
-<th style="text-align:left;">
+<th style="text-align:right;">
 question
 </th>
 <th style="text-align:right;">
@@ -57,23 +58,23 @@ yea
 <th style="text-align:right;">
 nay
 </th>
-<th style="text-align:left;">
+<th style="text-align:right;">
 article
 </th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align:left;">
+<td style="text-align:right;">
 1999-02-12
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 SRES44
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 A resolution relating to the censure of William Jefferson Clinton.
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 On the Motion
 </td>
 <td style="text-align:right;">
@@ -82,22 +83,22 @@ On the Motion
 <td style="text-align:right;">
 56
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 
 -   </td>
     </tr>
     <tr>
-    <td style="text-align:left;">
+    <td style="text-align:right;">
     1999-02-12
     </td>
-    <td style="text-align:left;">
+    <td style="text-align:right;">
     HRES611
     </td>
-    <td style="text-align:left;">
+    <td style="text-align:right;">
     A resolution impeaching William Jefferson Clinton, President of the
     United States, for high crimes and misdemeanors.
     </td>
-    <td style="text-align:left;">
+    <td style="text-align:right;">
     Guilty or Not Guilty
     </td>
     <td style="text-align:right;">
@@ -106,22 +107,22 @@ On the Motion
     <td style="text-align:right;">
     51
     </td>
-    <td style="text-align:left;">
+    <td style="text-align:right;">
     I
     </td>
     </tr>
     <tr>
-    <td style="text-align:left;">
+    <td style="text-align:right;">
     1999-02-12
     </td>
-    <td style="text-align:left;">
+    <td style="text-align:right;">
     HRES611
     </td>
-    <td style="text-align:left;">
+    <td style="text-align:right;">
     A resolution impeaching William Jefferson Clinton, President of the
     United States, for high crimes and misdemeanors.
     </td>
-    <td style="text-align:left;">
+    <td style="text-align:right;">
     Guilty or Not Guilty
     </td>
     <td style="text-align:right;">
@@ -130,22 +131,22 @@ On the Motion
     <td style="text-align:right;">
     56
     </td>
-    <td style="text-align:left;">
+    <td style="text-align:right;">
     II
     </td>
     </tr>
     <tr>
-    <td style="text-align:left;">
+    <td style="text-align:right;">
     2020-02-05
     </td>
-    <td style="text-align:left;">
+    <td style="text-align:right;">
     HRES755
     </td>
-    <td style="text-align:left;">
+    <td style="text-align:right;">
     A resolution impeaching Donald John Trump, President of the United
     States, for high crimes and misdemeanors.
     </td>
-    <td style="text-align:left;">
+    <td style="text-align:right;">
     Guilty or Not Guilty
     </td>
     <td style="text-align:right;">
@@ -154,22 +155,22 @@ On the Motion
     <td style="text-align:right;">
     53
     </td>
-    <td style="text-align:left;">
+    <td style="text-align:right;">
     I
     </td>
     </tr>
     <tr>
-    <td style="text-align:left;">
+    <td style="text-align:right;">
     2020-02-05
     </td>
-    <td style="text-align:left;">
+    <td style="text-align:right;">
     HRES755
     </td>
-    <td style="text-align:left;">
+    <td style="text-align:right;">
     A resolution impeaching Donald John Trump, President of the United
     States, for high crimes and misdemeanors.
     </td>
-    <td style="text-align:left;">
+    <td style="text-align:right;">
     Guilty or Not Guilty
     </td>
     <td style="text-align:right;">
@@ -178,7 +179,7 @@ On the Motion
     <td style="text-align:right;">
     52
     </td>
-    <td style="text-align:left;">
+    <td style="text-align:right;">
     II
     </td>
     </tr>
@@ -231,176 +232,29 @@ last_sum %>%
   kableExtra::pack_rows("Republican", 8, 10)
 ```
 
-<table>
-<thead>
-<tr>
-<th style="text-align:right;">
-year
-</th>
-<th style="text-align:left;">
-winner
-</th>
-<th style="text-align:right;">
-n
-</th>
-</tr>
-</thead>
-<tbody>
-<tr grouplength="7">
-<td colspan="3" style="border-bottom: 1px solid;">
-<strong>Democrat</strong>
-</td>
-</tr>
-<tr>
-<td style="text-align:right; padding-left:  2em;" indentlevel="1">
-2016
-</td>
-<td style="text-align:left;">
-Hillary Clinton
-</td>
-<td style="text-align:right;">
-21
-</td>
-</tr>
-<tr>
-<td style="text-align:right; padding-left:  2em;" indentlevel="1">
-1964
-</td>
-<td style="text-align:left;">
-Lyndon B. Johnson
-</td>
-<td style="text-align:right;">
-9
-</td>
-</tr>
-<tr>
-<td style="text-align:right; padding-left:  2em;" indentlevel="1">
-1996
-</td>
-<td style="text-align:left;">
-Bill Clinton
-</td>
-<td style="text-align:right;">
-7
-</td>
-</tr>
-<tr>
-<td style="text-align:right; padding-left:  2em;" indentlevel="1">
-2012
-</td>
-<td style="text-align:left;">
-Barack Obama
-</td>
-<td style="text-align:right;">
-6
-</td>
-</tr>
-<tr>
-<td style="text-align:right; padding-left:  2em;" indentlevel="1">
-1976
-</td>
-<td style="text-align:left;">
-Jimmy Carter
-</td>
-<td style="text-align:right;">
-4
-</td>
-</tr>
-<tr>
-<td style="text-align:right; padding-left:  2em;" indentlevel="1">
-1992
-</td>
-<td style="text-align:left;">
-Bill Clinton
-</td>
-<td style="text-align:right;">
-2
-</td>
-</tr>
-<tr>
-<td style="text-align:right; padding-left:  2em;" indentlevel="1">
-2008
-</td>
-<td style="text-align:left;">
-Barack Obama
-</td>
-<td style="text-align:right;">
-2
-</td>
-</tr>
-<tr grouplength="3">
-<td colspan="3" style="border-bottom: 1px solid;">
-<strong>Republican</strong>
-</td>
-</tr>
-<tr>
-<td style="text-align:right; padding-left:  2em;" indentlevel="1">
-2016
-</td>
-<td style="text-align:left;">
-Donald Trump
-</td>
-<td style="text-align:right;">
-30
-</td>
-</tr>
-<tr>
-<td style="text-align:right; padding-left:  2em;" indentlevel="1">
-1988
-</td>
-<td style="text-align:left;">
-George H. W. Bush
-</td>
-<td style="text-align:right;">
-8
-</td>
-</tr>
-<tr>
-<td style="text-align:right; padding-left:  2em;" indentlevel="1">
-1984
-</td>
-<td style="text-align:left;">
-Ronald Reagan
-</td>
-<td style="text-align:right;">
-6
-</td>
-</tr>
-<tr>
-<td style="text-align:right;">
-2004
-</td>
-<td style="text-align:left;">
-George W. Bush
-</td>
-<td style="text-align:right;">
-4
-</td>
-</tr>
-<tr>
-<td style="text-align:right;">
-1972
-</td>
-<td style="text-align:left;">
-Richard Nixon
-</td>
-<td style="text-align:right;">
-1
-</td>
-</tr>
-<tr>
-<td style="text-align:right;">
-2000
-</td>
-<td style="text-align:left;">
-George W. Bush
-</td>
-<td style="text-align:right;">
-1
-</td>
-</tr>
-</tbody>
-</table>
+    ## Warning in kableExtra::pack_rows(., "Democrat", 1, 7): Please specify format
+    ## in kable. kableExtra can customize either HTML or LaTeX outputs. See https://
+    ## haozhu233.github.io/kableExtra/ for details.
+
+    ## Warning in kableExtra::pack_rows(., "Republican", 8, 10): Please specify format
+    ## in kable. kableExtra can customize either HTML or LaTeX outputs. See https://
+    ## haozhu233.github.io/kableExtra/ for details.
+
+|  year| winner            |    n|
+|-----:|:------------------|----:|
+|  2016| Hillary Clinton   |   21|
+|  1964| Lyndon B. Johnson |    9|
+|  1996| Bill Clinton      |    7|
+|  2012| Barack Obama      |    6|
+|  1976| Jimmy Carter      |    4|
+|  1992| Bill Clinton      |    2|
+|  2008| Barack Obama      |    2|
+|  2016| Donald Trump      |   30|
+|  1988| George H. W. Bush |    8|
+|  1984| Ronald Reagan     |    6|
+|  2004| George W. Bush    |    4|
+|  1972| Richard Nixon     |    1|
+|  2000| George W. Bush    |    1|
 
 ``` r
 library(sf)
@@ -603,67 +457,66 @@ context
 <tbody>
 <tr>
 <td style="text-align:left;">
-text1221
+text20137
 </td>
 <td style="text-align:left;">
-… and judiciary . this seems to be an improvement on \|\| federal
-government \|\| beyond what has been made by any other States . …
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-text5721
-</td>
-<td style="text-align:left;">
-… peculiar Satisfaction with which I anticipated the effects of the \|\|
-Federal Government \|\| ( and which has been amply verified in the
-administration …
+… not to be exclusively credited to the change of our \|\| federal
+government \|\| , or to particular measures under it , according to …
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-text1356
+text26525
 </td>
 <td style="text-align:left;">
-… the present Inhabitants did not choose to Live under the \|\| Federal
-Government \|\| they would be permitted to sell their Estates & c …
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-text26670
-</td>
-<td style="text-align:left;">
-… Since notwithstanding the repeated assurances I have received from the
-\|\| federal government \|\| , of its determination to exclude those
-privateers from any …
+… of France , residing in your state , that the \|\| federal government
+\|\| , respecting his nation , and attentive to the safety …
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-text19091
+text13616
 </td>
 <td style="text-align:left;">
-… or improper . It has been said that in the \|\| federal government
-\|\| they are unnecessary , because the powers are enumerated , …
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-text10465
-</td>
-<td style="text-align:left;">
-… & to all the Gentlemen of both Houses of the \|\| Federal Government
-\|\| from Massachusetts ; and to the honorable Messrs Johnson , …
+… action at a great distance from the seat of the \|\| federal
+government \|\| and the hostile tribes strong and well supplied with
+arms …
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-text10298
+text22393
 </td>
 <td style="text-align:left;">
-… length arrived when there appears a prospect of an efficient \|\|
-federal government \|\| , under which , Officers are to be appointed by
+… recieve nominations of the several officers necessary to put the \|\|
+federal government \|\| into motion in that state . For this purpose I …
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+text21554
+</td>
+<td style="text-align:left;">
+… motion has been made in the Senate to remove the \|\| federal
+government \|\| to Philadelphia . There was a trial of strength on …
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+text10400
+</td>
+<td style="text-align:left;">
+… prays to be continued in the same Office under the \|\| Federal
+Government \|\| , Or be appointed one of the land or Tide …
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+text20598
+</td>
+<td style="text-align:left;">
+… these , formed the State Governments , the other the \|\| Federal
+Government \|\| . The powers of the Government had been further divided
 …
 </td>
 </tr>

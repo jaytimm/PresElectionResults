@@ -43,10 +43,10 @@ res %>%
   arrange(date, article) %>% 
   #knitr::kable()
   kableExtra::kbl() %>%
-  kableExtra::kable_classic(full_width = T) #html_font = "Cambria"
+  kable_styling(font_size = 11)
 ```
 
-<table class=" lightable-classic" style='font-family: "Arial Narrow", "Source Sans Pro", sans-serif; margin-left: auto; margin-right: auto;'>
+<table class="table" style="font-size: 11px; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -612,48 +612,38 @@ context
 <tbody>
 <tr>
 <td style="text-align:left;">
-text9423
+text19744
 </td>
 <td style="text-align:left;">
-… Sept . 1789 , a post he retained until the \|\| federal government
-\|\| moved to Philadelphia in 1790 . In 1786 he married …
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-text1221
-</td>
-<td style="text-align:left;">
-… in the places most remote from the Seat of the \|\| federal government
-\|\| as well as at the centre . I believe this …
+… rights of the people ; over the authorities of the \|\| confederal
+government \|\| ; and over both the rights and the authorities of …
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-text12010
+text10463
 </td>
 <td style="text-align:left;">
-… united States having rendered it expedient to resort to the \|\|
-federal Government \|\| for such prudent regulations as may best tend to
-secure …
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-text2383
-</td>
-<td style="text-align:left;">
-… - In America was happily set the example of a \|\| Federal Government
-\|\| ; of freedom of religions & of other beneficial novelties …
+… appears altogether impracticable , in the present state of the \|\|
+Federal Government \|\| , to make the Interest or honor of the Union …
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-text10795
+text27175
 </td>
 <td style="text-align:left;">
-… in the late Convention of this State for Ratifying the \|\| Federal
-Government \|\| - is a man of Industry respectable abilities and firm …
+… banks and public funds . 5 . Officers of the \|\| federal government
+\|\| with some exceptions . 6 . Office-hunters , willing to …
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+text26525
+</td>
+<td style="text-align:left;">
+… of France , residing in your state , that the \|\| federal government
+\|\| , respecting his nation , and attentive to the safety …
 </td>
 </tr>
 <tr>
@@ -667,12 +657,21 @@ Government \|\| & political interests will sooner or later come to be …
 </tr>
 <tr>
 <td style="text-align:left;">
-text26842
+text18043
 </td>
 <td style="text-align:left;">
-… of independence felt by the courts and officers of the \|\| federal
-government \|\| , and the science and integrity which has generally
-procured …
+… that the United States , under the operation of the \|\| Federal
+Government \|\| , have experienced a most rapid aggrandizement and
+prosperity , …
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+text1800
+</td>
+<td style="text-align:left;">
+… by Enlightening the minds of a few people . The \|\| Federal
+Government \|\| seems to have been formed much after the Manner of …
 </td>
 </tr>
 </tbody>

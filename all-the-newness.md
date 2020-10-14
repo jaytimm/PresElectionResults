@@ -30,161 +30,79 @@ res <- Rvoteview::voteview_search("impeachment") %>%
 res %>%
   select(-id) %>%
   mutate(article = c('-', 'I', 'II', 'II', 'I')) %>%
-  arrange(date, article) %>% 
-  #knitr::kable() %>%
-  # kableExtra::kbl() %>%
-  # kableExtra::kable_styling(font_size = 9)
-  formattable::formattable()
+  arrange(date, article) %>%
+  knitr::kable()
 ```
 
-<table class="table table-condensed">
+<table>
+<colgroup>
+<col style="width: 6%" />
+<col style="width: 6%" />
+<col style="width: 66%" />
+<col style="width: 11%" />
+<col style="width: 2%" />
+<col style="width: 2%" />
+<col style="width: 4%" />
+</colgroup>
 <thead>
-<tr>
-<th style="text-align:right;">
-date
-</th>
-<th style="text-align:right;">
-bill\_number
-</th>
-<th style="text-align:right;">
-text
-</th>
-<th style="text-align:right;">
-question
-</th>
-<th style="text-align:right;">
-yea
-</th>
-<th style="text-align:right;">
-nay
-</th>
-<th style="text-align:right;">
-article
-</th>
+<tr class="header">
+<th style="text-align: left;">date</th>
+<th style="text-align: left;">bill_number</th>
+<th style="text-align: left;">text</th>
+<th style="text-align: left;">question</th>
+<th style="text-align: right;">yea</th>
+<th style="text-align: right;">nay</th>
+<th style="text-align: left;">article</th>
 </tr>
 </thead>
 <tbody>
-<tr>
-<td style="text-align:right;">
-1999-02-12
-</td>
-<td style="text-align:right;">
-SRES44
-</td>
-<td style="text-align:right;">
-A resolution relating to the censure of William Jefferson Clinton.
-</td>
-<td style="text-align:right;">
-On the Motion
-</td>
-<td style="text-align:right;">
-43
-</td>
-<td style="text-align:right;">
-56
-</td>
-<td style="text-align:right;">
-
--   </td>
-    </tr>
-    <tr>
-    <td style="text-align:right;">
-    1999-02-12
-    </td>
-    <td style="text-align:right;">
-    HRES611
-    </td>
-    <td style="text-align:right;">
-    A resolution impeaching William Jefferson Clinton, President of the
-    United States, for high crimes and misdemeanors.
-    </td>
-    <td style="text-align:right;">
-    Guilty or Not Guilty
-    </td>
-    <td style="text-align:right;">
-    50
-    </td>
-    <td style="text-align:right;">
-    51
-    </td>
-    <td style="text-align:right;">
-    I
-    </td>
-    </tr>
-    <tr>
-    <td style="text-align:right;">
-    1999-02-12
-    </td>
-    <td style="text-align:right;">
-    HRES611
-    </td>
-    <td style="text-align:right;">
-    A resolution impeaching William Jefferson Clinton, President of the
-    United States, for high crimes and misdemeanors.
-    </td>
-    <td style="text-align:right;">
-    Guilty or Not Guilty
-    </td>
-    <td style="text-align:right;">
-    45
-    </td>
-    <td style="text-align:right;">
-    56
-    </td>
-    <td style="text-align:right;">
-    II
-    </td>
-    </tr>
-    <tr>
-    <td style="text-align:right;">
-    2020-02-05
-    </td>
-    <td style="text-align:right;">
-    HRES755
-    </td>
-    <td style="text-align:right;">
-    A resolution impeaching Donald John Trump, President of the United
-    States, for high crimes and misdemeanors.
-    </td>
-    <td style="text-align:right;">
-    Guilty or Not Guilty
-    </td>
-    <td style="text-align:right;">
-    47
-    </td>
-    <td style="text-align:right;">
-    53
-    </td>
-    <td style="text-align:right;">
-    I
-    </td>
-    </tr>
-    <tr>
-    <td style="text-align:right;">
-    2020-02-05
-    </td>
-    <td style="text-align:right;">
-    HRES755
-    </td>
-    <td style="text-align:right;">
-    A resolution impeaching Donald John Trump, President of the United
-    States, for high crimes and misdemeanors.
-    </td>
-    <td style="text-align:right;">
-    Guilty or Not Guilty
-    </td>
-    <td style="text-align:right;">
-    48
-    </td>
-    <td style="text-align:right;">
-    52
-    </td>
-    <td style="text-align:right;">
-    II
-    </td>
-    </tr>
-    </tbody>
-    </table>
+<tr class="odd">
+<td style="text-align: left;">1999-02-12</td>
+<td style="text-align: left;">SRES44</td>
+<td style="text-align: left;">A resolution relating to the censure of William Jefferson Clinton.</td>
+<td style="text-align: left;">On the Motion</td>
+<td style="text-align: right;">43</td>
+<td style="text-align: right;">56</td>
+<td style="text-align: left;">-</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1999-02-12</td>
+<td style="text-align: left;">HRES611</td>
+<td style="text-align: left;">A resolution impeaching William Jefferson Clinton, President of the United States, for high crimes and misdemeanors.</td>
+<td style="text-align: left;">Guilty or Not Guilty</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">51</td>
+<td style="text-align: left;">I</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1999-02-12</td>
+<td style="text-align: left;">HRES611</td>
+<td style="text-align: left;">A resolution impeaching William Jefferson Clinton, President of the United States, for high crimes and misdemeanors.</td>
+<td style="text-align: left;">Guilty or Not Guilty</td>
+<td style="text-align: right;">45</td>
+<td style="text-align: right;">56</td>
+<td style="text-align: left;">II</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">2020-02-05</td>
+<td style="text-align: left;">HRES755</td>
+<td style="text-align: left;">A resolution impeaching Donald John Trump, President of the United States, for high crimes and misdemeanors.</td>
+<td style="text-align: left;">Guilty or Not Guilty</td>
+<td style="text-align: right;">47</td>
+<td style="text-align: right;">53</td>
+<td style="text-align: left;">I</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">2020-02-05</td>
+<td style="text-align: left;">HRES755</td>
+<td style="text-align: left;">A resolution impeaching Donald John Trump, President of the United States, for high crimes and misdemeanors.</td>
+<td style="text-align: left;">Guilty or Not Guilty</td>
+<td style="text-align: right;">48</td>
+<td style="text-align: right;">52</td>
+<td style="text-align: left;">II</td>
+</tr>
+</tbody>
+</table>
 
 Here we look at how the 15 US Senators – members of both the 106th &
 116th congresses – voted on Article I from the 2020 trial and Article II
@@ -193,6 +111,30 @@ of the 1999 trial.
 ``` r
 votes <- Rvoteview::voteview_download(res$id)
 ```
+
+``` r
+sens <- Rvoteview:: member_search(chamber= 'Senate', 
+                                  congress = c(106, 116))  ## re-do this piece --         
+
+vs <- votes$votes.long %>% 
+  inner_join(sens %>% 
+               mutate(icpsr = as.character(icpsr))) %>%
+  filter(vname %in% c('RS1060018', 'RS1160461')) %>%
+  select(bioname, state_abbrev, 
+         congress, party_name, vote) %>%
+  mutate(vote = ifelse(vote == 1, 'Yea', 'Nay')) %>%
+  spread(congress, vote) %>%
+  filter(complete.cases(.)) %>%
+  arrange(party_name, `106`) 
+
+vs1 <- vs  %>% 
+  gridExtra::tableGrob(theme = gridExtra::ttheme_minimal(base_size = 10), 
+                       rows = NULL)
+
+gridExtra::grid.arrange(vs1)
+```
+
+![](all-the-newness_files/figure-markdown_github/unnamed-chunk-6-1.png)
 
 ################ 
 
@@ -224,21 +166,9 @@ a Democrat since LBJ –
 
 ``` r
 last_sum %>% 
-  select(-party_win) %>%
-  knitr::kable() %>%
-  # kableExtra::kbl() %>% #, caption = "Group Rows"
-  # kableExtra::kable_paper("striped", full_width = T) %>%
-  kableExtra::pack_rows("Democrat", 1, 7) %>%
-  kableExtra::pack_rows("Republican", 8, 10)
+  select(-party_win)%>%
+  knitr::kable()
 ```
-
-    ## Warning in kableExtra::pack_rows(., "Democrat", 1, 7): Please specify format
-    ## in kable. kableExtra can customize either HTML or LaTeX outputs. See https://
-    ## haozhu233.github.io/kableExtra/ for details.
-
-    ## Warning in kableExtra::pack_rows(., "Republican", 8, 10): Please specify format
-    ## in kable. kableExtra can customize either HTML or LaTeX outputs. See https://
-    ## haozhu233.github.io/kableExtra/ for details.
 
 |  year| winner            |    n|
 |-----:|:------------------|----:|
@@ -441,84 +371,45 @@ quicknews::qnews_search_contexts(qorp = qorp,
 ```
 
 <table>
-<caption>
-Search-in-context: COVID-19 & coronavirus
-</caption>
+<caption>Search-in-context: COVID-19 &amp; coronavirus</caption>
+<colgroup>
+<col style="width: 5%" />
+<col style="width: 94%" />
+</colgroup>
 <thead>
-<tr>
-<th style="text-align:left;">
-docname
-</th>
-<th style="text-align:left;">
-context
-</th>
+<tr class="header">
+<th style="text-align: left;">docname</th>
+<th style="text-align: left;">context</th>
 </tr>
 </thead>
 <tbody>
-<tr>
-<td style="text-align:left;">
-text20137
-</td>
-<td style="text-align:left;">
-… not to be exclusively credited to the change of our \|\| federal
-government \|\| , or to particular measures under it , according to …
-</td>
+<tr class="odd">
+<td style="text-align: left;">text1268</td>
+<td style="text-align: left;">… as well as upon the successful Operations of Your new || Federal Government || , and your Appointment to the very distinguished Post You …</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-text26525
-</td>
-<td style="text-align:left;">
-… of France , residing in your state , that the \|\| federal government
-\|\| , respecting his nation , and attentive to the safety …
-</td>
+<tr class="even">
+<td style="text-align: left;">text5677</td>
+<td style="text-align: left;">… or spirit or both , still professing friendship to the || federal government || . This new assembling of the Committees was it seems …</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-text13616
-</td>
-<td style="text-align:left;">
-… action at a great distance from the seat of the \|\| federal
-government \|\| and the hostile tribes strong and well supplied with
-arms …
-</td>
+<tr class="odd">
+<td style="text-align: left;">text1436</td>
+<td style="text-align: left;">… body of State Creditors constantly opposing the proceedings of the || Federal Government || &amp; preventing the collection of the Impost . - . …</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-text22393
-</td>
-<td style="text-align:left;">
-… recieve nominations of the several officers necessary to put the \|\|
-federal government \|\| into motion in that state . For this purpose I …
-</td>
+<tr class="even">
+<td style="text-align: left;">text13616</td>
+<td style="text-align: left;">… action at a great distance from the seat of the || federal government || and the hostile tribes strong and well supplied with arms …</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-text21554
-</td>
-<td style="text-align:left;">
-… motion has been made in the Senate to remove the \|\| federal
-government \|\| to Philadelphia . There was a trial of strength on …
-</td>
+<tr class="odd">
+<td style="text-align: left;">text12350</td>
+<td style="text-align: left;">… the people pretty generally disposed to think favourably of the || federal government || although considerable pains had been taken to misrepresent them . …</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-text10400
-</td>
-<td style="text-align:left;">
-… prays to be continued in the same Office under the \|\| Federal
-Government \|\| , Or be appointed one of the land or Tide …
-</td>
+<tr class="even">
+<td style="text-align: left;">text2383</td>
+<td style="text-align: left;">… - In America was happily set the example of a || Federal Government || ; of freedom of religions &amp; of other beneficial novelties …</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-text20598
-</td>
-<td style="text-align:left;">
-… these , formed the State Governments , the other the \|\| Federal
-Government \|\| . The powers of the Government had been further divided
-…
-</td>
+<tr class="odd">
+<td style="text-align: left;">text11098</td>
+<td style="text-align: left;">… only removed by this States having entered into the New || federal Government || - We have rejoiced at being reunited to the other …</td>
 </tr>
 </tbody>
 </table>

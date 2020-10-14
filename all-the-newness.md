@@ -257,7 +257,7 @@ vvo <- Rvoteview::download_metadata(type = 'members', chamber = 'house') %>%
   filter(congress > 66 & chamber != 'President')
 ```
 
-    ## [1] "/tmp/RtmpHtWiyy/Hall_members.csv"
+    ## [1] "/tmp/RtmpnEDAtz/Hall_members.csv"
 
 ``` r
 house <- vvo %>%
@@ -420,32 +420,32 @@ quicknews::qnews_search_contexts(qorp = qorp,
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">text9511</td>
-<td style="text-align: left;">… western Settlements . That these considerations ought to make the <code>Federal Government</code> take ( he thinks ) the most decisive steps as …</td>
+<td style="text-align: left;">text19974</td>
+<td style="text-align: left;">… 1792 ] By the Bank Act of 1791 , the <code>federal government</code> paid $ 2 million , from funds previously borrowed at …</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">text1141</td>
-<td style="text-align: left;">… many people , than the adoption or establishment of the <code>federal Government</code> . - Many pious people wish the name of the …</td>
+<td style="text-align: left;">text1268</td>
+<td style="text-align: left;">… as well as upon the successful Operations of Your new <code>Federal Government</code> , and your Appointment to the very distinguished Post You …</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">text5203</td>
-<td style="text-align: left;">… people of this State wou’d be perfectly Satisfied with the <code>federal Government</code> , if not misrepresented . I wish it were in …</td>
+<td style="text-align: left;">text423</td>
+<td style="text-align: left;">… the persons holding such office to an opposition of the <code>Federal Government</code> is it not placing a very dangerous weapon in the …</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">text9518</td>
-<td style="text-align: left;">… would be defrayed unless the establishment was ceded to the <code>federal government</code> . Section 3 of the act provided for the erection …</td>
+<td style="text-align: left;">text20224</td>
+<td style="text-align: left;">… when paying heavy taxes , before the institution of the <code>federal government</code> , at the amount of the taxes themselves . Their …</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">text14759</td>
-<td style="text-align: left;">… therefrom . To you alone have I declared that the <code>Federal government</code> , far from manifesting any regard for our generous conduct …</td>
+<td style="text-align: left;">text10400</td>
+<td style="text-align: left;">… prays to be continued in the same Office under the <code>Federal Government</code> , Or be appointed one of the land or Tide …</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">text10298</td>
-<td style="text-align: left;">… length arrived when there appears a prospect of an efficient <code>federal government</code> , under which , Officers are to be appointed by …</td>
+<td style="text-align: left;">text1208</td>
+<td style="text-align: left;">… preserved in places most remote from the seat of the <code>Federal government</code> , as well as at the centre . And the …</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">text5721</td>
-<td style="text-align: left;">… peculiar Satisfaction with which I anticipated the effects of the <code>Federal Government</code> ( and which has been amply verified in the administration …</td>
+<td style="text-align: left;">text4480</td>
+<td style="text-align: left;">… of Kean’s decision to remain in the service of the <code>Federal Government</code> in spite of his appointment as cashier of the Bank …</td>
 </tr>
 </tbody>
 </table>
@@ -732,7 +732,7 @@ uscds %>%
             by = c('state_code', 'district_code')) %>% 
   ggplot() + 
   geom_sf(aes(fill = per),
-           color = 'white') +
+           color = 'white', size = .15) +
   
   scale_fill_distiller(palette = "YlGnBu", direction = 1) +
   theme_minimal()+
@@ -740,11 +740,14 @@ uscds %>%
         axis.text.y=element_blank(),
         axis.title.x=element_blank(),
         axis.title.y=element_blank(),
+        panel.background = element_rect(fill = '#d5e4eb', color = NA),
         legend.position = 'none') +
 labs(title = "The American White Working Class")
 ```
 
 ![](all-the-newness_files/figure-markdown_github/unnamed-chunk-28-1.png)
+
+Zoom to cities –
 
 ``` r
 set.seed(99)
@@ -775,7 +778,7 @@ white_ed %>%
            caption = 'Source: ACS 1-Year estimates, 2019, Table C15002')
 ```
 
-![](all-the-newness_files/figure-markdown_github/unnamed-chunk-29-1.png)
+![](all-the-newness_files/figure-markdown_github/unnamed-chunk-30-1.png)
 
 References
 ----------

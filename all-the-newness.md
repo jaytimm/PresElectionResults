@@ -257,7 +257,7 @@ vvo <- Rvoteview::download_metadata(type = 'members', chamber = 'house') %>%
   filter(congress > 66 & chamber != 'President')
 ```
 
-    ## [1] "/tmp/RtmpGYbl6q/Hall_members.csv"
+    ## [1] "/tmp/RtmpOnzy4J/Hall_members.csv"
 
 ``` r
 house <- vvo %>%
@@ -420,32 +420,32 @@ quicknews::qnews_search_contexts(qorp = qorp,
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">text19525</td>
-<td style="text-align: left;">… , and to place it in the hands of the <code>federal government</code> : or whether we examine the nature and construction of …</td>
+<td style="text-align: left;">text10400</td>
+<td style="text-align: left;">… prays to be continued in the same Office under the <code>Federal Government</code> , Or be appointed one of the land or Tide …</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">text7502</td>
-<td style="text-align: left;">… blush for their virulent censures of the executive of the <code>federal government</code> , for an opposition to the measures of a foreign …</td>
+<td style="text-align: left;">text26670</td>
+<td style="text-align: left;">… . I have always imagined that the resolution of the <code>federal government</code> to restore vessels , captured by the privateers , fitted …</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">text19577</td>
-<td style="text-align: left;">… by a charter proposal . JM apparently suggests that the <code>federal government</code> lacks the power to establish banks . …</td>
+<td style="text-align: left;">text12025</td>
+<td style="text-align: left;">… active friend of the late Revolution , &amp; the present <code>federal Government</code> , and that although I have not had the honor …</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">text19833</td>
-<td style="text-align: left;">… and a memorial from the Massachusetts legislature proposing that the <code>federal government</code> assume that state’s debt . Mr . Madison observed , …</td>
+<td style="text-align: left;">text20598</td>
+<td style="text-align: left;">… be lodged in this or in that Department of the <code>Federal Government</code> . And we find it expressly vested in the Legislative …</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">text14757</td>
-<td style="text-align: left;">… of these United States consists in their Republican form of <code>Federal Government</code> ; as the only legitimate source of this Government is …</td>
+<td style="text-align: left;">text2104</td>
+<td style="text-align: left;">… ? or was the State Government the Horse and the <code>federal Government</code> the Cart ? or was the Town the Horse &amp; …</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">text12010</td>
-<td style="text-align: left;">… united States having rendered it expedient to resort to the <code>federal Government</code> for such prudent regulations as may best tend to secure …</td>
+<td style="text-align: left;">text19091</td>
+<td style="text-align: left;">… part of our fellow citizens ; the friends of the <code>federal government</code> will evince that spirit of deference and concession for which …</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">text16580</td>
-<td style="text-align: left;">… must be convinced , from the recent conduct of the <code>federal government</code> towards him in regard to a most atrocious official calumny …</td>
+<td style="text-align: left;">text19744</td>
+<td style="text-align: left;">… rights of the people ; over the authorities of the <code>confederal government</code> ; and over both the rights and the authorities of …</td>
 </tr>
 </tbody>
 </table>
@@ -653,7 +653,7 @@ base_viz <- gen %>%
                adjust = 1) +
   scale_fill_manual(values = 
                       colorRampPalette(ggthemes::economist_pal()(8))(12)) +
-  facet_wrap(~variable, scale = 'free', nrow = 4)+
+  facet_wrap(~variable, scale = 'free', ncol = 4)+
   theme_minimal() +
   theme(legend.position = "none",
         axis.text.y=element_blank(),

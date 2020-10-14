@@ -173,25 +173,25 @@ last_dem %>%
   summarise(n = n()) %>%
   ungroup() %>%
   arrange(party_win, desc(n)) %>%
-  mutate(party_win = paste0('<mark>', party_win, '</mark>')) %>%
+  mutate(party_win = paste0('`', party_win, '`')) %>%
   knitr::kable(escape = F)
 ```
 
-|  year| party\_win              | winner            |    n|
-|-----:|:------------------------|:------------------|----:|
-|  2016| <mark>democrat</mark>   | Hillary Clinton   |   21|
-|  1964| <mark>democrat</mark>   | Lyndon B. Johnson |    9|
-|  1996| <mark>democrat</mark>   | Bill Clinton      |    7|
-|  2012| <mark>democrat</mark>   | Barack Obama      |    6|
-|  1976| <mark>democrat</mark>   | Jimmy Carter      |    4|
-|  1992| <mark>democrat</mark>   | Bill Clinton      |    2|
-|  2008| <mark>democrat</mark>   | Barack Obama      |    2|
-|  2016| <mark>republican</mark> | Donald Trump      |   30|
-|  1988| <mark>republican</mark> | George H. W. Bush |    8|
-|  1984| <mark>republican</mark> | Ronald Reagan     |    6|
-|  2004| <mark>republican</mark> | George W. Bush    |    4|
-|  1972| <mark>republican</mark> | Richard Nixon     |    1|
-|  2000| <mark>republican</mark> | George W. Bush    |    1|
+|  year| party\_win   | winner            |    n|
+|-----:|:-------------|:------------------|----:|
+|  2016| `democrat`   | Hillary Clinton   |   21|
+|  1964| `democrat`   | Lyndon B. Johnson |    9|
+|  1996| `democrat`   | Bill Clinton      |    7|
+|  2012| `democrat`   | Barack Obama      |    6|
+|  1976| `democrat`   | Jimmy Carter      |    4|
+|  1992| `democrat`   | Bill Clinton      |    2|
+|  2008| `democrat`   | Barack Obama      |    2|
+|  2016| `republican` | Donald Trump      |   30|
+|  1988| `republican` | George H. W. Bush |    8|
+|  1984| `republican` | Ronald Reagan     |    6|
+|  2004| `republican` | George W. Bush    |    4|
+|  1972| `republican` | Richard Nixon     |    1|
+|  2000| `republican` | George W. Bush    |    1|
 
 ``` r
 library(sf)
@@ -391,32 +391,32 @@ quicknews::qnews_search_contexts(qorp = qorp,
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">text13503</td>
-<td style="text-align: left;">… course of thought , which a calm attention to the || federal government || has suggested , and no bias of party has influenced …</td>
+<td style="text-align: left;">text1487</td>
+<td style="text-align: left;">… have no doubt it would be , would establish the || Federal Government || . I have a very high opinion of the Secretary …</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">text10400</td>
+<td style="text-align: left;">… prays to be continued in the same Office under the || Federal Government || , Or be appointed one of the land or Tide …</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">text10760</td>
+<td style="text-align: left;">… in the Welfare and punctuality of the rest ; the || federal Government || will be zealously supported as a general Guarrantee ; and …</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">text11513</td>
 <td style="text-align: left;">… to conciliate the Affections and Esteem for the National or || Federal Government || . We therefore , take the Liberty of recommending to …</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">text11368</td>
-<td style="text-align: left;">… is to be employed in the Revenue Department under the || federal government || in this district . He was for a considerable time …</td>
+<td style="text-align: left;">text19212</td>
+<td style="text-align: left;">… the case . With respect , however , to the || federal government || , there is one consideration that shews , in a …</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">text2104</td>
-<td style="text-align: left;">… ? or was the State Government the Horse and the || federal Government || the Cart ? or was the Town the Horse &amp; …</td>
+<td style="text-align: left;">text10298</td>
+<td style="text-align: left;">… length arrived when there appears a prospect of an efficient || federal government || , under which , Officers are to be appointed by …</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">text11098</td>
-<td style="text-align: left;">… only removed by this States having entered into the New || federal Government || - We have rejoiced at being reunited to the other …</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">text19091</td>
-<td style="text-align: left;">… earth can do ; and the greatest opponents to a || federal government || admit the state legislatures to be sure guardians of the …</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">text11967</td>
-<td style="text-align: left;">… , in the fullest confidence that the power of the || federal Government || will be so applied as to quiet the Apprehension and …</td>
+<td style="text-align: left;">text16356</td>
+<td style="text-align: left;">… who are friends to royalty , &amp; enemies to the || federal government || . My information upon this head cannot be doubted . …</td>
 </tr>
 </tbody>
 </table>

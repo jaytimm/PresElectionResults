@@ -165,6 +165,9 @@ last_dem <- uspols::uspols_wiki_pres %>%
 **Nine US states** have not voted for a Democratic Presidential
 candidate since LBJ. So, roughly 1/5 of the country (here, of total
 states) hasn’t voted for a Democrat since LBJ –
+<style>p{color:red;}</style>
+
+*foo*
 
 ``` r
 last_dem %>%
@@ -391,32 +394,32 @@ quicknews::qnews_search_contexts(qorp = qorp,
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">text1487</td>
-<td style="text-align: left;">… have no doubt it would be , would establish the || Federal Government || . I have a very high opinion of the Secretary …</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">text10400</td>
-<td style="text-align: left;">… prays to be continued in the same Office under the || Federal Government || , Or be appointed one of the land or Tide …</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">text10760</td>
-<td style="text-align: left;">… in the Welfare and punctuality of the rest ; the || federal Government || will be zealously supported as a general Guarrantee ; and …</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">text11513</td>
-<td style="text-align: left;">… to conciliate the Affections and Esteem for the National or || Federal Government || . We therefore , take the Liberty of recommending to …</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">text19212</td>
-<td style="text-align: left;">… the case . With respect , however , to the || federal government || , there is one consideration that shews , in a …</td>
-</tr>
-<tr class="even">
 <td style="text-align: left;">text10298</td>
 <td style="text-align: left;">… length arrived when there appears a prospect of an efficient || federal government || , under which , Officers are to be appointed by …</td>
 </tr>
+<tr class="even">
+<td style="text-align: left;">text1141</td>
+<td style="text-align: left;">… many people , than the adoption or establishment of the || federal Government || . - Many pious people wish the name of the …</td>
+</tr>
 <tr class="odd">
-<td style="text-align: left;">text16356</td>
-<td style="text-align: left;">… who are friends to royalty , &amp; enemies to the || federal government || . My information upon this head cannot be doubted . …</td>
+<td style="text-align: left;">text21554</td>
+<td style="text-align: left;">… motion has been made in the Senate to remove the || federal government || to Philadelphia . There was a trial of strength on …</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">text20598</td>
+<td style="text-align: left;">… these , formed the State Governments , the other the || Federal Government || . The powers of the Government had been further divided …</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">text454</td>
+<td style="text-align: left;">… not their influence be dangerous and perhaps fatal to the || Federal Government || ? I am fearful that the antifederal party in Congress …</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">text27150</td>
+<td style="text-align: left;">… be to Congress , if to any member of the || Federal government || . Whether they ought to give relief , is one …</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">text18107</td>
+<td style="text-align: left;">… , believing that the most essential truth relating to our || federal Government || &amp; political interests will sooner or later come to be …</td>
 </tr>
 </tbody>
 </table>

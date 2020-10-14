@@ -257,7 +257,7 @@ vvo <- Rvoteview::download_metadata(type = 'members', chamber = 'house') %>%
   filter(congress > 66 & chamber != 'President')
 ```
 
-    ## [1] "/tmp/RtmpOnzy4J/Hall_members.csv"
+    ## [1] "/tmp/RtmpHtWiyy/Hall_members.csv"
 
 ``` r
 house <- vvo %>%
@@ -420,32 +420,32 @@ quicknews::qnews_search_contexts(qorp = qorp,
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">text10400</td>
-<td style="text-align: left;">… prays to be continued in the same Office under the <code>Federal Government</code> , Or be appointed one of the land or Tide …</td>
+<td style="text-align: left;">text9511</td>
+<td style="text-align: left;">… western Settlements . That these considerations ought to make the <code>Federal Government</code> take ( he thinks ) the most decisive steps as …</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">text26670</td>
-<td style="text-align: left;">… . I have always imagined that the resolution of the <code>federal government</code> to restore vessels , captured by the privateers , fitted …</td>
+<td style="text-align: left;">text1141</td>
+<td style="text-align: left;">… many people , than the adoption or establishment of the <code>federal Government</code> . - Many pious people wish the name of the …</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">text12025</td>
-<td style="text-align: left;">… active friend of the late Revolution , &amp; the present <code>federal Government</code> , and that although I have not had the honor …</td>
+<td style="text-align: left;">text5203</td>
+<td style="text-align: left;">… people of this State wou’d be perfectly Satisfied with the <code>federal Government</code> , if not misrepresented . I wish it were in …</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">text20598</td>
-<td style="text-align: left;">… be lodged in this or in that Department of the <code>Federal Government</code> . And we find it expressly vested in the Legislative …</td>
+<td style="text-align: left;">text9518</td>
+<td style="text-align: left;">… would be defrayed unless the establishment was ceded to the <code>federal government</code> . Section 3 of the act provided for the erection …</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">text2104</td>
-<td style="text-align: left;">… ? or was the State Government the Horse and the <code>federal Government</code> the Cart ? or was the Town the Horse &amp; …</td>
+<td style="text-align: left;">text14759</td>
+<td style="text-align: left;">… therefrom . To you alone have I declared that the <code>Federal government</code> , far from manifesting any regard for our generous conduct …</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">text19091</td>
-<td style="text-align: left;">… part of our fellow citizens ; the friends of the <code>federal government</code> will evince that spirit of deference and concession for which …</td>
+<td style="text-align: left;">text10298</td>
+<td style="text-align: left;">… length arrived when there appears a prospect of an efficient <code>federal government</code> , under which , Officers are to be appointed by …</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">text19744</td>
-<td style="text-align: left;">… rights of the people ; over the authorities of the <code>confederal government</code> ; and over both the rights and the authorities of …</td>
+<td style="text-align: left;">text5721</td>
+<td style="text-align: left;">… peculiar Satisfaction with which I anticipated the effects of the <code>Federal Government</code> ( and which has been amply verified in the administration …</td>
 </tr>
 </tbody>
 </table>
@@ -581,11 +581,6 @@ house %>%
 
 ``` r
 tidycensus::census_api_key("b508704c99f3ae9bc5b5e7c41e3dd77e59d52722")
-```
-
-    ## To install your API key for use in future sessions, run this function with `install = TRUE`.
-
-``` r
 Sys.getenv("CENSUS_API_KEY")
 ```
 
@@ -593,22 +588,12 @@ Sys.getenv("CENSUS_API_KEY")
 
 ``` r
 library(tigris); options(tigris_use_cache = TRUE, tigris_class = "sf")
-```
-
-    ## To enable 
-    ## caching of data, set `options(tigris_use_cache = TRUE)` in your R script or .Rprofile.
-
-``` r
 nonx <- c('78', '69', '66', '72', '60', '15', '02')
 
 states <- tigris::states(cb = TRUE) %>%
   data.frame() %>%
   select(STATEFP, STUSPS) %>%
   rename(state_code = STATEFP, state_abbrev = STUSPS)
-```
-
-``` r
-x <- tidycensus::load_variables(year = '2019', dataset = "acs1/profile")
 ```
 
 ``` r
@@ -667,11 +652,130 @@ base_viz +
   geom_vline (data = nm02, 
               aes(xintercept=estimate),
               linetype = 2) +
-  labs(title = "A demographic profile of New Mexico's 2nd District",
-       subtitle = 'American Community Survey, 1-Year Estimates, 2019')
+  labs(title = "A demographic profile",
+       subtitle = "New Mexico's 2nd District", 
+       caption = 'Source: American Community Survey, 1-Year Estimates, 2019')
 ```
 
 ![](all-the-newness_files/figure-markdown_github/unnamed-chunk-25-1.png)
+
+White working class
+
+``` r
+white_ed_vars <- c(white_m_bach = 'C15002H_006',
+                   white_w_bach = 'C15002H_011',
+                   white_pop = 'C15002H_001',
+
+                   all_w_xbach = 'C15002_016',
+                   all_w_xgrad = 'C15002_017',
+                   all_m_xbach = 'C15002_008',
+                   all_m_xgrad = 'C15002_009',
+                   all_pop = 'C15002_001')
+
+# Denominator = everyone 25 and over -- !!
+
+#Get White-not Hispanic education levels
+white_ed <- tidycensus::get_acs(geography = 'congressional district',
+                            variables = white_ed_vars,
+                            year = 2019,
+                            #output = 'wide',
+                            survey = 'acs1') %>%
+  select(-moe) %>%
+  spread(key = variable, value = estimate) %>%
+
+  mutate(white_college =
+           white_m_bach +
+           white_w_bach,
+         white_working =
+           white_pop -
+           white_college,
+         non_white_college =
+           all_m_xbach +
+           all_w_xbach +
+           all_m_xgrad +
+           all_w_xgrad -
+           white_college,
+         non_white_working =
+           all_pop -
+           white_pop -
+           non_white_college) %>%
+
+  select(GEOID, white_college:non_white_working) %>%
+  gather(-GEOID, key = 'group', value = 'estimate') %>%
+  group_by(GEOID) %>%
+  mutate(per = round(estimate/ sum(estimate) * 100, 1)) %>%
+  ungroup() %>%
+  mutate(state_code = substr(GEOID, 1, 2),
+         district_code = substr(GEOID, 3, 4))  %>%
+  left_join(states, by = c('state_code')) %>%
+  select(GEOID, state_code, state_abbrev, district_code, group, per, estimate)
+```
+
+    ## Getting data from the 2019 1-year ACS
+
+    ## The one-year ACS provides data for geographies with populations of 65,000 and greater.
+
+``` r
+uscds <- tigris::congressional_districts(cb = TRUE) %>%
+  select(GEOID) %>%
+  mutate(state_code = substr(GEOID, 1, 2),
+         district_code = substr(GEOID, 3, 4)) 
+```
+
+White working map — via equal-area –
+
+``` r
+uscds %>%
+  filter(!state_code %in% nonx) %>%
+  left_join(white_ed %>%
+              filter(group == 'white_working'), 
+            by = c('state_code', 'district_code')) %>% 
+  ggplot() + 
+  geom_sf(aes(fill = per),
+           color = 'white') +
+  
+  scale_fill_distiller(palette = "YlGnBu", direction = 1) +
+  theme_minimal()+
+  theme(axis.text.x=element_blank(),
+        axis.text.y=element_blank(),
+        axis.title.x=element_blank(),
+        axis.title.y=element_blank(),
+        legend.position = 'none') +
+labs(title = "The American White Working Class")
+```
+
+![](all-the-newness_files/figure-markdown_github/unnamed-chunk-28-1.png)
+
+``` r
+set.seed(99)
+samp_n <- sample(unique(white_ed $GEOID), 12)
+
+white_ed %>%
+  filter(GEOID %in% samp_n) %>%
+    ggplot(aes(area = per,
+               fill = group,
+               label = group,
+               subgroup = group))+
+      treemapify::geom_treemap(alpha=.8)+
+      treemapify::geom_treemap_subgroup_border(color = 'white') +
+
+      treemapify::geom_treemap_text(colour = "black", 
+                        place = "topleft", 
+                        reflow = T,
+                        size = 8)+
+      #ggthemes::scale_fill_economist()+ 
+      #scale_fill_brewer(palette = 'Paired') +
+  #scale_fill_distiller(palette = "BrBG", direction = 1) +
+  
+  scale_fill_manual(values = c('#7b3294', '#c2a5cf', '#008837', '#a6dba0'))+
+  theme_minimal() +
+      facet_wrap(~paste0(state_abbrev, '-', district_code)) +
+      theme(legend.position = "none") + 
+      labs(title = "Educational attainment profiles",
+           caption = 'Source: ACS 1-Year estimates, 2019, Table C15002')
+```
+
+![](all-the-newness_files/figure-markdown_github/unnamed-chunk-29-1.png)
 
 References
 ----------

@@ -173,24 +173,25 @@ last_dem %>%
   summarise(n = n()) %>%
   ungroup() %>%
   arrange(party_win, desc(n)) %>%
-  knitr::kable()
+  mutate(party_win = paste0('<mark>', party_win, '</mark>')) %>%
+  knitr::kable(escape = F)
 ```
 
-|  year| party\_win | winner            |    n|
-|-----:|:-----------|:------------------|----:|
-|  2016| democrat   | Hillary Clinton   |   21|
-|  1964| democrat   | Lyndon B. Johnson |    9|
-|  1996| democrat   | Bill Clinton      |    7|
-|  2012| democrat   | Barack Obama      |    6|
-|  1976| democrat   | Jimmy Carter      |    4|
-|  1992| democrat   | Bill Clinton      |    2|
-|  2008| democrat   | Barack Obama      |    2|
-|  2016| republican | Donald Trump      |   30|
-|  1988| republican | George H. W. Bush |    8|
-|  1984| republican | Ronald Reagan     |    6|
-|  2004| republican | George W. Bush    |    4|
-|  1972| republican | Richard Nixon     |    1|
-|  2000| republican | George W. Bush    |    1|
+|  year| party\_win              | winner            |    n|
+|-----:|:------------------------|:------------------|----:|
+|  2016| <mark>democrat</mark>   | Hillary Clinton   |   21|
+|  1964| <mark>democrat</mark>   | Lyndon B. Johnson |    9|
+|  1996| <mark>democrat</mark>   | Bill Clinton      |    7|
+|  2012| <mark>democrat</mark>   | Barack Obama      |    6|
+|  1976| <mark>democrat</mark>   | Jimmy Carter      |    4|
+|  1992| <mark>democrat</mark>   | Bill Clinton      |    2|
+|  2008| <mark>democrat</mark>   | Barack Obama      |    2|
+|  2016| <mark>republican</mark> | Donald Trump      |   30|
+|  1988| <mark>republican</mark> | George H. W. Bush |    8|
+|  1984| <mark>republican</mark> | Ronald Reagan     |    6|
+|  2004| <mark>republican</mark> | George W. Bush    |    4|
+|  1972| <mark>republican</mark> | Richard Nixon     |    1|
+|  2000| <mark>republican</mark> | George W. Bush    |    1|
 
 ``` r
 library(sf)
@@ -390,32 +391,32 @@ quicknews::qnews_search_contexts(qorp = qorp,
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">text10451</td>
-<td style="text-align: left;">… to Join his aid in carrying into Execution the Glorious || Federal Government || . In the various arangement of Office , if I …</td>
+<td style="text-align: left;">text13503</td>
+<td style="text-align: left;">… course of thought , which a calm attention to the || federal government || has suggested , and no bias of party has influenced …</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">text1378</td>
-<td style="text-align: left;">… would keep a Day of Thanksgiving on hearing that the || Federal Government || was dissolved , and some of the principle officers carred …</td>
+<td style="text-align: left;">text11513</td>
+<td style="text-align: left;">… to conciliate the Affections and Esteem for the National or || Federal Government || . We therefore , take the Liberty of recommending to …</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">text20426</td>
-<td style="text-align: left;">… ( or to hope ) that the weakness of our || Federal Government || , and the want of concurrence among the state governments …</td>
+<td style="text-align: left;">text11368</td>
+<td style="text-align: left;">… is to be employed in the Revenue Department under the || federal government || in this district . He was for a considerable time …</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">text12350</td>
-<td style="text-align: left;">… the people pretty generally disposed to think favourably of the || federal government || although considerable pains had been taken to misrepresent them . …</td>
+<td style="text-align: left;">text2104</td>
+<td style="text-align: left;">… ? or was the State Government the Horse and the || federal Government || the Cart ? or was the Town the Horse &amp; …</td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;">text11098</td>
+<td style="text-align: left;">… only removed by this States having entered into the New || federal Government || - We have rejoiced at being reunited to the other …</td>
+</tr>
+<tr class="even">
 <td style="text-align: left;">text19091</td>
-<td style="text-align: left;">… part of our fellow citizens ; the friends of the || federal government || will evince that spirit of deference and concession for which …</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">text1215</td>
-<td style="text-align: left;">… family . Our Rulers continue as obstinately opposed to the || Federal Government || as ever , and I have no Idea that they …</td>
+<td style="text-align: left;">… earth can do ; and the greatest opponents to a || federal government || admit the state legislatures to be sure guardians of the …</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">text27150</td>
-<td style="text-align: left;">… be to Congress , if to any member of the || Federal government || . Whether they ought to give relief , is one …</td>
+<td style="text-align: left;">text11967</td>
+<td style="text-align: left;">… , in the fullest confidence that the power of the || federal Government || will be so applied as to quiet the Apprehension and …</td>
 </tr>
 </tbody>
 </table>

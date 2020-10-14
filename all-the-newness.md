@@ -37,10 +37,6 @@ Article I and against Article II in the 2020 impeachment trial of
 President Trump.)
 
 ``` r
-#options(knitr.table.format = "latex")
-```
-
-``` r
 library(tidyverse)
 
 res <- Rvoteview::voteview_search("impeachment") %>%
@@ -185,27 +181,30 @@ states) hasn’t voted for a Democrat since LBJ –
 
 ``` r
 last_dem %>%
-  group_by(year, party_win, winner) %>%
+  group_by(party_win, label) %>%
   summarise(n = n()) %>%
   ungroup() %>%
-  knitr::kable()
+  arrange(party_win, desc(n)) %>%
+  filter(party_win == 'democrat') %>% 
+  
+      ggplot(aes(x = reorder(label,n), 
+               y = n, 
+               fill = label, 
+               label = n)) + 
+  
+    geom_col(width=.65, color = 'lightgray') +  
+    geom_text(size = 3) +
+    coord_flip()+
+    #labs(title = "Roll call results for legislation referencing HEALTH CARE") +
+    theme_minimal()+
+    ggthemes::scale_fill_stata() +
+  
+    theme(legend.position = "none",
+          plot.title = element_text(size=12))+
+    facet_wrap(~party_win, ncol = 2) 
 ```
 
-|  year| party\_win | winner            |    n|
-|-----:|:-----------|:------------------|----:|
-|  1964| democrat   | Lyndon B. Johnson |    9|
-|  1972| republican | Richard Nixon     |    1|
-|  1976| democrat   | Jimmy Carter      |    4|
-|  1984| republican | Ronald Reagan     |    6|
-|  1988| republican | George H. W. Bush |    8|
-|  1992| democrat   | Bill Clinton      |    2|
-|  1996| democrat   | Bill Clinton      |    7|
-|  2000| republican | George W. Bush    |    1|
-|  2004| republican | George W. Bush    |    4|
-|  2008| democrat   | Barack Obama      |    2|
-|  2012| democrat   | Barack Obama      |    6|
-|  2016| democrat   | Hillary Clinton   |   21|
-|  2016| republican | Donald Trump      |   30|
+![](all-the-newness_files/figure-markdown_github/unnamed-chunk-8-1.png)
 
 ``` r
 library(sf)
@@ -234,7 +233,7 @@ uspols::xsf_TileOutv10 %>%
   labs(title = "Last vote for a Democratic Presidential candidate")
 ```
 
-![](all-the-newness_files/figure-markdown_github/unnamed-chunk-11-1.png)
+![](all-the-newness_files/figure-markdown_github/unnamed-chunk-9-1.png)
 
 ######### 
 
@@ -255,17 +254,30 @@ Rvoteview: House composition
 *Obviously do this the once* –
 
 ``` r
-house <- lapply(c(66:116), function (x)
-                    Rvoteview::member_search (
-                      chamber = 'House', 
-                      congress = x)) %>% 
+vvo <- Rvoteview::download_metadata(type = 'members', chamber = 'house') %>%
+  filter(congress > 66 & chamber != 'President')
+```
+
+    ## [1] "/tmp/RtmpEWTjBI/Hall_members.csv"
+
+``` r
+house <- vvo %>%
+  
+  # lapply(c(66:116), function (x)
+  #                   Rvoteview::member_search (
+  #                     chamber = 'House', 
+  #                     congress = x)) %>% 
   bind_rows() %>%
     mutate(x = length(unique(district_code))) %>%
     ungroup() %>%
     mutate(district_code = ifelse(x==1, 0, district_code)) %>%
     mutate(district_code = 
              stringr::str_pad (as.numeric(district_code), 
-                               2, pad = 0)) 
+                               2, pad = 0),
+           party_code = as.character(party_code)) %>%
+  left_join(data.frame(year = c(1918 + 2*rep(c(1:50))), 
+                       ## NOTE: election years.  term begins year + 1
+                       congress = c(67:116)), by = 'congress') 
 ```
 
 Southern states versus non-Southern states
@@ -278,14 +290,13 @@ Southern states versus non-Southern states
 house %>%
   mutate(is_south = ifelse(state_abbrev %in% south, 
                            'south', 'non-south')) %>%
-  group_by(congress, is_south, party_name) %>%
+  group_by(year, is_south, party_code) %>%
   summarize (n = n()) %>%
-  group_by(congress, is_south) %>%
+  group_by(year, is_south) %>%
   
   mutate(per = round(n/sum(n)*100, 1)) %>%
-  filter(party_name == 'Republican Party') %>%
+  filter(party_code == '200') %>%
   ungroup() %>%
-  mutate(year = 1919 + 2*rep(c(1:49), each = 2)) %>%
   
   ggplot() +
   geom_line(aes(x = year, y= per, color = is_south), size = 1.25) +
@@ -293,11 +304,11 @@ house %>%
   theme_minimal() +
   theme(legend.position = 'bottom',
         axis.text.x = element_text(angle = 90, hjust = 1)) +
-  scale_x_continuous(breaks=seq(1919,2019,10)) +
+  scale_x_continuous(breaks=seq(1920,2020,10)) +
   labs(title="Republican percentage of House seats, since 1919") 
 ```
 
-![](all-the-newness_files/figure-markdown_github/unnamed-chunk-14-1.png)
+![](all-the-newness_files/figure-markdown_github/unnamed-chunk-12-1.png)
 
 A comparison of ideal points for members of the 111th, 113th & 115th
 Houses & Presidential vote margins for the 2008, 2012 & 2016 elections,
@@ -307,18 +318,15 @@ Two observations/points to the plot below:
 
 ``` r
 uspols::uspols_dk_pres %>%
-  mutate(margin = republican - democrat,
-         congress = case_when(year == 2008 ~ 111, 
-                              year == 2012 ~ 113,
-                              year == 2016 ~ 115)) %>%
+  mutate(margin = republican - democrat) %>%
   
   left_join(house %>% filter(congress %in% c('111', '113', '115')), 
-            by = c('congress', 'state_abbrev', 'district_code')) %>%
+            by = c('year', 'state_abbrev', 'district_code')) %>%
   
   
-  ggplot(aes(y = nominate.dim1, 
+  ggplot(aes(y = nominate_dim1, 
              x = margin, 
-             color = as.factor(party_name)))+ 
+             color = party_code))+ 
   
   geom_point()+ #
   geom_smooth(method="lm", se=T) +
@@ -332,13 +340,13 @@ uspols::uspols_dk_pres %>%
   labs(title="Presidential Election Margins & DW-Nominate scores")
 ```
 
-![](all-the-newness_files/figure-markdown_github/unnamed-chunk-15-1.png)
+![](all-the-newness_files/figure-markdown_github/unnamed-chunk-13-1.png)
 
 ################## 
 
 Founding fathers —
 
-1.  A relevant correspondance –
+1.  A relevant correspondence –
 
 An excerpt from this letter sent by Alexander Hamilton to George
 Washington on 1792-08-18, and quoted by Representative Adam Schiff on
@@ -413,45 +421,38 @@ quicknews::qnews_search_contexts(qorp = qorp,
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">text1171</td>
-<td style="text-align: left;">… united in any one opinion besides that , of a <code>federal Government</code> being necessary : this was not only an avowed , …</td>
+<td style="text-align: left;">text18847</td>
+<td style="text-align: left;">… upright valuable Citizen , and a steady supporter of the <code>Federal Government</code> and an Officer of the Revenue , in whom may …</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">text19117</td>
-<td style="text-align: left;">… by the Constitution or by itself . And if the <code>federal Government</code> should lose its proper equilibrium within itself , I am …</td>
+<td style="text-align: left;">text1182</td>
+<td style="text-align: left;">… in favour of it’s the insurgents - But to the <code>federal government</code> he has been openly and avowedly its opponent - and …</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">text19731</td>
-<td style="text-align: left;">… reasons for keeping great departments of power separate ( 65 <code>Federal Governments</code> See Federalist Vol . 1 . pg - The Governments …</td>
+<td style="text-align: left;">text11505</td>
+<td style="text-align: left;">… office will be continued there after the Organization of the <code>Federal Government</code> in this State for the better security of the collection …</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">text26305</td>
-<td style="text-align: left;">… price on account of the contingency of the seat of <code>federal government</code> coming there - and , as I have said above …</td>
+<td style="text-align: left;">text10339</td>
+<td style="text-align: left;">… the two nations . As by the transformation of the <code>Federal Government</code> of the United states the establish’d forms have ceased , …</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">text20598</td>
-<td style="text-align: left;">… these , formed the State Governments , the other the <code>Federal Government</code> . The powers of the Government had been further divided …</td>
-</tr>
-<tr class="even">
 <td style="text-align: left;">text10790</td>
 <td style="text-align: left;">… . We contemplate the day of our accession to the <code>Federal Government</code> , now , near at hand . At the election …</td>
 </tr>
+<tr class="even">
+<td style="text-align: left;">text10400</td>
+<td style="text-align: left;">… prays to be continued in the same Office under the <code>Federal Government</code> , Or be appointed one of the land or Tide …</td>
+</tr>
 <tr class="odd">
-<td style="text-align: left;">text19974</td>
-<td style="text-align: left;">… 1792 ] By the Bank Act of 1791 , the <code>federal government</code> paid $ 2 million , from funds previously borrowed at …</td>
+<td style="text-align: left;">text12237</td>
+<td style="text-align: left;">… receive nominations of the several Officers necessary to put the <code>federal Government</code> into motion in that State . For this purpose I …</td>
 </tr>
 </tbody>
 </table>
 
-TO DO –
--------
-
-Age and the house – ?? controlling for average lifespan –
-
-Split ticket and delegations – split delegations could go way back via
-VoteView – do not need margins –
-
-Pre Margins by state – deep historical + facet –
+Presidential elections historically –
+-------------------------------------
 
 ``` r
 uspols::xsf_TileOutv10 %>%
@@ -482,7 +483,100 @@ labs(title = "Equal-area US State geometry",
      caption = "Source: DailyKos")
 ```
 
+![](all-the-newness_files/figure-markdown_github/unnamed-chunk-17-1.png)
+
+### Split ticket voting –
+
+Here, per presidential election, Party Senator !- Party President –
+
+Split means that folks from a given state sent a Senator from party X to
+the senate and sent electoral votes to President from party Y.
+
+``` r
+splits <- uspols::uspols_wiki_pres %>% 
+  rename(party_pres = party_win) %>%
+  filter(year >= 1976) %>%
+  select(year, state_abbrev, party_pres) %>%
+  inner_join(uspols::uspols_medsl_senate, 
+         by = c('year', 'state_abbrev')) %>%
+  mutate(split = ifelse(party_pres != party_win, 1, 0)) 
+
+splits %>%
+  group_by(year) %>%
+  summarize(per_split = round(mean(split)*100, 1)) %>%
+  
+        ggplot(aes(x = year, 
+               y = per_split, 
+               label = per_split)) + 
+  
+    geom_col(width = 2.75, fill = 'steelblue',  color = 'lightgray') +  
+    geom_text(size = 3, nudge_y = 1) +
+    labs(title = "Senator-President Splits") +
+    theme_minimal()+
+    ggthemes::scale_fill_stata() +
+    scale_x_continuous(breaks=seq(1976,2016,4)) +
+  ylab('') + xlab('') +
+    theme(legend.position = "none",
+          axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+![](all-the-newness_files/figure-markdown_github/unnamed-chunk-18-1.png)
+
+Mapping splits quickly – need to add CLASS information – !!
+
+And change dark blue color – sos to see – !! and note that no
+distinctions are made here wrt party affiliation – Although a simple
+cross-tab/typology will show – !!
+
+``` r
+uspols::xsf_TileOutv10 %>%
+  left_join(splits, by = 'state_abbrev') %>% 
+  ggplot() + 
+  geom_sf(aes(fill = split),
+           color = 'gray') +
+  geom_sf(data = uspols::xsf_TileInv10, 
+          fill = NA, 
+          show.legend = F, 
+          color = NA, 
+          lwd=.5) +
+  ggsflabel::geom_sf_text(data = uspols::xsf_TileInv10,
+                          aes(label = state_abbrev),
+                          size = 1.25,
+                          color='black') +
+  #scale_fill_distiller(palette = "RdBu", direction=-1) +
+  facet_wrap(~year) +
+  theme_minimal()+
+  theme(axis.text.x=element_blank(),
+        axis.text.y=element_blank(),
+        axis.title.x=element_blank(),
+        axis.title.y=element_blank(),
+        legend.position = 'none') +
+labs(title = "Split tickets per General Election",
+     caption = "Source: DailyKos")
+```
+
 ![](all-the-newness_files/figure-markdown_github/unnamed-chunk-19-1.png)
+
+Age – briefly –
+---------------
+
+``` r
+house %>%
+  mutate(age = year - born) %>%
+  filter (party_code %in% c('100', '200'), year > 1995) %>% ## 100 == democrat --
+  ggplot(aes(age, 
+             fill = party_code)) +
+
+  ggthemes::scale_fill_stata()+
+  theme_minimal() +
+  geom_density(alpha = 0.6, color = 'gray') +
+  facet_wrap(~year)+
+
+  labs(title="Age distributions in the House since 1997, by party") +
+  theme(legend.position = "none")
+```
+
+![](all-the-newness_files/figure-markdown_github/unnamed-chunk-20-1.png)
 
 References
 ----------

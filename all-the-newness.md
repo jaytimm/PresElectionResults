@@ -117,7 +117,7 @@ sens <- Rvoteview:: member_search(chamber= 'Senate',
                                   congress = c(106, 116))  
 ## re-do this piece --         
 
-vs <- votes$votes.long %>% 
+votes$votes.long %>% 
   inner_join(sens %>% 
                mutate(icpsr = as.character(icpsr))) %>%
   filter(vname %in% c('RS1060018', 'RS1160461')) %>%
@@ -126,15 +126,27 @@ vs <- votes$votes.long %>%
   mutate(vote = ifelse(vote == 1, 'Yea', 'Nay')) %>%
   spread(congress, vote) %>%
   filter(complete.cases(.)) %>%
-  arrange(party_name, `106`) %>% 
-  gridExtra::tableGrob(
-    theme = gridExtra::ttheme_minimal(base_size = 10), 
-                       rows = NULL)
-
-gridExtra::grid.arrange(vs)
+  arrange(party_name, `106`) %>%
+  knitr::kable()
 ```
 
-![](all-the-newness_files/figure-markdown_github/unnamed-chunk-6-1.png)
+| bioname                             | state\_abbrev | party\_name      | 106 | 116 |
+|:------------------------------------|:--------------|:-----------------|:----|:----|
+| DURBIN, Richard Joseph              | IL            | Democratic Party | Nay | Yea |
+| FEINSTEIN, Dianne                   | CA            | Democratic Party | Nay | Yea |
+| LEAHY, Patrick Joseph               | VT            | Democratic Party | Nay | Yea |
+| MURRAY, Patty                       | WA            | Democratic Party | Nay | Yea |
+| REED, John F. (Jack)                | RI            | Democratic Party | Nay | Yea |
+| SCHUMER, Charles Ellis (Chuck)      | NY            | Democratic Party | Nay | Yea |
+| WYDEN, Ronald Lee                   | OR            | Democratic Party | Nay | Yea |
+| COLLINS, Susan Margaret             | ME            | Republican Party | Nay | Nay |
+| CRAPO, Michael Dean                 | ID            | Republican Party | Yea | Nay |
+| ENZI, Michael B.                    | WY            | Republican Party | Yea | Nay |
+| GRASSLEY, Charles Ernest            | IA            | Republican Party | Yea | Nay |
+| INHOFE, James Mountain              | OK            | Republican Party | Yea | Nay |
+| McCONNELL, Addison Mitchell (Mitch) | KY            | Republican Party | Yea | Nay |
+| ROBERTS, Charles Patrick (Pat)      | KS            | Republican Party | Yea | Nay |
+| SHELBY, Richard C.                  | AL            | Republican Party | Yea | Nay |
 
 ################ 
 
@@ -151,30 +163,34 @@ last_dem <- uspols::uspols_wiki_pres %>%
 ```
 
 **Nine US states** have not voted for a Democratic Presidential
-candidate since LBJ.
+candidate since LBJ. So, roughly 1/5 of the country (here, of total
+states) hasn’t voted for a Democrat since LBJ –
 
 ``` r
-last_sum <- last_dem %>%
-  filter(party_win == 'democrat') %>%
-  group_by(year, winner) %>%
+last_dem %>%
+  #filter(party_win == 'democrat') %>%
+  group_by(year, party_win, winner) %>%
   summarise(n = n()) %>%
   ungroup() %>%
-  arrange(desc(n))
+  arrange(party_win, desc(n)) %>%
+  knitr::kable()
 ```
 
-So, roughly 1/5 of the country (here, of total states) hasn’t voted for
-a Democrat since LBJ –
-
-``` r
-ls1 <- last_sum %>% 
-  gridExtra::tableGrob(
-    theme = gridExtra::ttheme_minimal(base_size = 10), 
-                       rows = NULL)
-
-gridExtra::grid.arrange(ls1)
-```
-
-![](all-the-newness_files/figure-markdown_github/unnamed-chunk-10-1.png)
+|  year| party\_win | winner            |    n|
+|-----:|:-----------|:------------------|----:|
+|  2016| democrat   | Hillary Clinton   |   21|
+|  1964| democrat   | Lyndon B. Johnson |    9|
+|  1996| democrat   | Bill Clinton      |    7|
+|  2012| democrat   | Barack Obama      |    6|
+|  1976| democrat   | Jimmy Carter      |    4|
+|  1992| democrat   | Bill Clinton      |    2|
+|  2008| democrat   | Barack Obama      |    2|
+|  2016| republican | Donald Trump      |   30|
+|  1988| republican | George H. W. Bush |    8|
+|  1984| republican | Ronald Reagan     |    6|
+|  2004| republican | George W. Bush    |    4|
+|  1972| republican | Richard Nixon     |    1|
+|  2000| republican | George W. Bush    |    1|
 
 ``` r
 library(sf)
@@ -203,7 +219,7 @@ uspols::xsf_TileOutv10 %>%
   labs(title = "Last vote for a Democratic Presidential candidate")
 ```
 
-![](all-the-newness_files/figure-markdown_github/unnamed-chunk-11-1.png)
+![](all-the-newness_files/figure-markdown_github/unnamed-chunk-10-1.png)
 
 ######### 
 
@@ -264,7 +280,7 @@ house %>%
   labs(title="Republican percentage of House seats, since 1919") 
 ```
 
-![](all-the-newness_files/figure-markdown_github/unnamed-chunk-14-1.png)
+![](all-the-newness_files/figure-markdown_github/unnamed-chunk-13-1.png)
 
 A comparison of ideal points for members of the 111th, 113th & 115th
 Houses & Presidential vote margins for the 2008, 2012 & 2016 elections,
@@ -299,7 +315,7 @@ uspols::uspols_dk_pres %>%
   labs(title="Presidential Election Margins & DW-Nominate scores")
 ```
 
-![](all-the-newness_files/figure-markdown_github/unnamed-chunk-15-1.png)
+![](all-the-newness_files/figure-markdown_github/unnamed-chunk-14-1.png)
 
 ################## 
 
@@ -374,32 +390,32 @@ quicknews::qnews_search_contexts(qorp = qorp,
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">text11505</td>
-<td style="text-align: left;">… office will be continued there after the Organization of the || Federal Government || in this State for the better security of the collection …</td>
+<td style="text-align: left;">text10451</td>
+<td style="text-align: left;">… to Join his aid in carrying into Execution the Glorious || Federal Government || . In the various arangement of Office , if I …</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">text9423</td>
-<td style="text-align: left;">… Sept . 1789 , a post he retained until the || federal government || moved to Philadelphia in 1790 . In 1786 he married …</td>
+<td style="text-align: left;">text1378</td>
+<td style="text-align: left;">… would keep a Day of Thanksgiving on hearing that the || Federal Government || was dissolved , and some of the principle officers carred …</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">text10560</td>
-<td style="text-align: left;">… office I am desirous of continuing in it under the || federal Government || , wishing for the Satisfaction of contributing my part of …</td>
+<td style="text-align: left;">text20426</td>
+<td style="text-align: left;">… ( or to hope ) that the weakness of our || Federal Government || , and the want of concurrence among the state governments …</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">text26305</td>
-<td style="text-align: left;">… price on account of the contingency of the seat of || federal government || coming there - and , as I have said above …</td>
+<td style="text-align: left;">text12350</td>
+<td style="text-align: left;">… the people pretty generally disposed to think favourably of the || federal government || although considerable pains had been taken to misrepresent them . …</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">text22393</td>
-<td style="text-align: left;">… recieve nominations of the several officers necessary to put the || federal government || into motion in that state . For this purpose I …</td>
+<td style="text-align: left;">text19091</td>
+<td style="text-align: left;">… part of our fellow citizens ; the friends of the || federal government || will evince that spirit of deference and concession for which …</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">text23107</td>
-<td style="text-align: left;">… you Sir are plac’d in a public Station in the || federal Government || , I have taken the Liberty of troubling you with …</td>
+<td style="text-align: left;">text1215</td>
+<td style="text-align: left;">… family . Our Rulers continue as obstinately opposed to the || Federal Government || as ever , and I have no Idea that they …</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">text1335</td>
-<td style="text-align: left;">… of congratulating your zeal on the effectual opperation of the || federal Government || . Its Quick progress to its present stage is a …</td>
+<td style="text-align: left;">text27150</td>
+<td style="text-align: left;">… be to Congress , if to any member of the || Federal government || . Whether they ought to give relief , is one …</td>
 </tr>
 </tbody>
 </table>

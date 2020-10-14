@@ -193,14 +193,13 @@ last_dem %>%
                label = n)) + 
   
     geom_col(width=.65, color = 'lightgray') +  
-    geom_text(size = 3) +
+    geom_text(size = 3, nudge_y = .5) +
     coord_flip()+
     #labs(title = "Roll call results for legislation referencing HEALTH CARE") +
     theme_minimal()+
-    ggthemes::scale_fill_stata() +
-  
-    theme(legend.position = "none",
-          plot.title = element_text(size=12))+
+    ggthemes::scale_fill_economist()+
+    xlab('') + ylab('') +
+    theme(legend.position = "none")+
     facet_wrap(~party_win, ncol = 2) 
 ```
 
@@ -215,7 +214,7 @@ uspols::xsf_TileOutv10 %>%
   
   ggplot() + 
   geom_sf(aes(fill = label),
-          color = 'black' , 
+          color = 'white' , 
           alpha = .85) + 
   
   ggsflabel::geom_sf_text(data = uspols::xsf_TileInv10,
@@ -223,7 +222,7 @@ uspols::xsf_TileOutv10 %>%
                           size = 3,
                           color = 'white') +
   theme_minimal() +
-  ggthemes::scale_fill_stata() +
+  ggthemes::scale_fill_economist()+
   theme(axis.title.x=element_blank(),  ## add a simple theme --
         axis.text.x=element_blank(),
         axis.title.y=element_blank(),
@@ -258,7 +257,7 @@ vvo <- Rvoteview::download_metadata(type = 'members', chamber = 'house') %>%
   filter(congress > 66 & chamber != 'President')
 ```
 
-    ## [1] "/tmp/RtmpEWTjBI/Hall_members.csv"
+    ## [1] "/tmp/RtmpJ36nPK/Hall_members.csv"
 
 ``` r
 house <- vvo %>%
@@ -421,32 +420,32 @@ quicknews::qnews_search_contexts(qorp = qorp,
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">text18847</td>
-<td style="text-align: left;">… upright valuable Citizen , and a steady supporter of the <code>Federal Government</code> and an Officer of the Revenue , in whom may …</td>
+<td style="text-align: left;">text22393</td>
+<td style="text-align: left;">… recieve nominations of the several officers necessary to put the <code>federal government</code> into motion in that state . For this purpose I …</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">text1436</td>
+<td style="text-align: left;">… body of State Creditors constantly opposing the proceedings of the <code>Federal Government</code> &amp; preventing the collection of the Impost . - . …</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">text10264</td>
+<td style="text-align: left;">… a number of Gentlemen now about the seat of the <code>Federal Government</code> subject still to be either ⟨ a ⟩ mended or …</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">text1141</td>
+<td style="text-align: left;">… many people , than the adoption or establishment of the <code>federal Government</code> . - Many pious people wish the name of the …</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">text454</td>
+<td style="text-align: left;">… not their influence be dangerous and perhaps fatal to the <code>Federal Government</code> ? I am fearful that the antifederal party in Congress …</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">text1182</td>
 <td style="text-align: left;">… in favour of it’s the insurgents - But to the <code>federal government</code> he has been openly and avowedly its opponent - and …</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">text11505</td>
-<td style="text-align: left;">… office will be continued there after the Organization of the <code>Federal Government</code> in this State for the better security of the collection …</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">text10339</td>
-<td style="text-align: left;">… the two nations . As by the transformation of the <code>Federal Government</code> of the United states the establish’d forms have ceased , …</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">text10790</td>
-<td style="text-align: left;">… . We contemplate the day of our accession to the <code>Federal Government</code> , now , near at hand . At the election …</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">text10400</td>
-<td style="text-align: left;">… prays to be continued in the same Office under the <code>Federal Government</code> , Or be appointed one of the land or Tide …</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">text12237</td>
-<td style="text-align: left;">… receive nominations of the several Officers necessary to put the <code>federal Government</code> into motion in that State . For this purpose I …</td>
+<td style="text-align: left;">text1339</td>
+<td style="text-align: left;">… goes to new york to Solicit an Appointment Under the <code>federal government</code> . He has fought - and suffered for his Country …</td>
 </tr>
 </tbody>
 </table>
@@ -532,7 +531,7 @@ cross-tab/typology will show – !!
 uspols::xsf_TileOutv10 %>%
   left_join(splits, by = 'state_abbrev') %>% 
   ggplot() + 
-  geom_sf(aes(fill = split),
+  geom_sf(aes(fill = as.character(split)),
            color = 'gray') +
   geom_sf(data = uspols::xsf_TileInv10, 
           fill = NA, 
@@ -544,15 +543,15 @@ uspols::xsf_TileOutv10 %>%
                           size = 1.25,
                           color='black') +
   #scale_fill_distiller(palette = "RdBu", direction=-1) +
+  ggthemes::scale_fill_few () + 
   facet_wrap(~year) +
   theme_minimal()+
   theme(axis.text.x=element_blank(),
         axis.text.y=element_blank(),
         axis.title.x=element_blank(),
         axis.title.y=element_blank(),
-        legend.position = 'none') +
-labs(title = "Split tickets per General Election",
-     caption = "Source: DailyKos")
+        legend.position = 'bottom') +
+labs(title = "Split tickets per General Election")
 ```
 
 ![](all-the-newness_files/figure-markdown_github/unnamed-chunk-19-1.png)
@@ -577,6 +576,8 @@ house %>%
 ```
 
 ![](all-the-newness_files/figure-markdown_github/unnamed-chunk-20-1.png)
+
+### Profiling congressional districts via census data
 
 References
 ----------

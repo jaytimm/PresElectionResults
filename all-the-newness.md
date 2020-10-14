@@ -12,7 +12,7 @@ Article I and against Article II in the 2020 impeachment trial of
 President Trump.)
 
 ``` r
-options(knitr.table.format = "latex")
+#options(knitr.table.format = "latex")
 ```
 
 ``` r
@@ -432,49 +432,60 @@ context
 <tbody>
 <tr>
 <td style="text-align:left;">
-text5203
+text1882
 </td>
 <td style="text-align:left;">
-… people of this State wou’d be perfectly Satisfied with the \|\|
-federal Government \|\| , if not misrepresented . I wish it were in …
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-text16356
-</td>
-<td style="text-align:left;">
-… who are friends to royalty , & enemies to the \|\| federal government
-\|\| . My information upon this head cannot be doubted . …
+… deriving peculiarly , nay almost monopolizing the advantages of the
+\|\| federal government \|\| , should say and do so many things against
+it …
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-text7502
+text26842
 </td>
 <td style="text-align:left;">
-… most violent and ill-grounded invectives against the members of the
-\|\| federal government \|\| , as purely intended to keep alive among
-the people …
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-text21673
-</td>
-<td style="text-align:left;">
-… or Polly . The bill for the removal of the \|\| federal government
-\|\| to Philadelphia for 10 . years and then to Georgetown …
+… of independence felt by the courts and officers of the \|\| federal
+government \|\| , and the science and integrity which has generally
+procured …
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-text11202
+text19921
 </td>
 <td style="text-align:left;">
-… which they fought and bled . The Operation of the \|\| Federal
-Government \|\| , according to the existing Laws , will immediately
-prove …
+… was terminated by the regular and effectual establishment of the \|\|
+federal government \|\| in 1788 ; out of the administration of which , …
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+text19690
+</td>
+<td style="text-align:left;">
+… Checks devised in Democracies marking self-distrust , " and " \|\|
+Federal Governments \|\| " ) were never printed in the National Gazette
+, …
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+text10231
+</td>
+<td style="text-align:left;">
+… was a point acknowledged on all parts that the late \|\| federal
+government \|\| could not have existed much longer ; if without some …
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+text3530
+</td>
+<td style="text-align:left;">
+… State will soon appear Conspicuous for its opposition to the \|\|
+Federal Government \|\| . We have scarcely any sensible Independent Man
+in the …
 </td>
 </tr>
 <tr>
@@ -482,17 +493,8 @@ prove …
 text19091
 </td>
 <td style="text-align:left;">
-… earth can do ; and the greatest opponents to a \|\| federal government
-\|\| admit the state legislatures to be sure guardians of the …
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-text22526
-</td>
-<td style="text-align:left;">
-… the laws of every state for the use of the \|\| federal government
-\|\| , is extremely important . I must therefore ask the …
+… or improper . It has been said that in the \|\| federal government
+\|\| they are unnecessary , because the powers are enumerated , …
 </td>
 </tr>
 </tbody>

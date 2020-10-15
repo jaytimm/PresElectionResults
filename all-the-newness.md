@@ -256,7 +256,7 @@ vvo <- Rvoteview::download_metadata(type = 'members',
   filter(congress > 66 & chamber != 'President')
 ```
 
-    ## [1] "/tmp/RtmpOnKZKu/Hall_members.csv"
+    ## [1] "/tmp/Rtmp5Lnkyj/Hall_members.csv"
 
 ``` r
 house <- vvo %>%
@@ -410,8 +410,8 @@ quicknews::qnews_search_contexts(qorp = qorp,
 <table>
 <caption>Search-in-context: COVID-19 &amp; coronavirus</caption>
 <colgroup>
-<col style="width: 5%" />
-<col style="width: 94%" />
+<col style="width: 6%" />
+<col style="width: 93%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -421,32 +421,32 @@ quicknews::qnews_search_contexts(qorp = qorp,
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">text26525</td>
-<td style="text-align: left;">… of France , residing in your state , that the <code>federal government</code> , respecting his nation , and attentive to the safety …</td>
+<td style="text-align: left;">text1159</td>
+<td style="text-align: left;">… their sitting twice a year at the seat of the <code>Federal Government</code> , that wou’d expose me to all the difficulties arising …</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">text18719</td>
-<td style="text-align: left;">… have proposed various arrangements for limiting these usurpations . The <code>federal Government</code> had itself proposed measures on this subject - the first …</td>
+<td style="text-align: left;">text5203</td>
+<td style="text-align: left;">… people of this State wou’d be perfectly Satisfied with the <code>federal Government</code> , if not misrepresented . I wish it were in …</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">text10528</td>
-<td style="text-align: left;">… to determine at all events to pursue it . The <code>federal government</code> opens upon us a scene new &amp; variegated , &amp; …</td>
+<td style="text-align: left;">text22526</td>
+<td style="text-align: left;">… the laws of every state for the use of the <code>federal government</code> , is extremely important . I must therefore ask the …</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">text5677</td>
-<td style="text-align: left;">… or spirit or both , still professing friendship to the <code>federal government</code> . This new assembling of the Committees was it seems …</td>
+<td style="text-align: left;">text1378</td>
+<td style="text-align: left;">… our Convention has ended and that the Friends of the <code>Federal Government</code> are in despondery Circumstances , at present . We would …</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">text10298</td>
-<td style="text-align: left;">… length arrived when there appears a prospect of an efficient <code>federal government</code> , under which , Officers are to be appointed by …</td>
+<td style="text-align: left;">text12920</td>
+<td style="text-align: left;">… doubtful ; &amp; whose attachment to your administration &amp; the <code>federal government</code> is inviolable - If , say they , Genl Wilkinson …</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">text9610</td>
-<td style="text-align: left;">… , " 27 May 1790 , DLC:GW ) . The <code>federal government</code> took as strong action as possible during the summer of …</td>
+<td style="text-align: left;">text12143</td>
+<td style="text-align: left;">… it must be ; 1st because the nature of the <code>Federal government</code> implies it ; or 2d because it is involved in …</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">text19091</td>
-<td style="text-align: left;">… part of our fellow citizens ; the friends of the <code>federal government</code> will evince that spirit of deference and concession for which …</td>
+<td style="text-align: left;">text9423</td>
+<td style="text-align: left;">… Sept . 1789 , a post he retained until the <code>federal government</code> moved to Philadelphia in 1790 . In 1786 he married …</td>
 </tr>
 </tbody>
 </table>
@@ -764,19 +764,20 @@ plots <- lapply(sub_geos, function(x) {
 
     ggplot() + geom_sf(data = cropped,
                        aes(fill = per),
-                       color = 'gray', size = .25) +
+                       color = 'white', size = .25) +
 
-      scale_fill_distiller(palette = "YlGnBu", 
-                           direction = 1, 
-                           limit = range(c(mins, maxs))) + #!
-      theme_minimal() +
-      theme(axis.title.x=element_blank(),
-            axis.text.x=element_blank(),
-            axis.title.y=element_blank(),
-            axis.text.y=element_blank(),
-            plot.title = element_text(size=9),
-            legend.position = 'none') +
-      ggtitle(gsub(',.*$', '', x))   })
+    scale_fill_distiller(palette = "YlGnBu", 
+                         direction = 1, 
+                         limit = range(c(mins, maxs))) + #!
+    theme_minimal() +
+    theme(axis.title.x=element_blank(),
+          axis.text.x=element_blank(),
+          axis.title.y=element_blank(),
+          axis.text.y=element_blank(),
+          panel.background = element_rect(fill = '#d5e4eb', color = NA),
+          plot.title = element_text(size=9),
+          legend.position = 'none') +
+    ggtitle(gsub(',.*$', '', x))   })
   
 
 patchwork::wrap_plots(plots, ncol = 4) +

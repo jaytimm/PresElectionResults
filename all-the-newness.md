@@ -256,7 +256,7 @@ vvo <- Rvoteview::download_metadata(type = 'members',
   filter(congress > 66 & chamber != 'President')
 ```
 
-    ## [1] "/tmp/RtmpxtQnRR/Hall_members.csv"
+    ## [1] "/tmp/RtmpDGT55V/Hall_members.csv"
 
 ``` r
 house <- vvo %>%
@@ -421,32 +421,32 @@ quicknews::qnews_search_contexts(qorp = qorp,
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">text11513</td>
-<td style="text-align: left;">… before named may be continued after the Organization of the <code>Federal Government</code> within this State in the Offices which they now respectively …</td>
+<td style="text-align: left;">text27175</td>
+<td style="text-align: left;">… banks and public funds . 5 . Officers of the <code>federal government</code> with some exceptions . 6 . Office-hunters , willing to …</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">text2383</td>
+<td style="text-align: left;">… - In America was happily set the example of a <code>Federal Government</code> ; of freedom of religions &amp; of other beneficial novelties …</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">text1215</td>
+<td style="text-align: left;">… family . Our Rulers continue as obstinately opposed to the <code>Federal Government</code> as ever , and I have no Idea that they …</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">text20426</td>
-<td style="text-align: left;">… which she has since inflexibly adhered . Had the present <code>federal government</code> , on its first establishment , done what it ought …</td>
+<td style="text-align: left;">… more enlarged plan , for a general revision of the <code>Federal Government</code> . From this convention proceeded the present Federal Constitution , …</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">text23034</td>
-<td style="text-align: left;">… a loss for the proper Address to Officers of the <code>Federal Government</code> - for the [ Former Reverence ] which we espouse …</td>
+<td style="text-align: left;">text21672</td>
+<td style="text-align: left;">… 20th . of June . The bill for removing the <code>federal government</code> to Philadelphia for 10 . years and then to Georgetown …</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">text3530</td>
-<td style="text-align: left;">… State will soon appear Conspicuous for its opposition to the <code>Federal Government</code> . We have scarcely any sensible Independent Man in the …</td>
+<td style="text-align: left;">text12010</td>
+<td style="text-align: left;">… united States having rendered it expedient to resort to the <code>federal Government</code> for such prudent regulations as may best tend to secure …</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">text21698</td>
-<td style="text-align: left;">… before the President , declaring that the seat of the <code>federal government</code> shall be transferred to the Patowmac in the year 1790 …</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">text1317</td>
-<td style="text-align: left;">… that there was of their committing the Consideration of the <code>Federal Government</code> to the People in the way prescribed by The Grand …</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">text21673</td>
-<td style="text-align: left;">… or Polly . The bill for the removal of the <code>federal government</code> to Philadelphia for 10 . years and then to Georgetown …</td>
+<td style="text-align: left;">text10451</td>
+<td style="text-align: left;">… to Join his aid in carrying into Execution the Glorious <code>Federal Government</code> . In the various arangement of Office , if I …</td>
 </tr>
 </tbody>
 </table>
@@ -634,7 +634,7 @@ base_viz <- gen %>%
                color = 'darkgray',
                adjust = 1) +
   scale_fill_manual(
-    values = colorRampPalette(ggthemes::economist_pal()(8))(12)) +
+    values = colorRampPalette(ggthemes::economist_pal()(6))(12)) +
   facet_wrap(~variable, scale = 'free', ncol = 4)+
   theme_minimal() +
   theme(legend.position = "none",
@@ -732,7 +732,9 @@ mplot %>%
   geom_sf(aes(fill = per),
            color = 'white', size = .15) +
   
-  scale_fill_distiller(palette = "YlGnBu", direction = 1, limit = range(c(mins, maxs))) +
+  scale_fill_distiller(palette = "YlGnBu", 
+                       direction = 1, 
+                       limit = range(c(mins, maxs))) +
   theme_minimal()+
   theme(axis.text.x=element_blank(),
         axis.text.y=element_blank(),
@@ -751,7 +753,8 @@ Zoom to cities –
 sub_geos <- c('New York, NY', 'Los Angeles, CA',
               'Chicago, IL', 'Houston, TX', 
               'Dallas, TX', 'Philadelphia, PA',
-              'Phoenix, AZ', 'Boston, MA')
+              'Phoenix, AZ', 'Boston, MA',
+              'San Antonio, TX')
 
 main <- mplot
 plots <- lapply(sub_geos, function(x) {
@@ -777,7 +780,7 @@ plots <- lapply(sub_geos, function(x) {
       ggtitle(gsub(',.*$', '', x))   })
   
 
-patchwork::wrap_plots(plots, nrow = 2) +
+patchwork::wrap_plots(plots, ncol = 3) +
   patchwork::plot_annotation(title = 'In some American cities')
 ```
 

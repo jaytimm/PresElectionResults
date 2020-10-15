@@ -256,7 +256,7 @@ vvo <- Rvoteview::download_metadata(type = 'members',
   filter(congress > 66 & chamber != 'President')
 ```
 
-    ## [1] "/tmp/RtmpDGT55V/Hall_members.csv"
+    ## [1] "/tmp/RtmpOnKZKu/Hall_members.csv"
 
 ``` r
 house <- vvo %>%
@@ -410,8 +410,8 @@ quicknews::qnews_search_contexts(qorp = qorp,
 <table>
 <caption>Search-in-context: COVID-19 &amp; coronavirus</caption>
 <colgroup>
-<col style="width: 6%" />
-<col style="width: 93%" />
+<col style="width: 5%" />
+<col style="width: 94%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -421,32 +421,32 @@ quicknews::qnews_search_contexts(qorp = qorp,
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">text27175</td>
-<td style="text-align: left;">… banks and public funds . 5 . Officers of the <code>federal government</code> with some exceptions . 6 . Office-hunters , willing to …</td>
+<td style="text-align: left;">text26525</td>
+<td style="text-align: left;">… of France , residing in your state , that the <code>federal government</code> , respecting his nation , and attentive to the safety …</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">text2383</td>
-<td style="text-align: left;">… - In America was happily set the example of a <code>Federal Government</code> ; of freedom of religions &amp; of other beneficial novelties …</td>
+<td style="text-align: left;">text18719</td>
+<td style="text-align: left;">… have proposed various arrangements for limiting these usurpations . The <code>federal Government</code> had itself proposed measures on this subject - the first …</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">text1215</td>
-<td style="text-align: left;">… family . Our Rulers continue as obstinately opposed to the <code>Federal Government</code> as ever , and I have no Idea that they …</td>
+<td style="text-align: left;">text10528</td>
+<td style="text-align: left;">… to determine at all events to pursue it . The <code>federal government</code> opens upon us a scene new &amp; variegated , &amp; …</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">text20426</td>
-<td style="text-align: left;">… more enlarged plan , for a general revision of the <code>Federal Government</code> . From this convention proceeded the present Federal Constitution , …</td>
+<td style="text-align: left;">text5677</td>
+<td style="text-align: left;">… or spirit or both , still professing friendship to the <code>federal government</code> . This new assembling of the Committees was it seems …</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">text21672</td>
-<td style="text-align: left;">… 20th . of June . The bill for removing the <code>federal government</code> to Philadelphia for 10 . years and then to Georgetown …</td>
+<td style="text-align: left;">text10298</td>
+<td style="text-align: left;">… length arrived when there appears a prospect of an efficient <code>federal government</code> , under which , Officers are to be appointed by …</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">text12010</td>
-<td style="text-align: left;">… united States having rendered it expedient to resort to the <code>federal Government</code> for such prudent regulations as may best tend to secure …</td>
+<td style="text-align: left;">text9610</td>
+<td style="text-align: left;">… , " 27 May 1790 , DLC:GW ) . The <code>federal government</code> took as strong action as possible during the summer of …</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">text10451</td>
-<td style="text-align: left;">… to Join his aid in carrying into Execution the Glorious <code>Federal Government</code> . In the various arangement of Office , if I …</td>
+<td style="text-align: left;">text19091</td>
+<td style="text-align: left;">… part of our fellow citizens ; the friends of the <code>federal government</code> will evince that spirit of deference and concession for which …</td>
 </tr>
 </tbody>
 </table>
@@ -741,7 +741,7 @@ mplot %>%
         axis.title.x=element_blank(),
         axis.title.y=element_blank(),
         panel.background = element_rect(fill = '#d5e4eb', color = NA),
-        legend.position = 'right') +
+        legend.position = 'bottom') +
 labs(title = "The American White Working Class")
 ```
 
@@ -753,8 +753,7 @@ Zoom to cities –
 sub_geos <- c('New York, NY', 'Los Angeles, CA',
               'Chicago, IL', 'Houston, TX', 
               'Dallas, TX', 'Philadelphia, PA',
-              'Phoenix, AZ', 'Boston, MA',
-              'San Antonio, TX')
+              'Boston, MA', 'San Antonio, TX')
 
 main <- mplot
 plots <- lapply(sub_geos, function(x) {
@@ -780,7 +779,7 @@ plots <- lapply(sub_geos, function(x) {
       ggtitle(gsub(',.*$', '', x))   })
   
 
-patchwork::wrap_plots(plots, ncol = 3) +
+patchwork::wrap_plots(plots, ncol = 4) +
   patchwork::plot_annotation(title = 'In some American cities')
 ```
 

@@ -1,3 +1,10 @@
+> Nothing could be more ill-judged than that intolerant spirit which
+> has, at all times, characterized political parties. \~ Alexander
+> Hamilton
+
+> Men by their constitutions are naturally divided into two parties. \~
+> Thomas Jefferson
+
 ggplot theme for this one:
 
 ``` r
@@ -256,7 +263,7 @@ vvo <- Rvoteview::download_metadata(type = 'members',
   filter(congress > 66 & chamber != 'President')
 ```
 
-    ## [1] "/tmp/Rtmp5Lnkyj/Hall_members.csv"
+    ## [1] "/tmp/Rtmp1wDg8X/Hall_members.csv"
 
 ``` r
 house <- vvo %>%
@@ -393,12 +400,15 @@ ah2 <- strsplit(ah1, 'It has aptly been observed that Cato was the Tory-Cæsar t
 
 1.  search using `quicknews` –
 
+*SEARCH “FACTIONS”*
+
 ``` r
 qorp <- quanteda::corpus(ffc_washington)
 #quanteda::docnames(qorp) <- korpus$status_id
 
 quicknews::qnews_search_contexts(qorp = qorp, 
-                                        search = "federal government", 
+                                        search = " faction(s)?", 
+                                 ## need to check - should not require space
                                         window = 10,
                                         highlight_color = '|') %>%
   #left_join(metas, by = c('docname' = 'link')) %>%
@@ -410,8 +420,8 @@ quicknews::qnews_search_contexts(qorp = qorp,
 <table>
 <caption>Search-in-context: COVID-19 &amp; coronavirus</caption>
 <colgroup>
-<col style="width: 6%" />
-<col style="width: 93%" />
+<col style="width: 7%" />
+<col style="width: 92%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -421,32 +431,32 @@ quicknews::qnews_search_contexts(qorp = qorp,
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">text1159</td>
-<td style="text-align: left;">… their sitting twice a year at the seat of the <code>Federal Government</code> , that wou’d expose me to all the difficulties arising …</td>
+<td style="text-align: left;">text26971</td>
+<td style="text-align: left;">… . On the subject of the Debt , the Treasury <code>faction</code> is spouting on the policy of paying it off as …</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">text5203</td>
-<td style="text-align: left;">… people of this State wou’d be perfectly Satisfied with the <code>federal Government</code> , if not misrepresented . I wish it were in …</td>
+<td style="text-align: left;">text18922</td>
+<td style="text-align: left;">… How many opportunities do they afford to tamper with domestic <code>factions</code> , to practice the acts of seduction , to mislead …</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">text22526</td>
-<td style="text-align: left;">… the laws of every state for the use of the <code>federal government</code> , is extremely important . I must therefore ask the …</td>
+<td style="text-align: left;">text17301</td>
+<td style="text-align: left;">… it would have a direct tendency to encourage animosities , <code>factions</code> and divisions among ourselves . 3d Resolved , that we …</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">text1378</td>
-<td style="text-align: left;">… our Convention has ended and that the Friends of the <code>Federal Government</code> are in despondery Circumstances , at present . We would …</td>
+<td style="text-align: left;">text780</td>
+<td style="text-align: left;">… a pretty example of what results from the dependence of <code>factions</code> upon the aid of foreign powers . Poland annihilated . …</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">text12920</td>
-<td style="text-align: left;">… doubtful ; &amp; whose attachment to your administration &amp; the <code>federal government</code> is inviolable - If , say they , Genl Wilkinson …</td>
+<td style="text-align: left;">text17696</td>
+<td style="text-align: left;">… Station you fill ; at a time too , when <code>faction</code> is so active to embitter &amp; pall those enjoyments &amp; …</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">text12143</td>
-<td style="text-align: left;">… it must be ; 1st because the nature of the <code>Federal government</code> implies it ; or 2d because it is involved in …</td>
+<td style="text-align: left;">text1959</td>
+<td style="text-align: left;">… Influence , in so many other particulars , to a <code>Faction</code> , who are in opposition to the national Constitution as …</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">text9423</td>
-<td style="text-align: left;">… Sept . 1789 , a post he retained until the <code>federal government</code> moved to Philadelphia in 1790 . In 1786 he married …</td>
+<td style="text-align: left;">text19104</td>
+<td style="text-align: left;">… of our transactions shall be marked by that asperity of <code>faction</code> that disgraced their predecessors . [ " ] I have …</td>
 </tr>
 </tbody>
 </table>
@@ -656,6 +666,7 @@ base_viz +
 ![](all-the-newness_files/figure-markdown_github/unnamed-chunk-25-1.png)
 
 White working class
+-------------------
 
 ``` r
 white_ed_vars <- c(white_m_bach = 'C15002H_006',
@@ -753,7 +764,7 @@ Zoom to cities –
 sub_geos <- c('New York, NY', 'Los Angeles, CA',
               'Chicago, IL', 'Houston, TX', 
               'Dallas, TX', 'Philadelphia, PA',
-              'Boston, MA', 'San Antonio, TX')
+              'San Diego, CA', 'San Antonio, TX')
 
 main <- mplot
 plots <- lapply(sub_geos, function(x) {
@@ -764,7 +775,7 @@ plots <- lapply(sub_geos, function(x) {
 
     ggplot() + geom_sf(data = cropped,
                        aes(fill = per),
-                       color = 'white', size = .25) +
+                       color = 'white', size = .4) +
 
     scale_fill_distiller(palette = "YlGnBu", 
                          direction = 1, 

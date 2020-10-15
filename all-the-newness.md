@@ -256,7 +256,7 @@ vvo <- Rvoteview::download_metadata(type = 'members',
   filter(congress > 66 & chamber != 'President')
 ```
 
-    ## [1] "/tmp/RtmpAV461p/Hall_members.csv"
+    ## [1] "/tmp/RtmpxtQnRR/Hall_members.csv"
 
 ``` r
 house <- vvo %>%
@@ -421,32 +421,32 @@ quicknews::qnews_search_contexts(qorp = qorp,
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">text2588</td>
-<td style="text-align: left;">… those of the several States , &amp; to support the <code>federal Government</code> ; it is a very important Question how far it …</td>
+<td style="text-align: left;">text11513</td>
+<td style="text-align: left;">… before named may be continued after the Organization of the <code>Federal Government</code> within this State in the Offices which they now respectively …</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">text11998</td>
-<td style="text-align: left;">… as great a claim to protection as any under the <code>Federal Government</code> . A great proportion of us served our country through …</td>
+<td style="text-align: left;">text20426</td>
+<td style="text-align: left;">… which she has since inflexibly adhered . Had the present <code>federal government</code> , on its first establishment , done what it ought …</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">text20142</td>
-<td style="text-align: left;">… &amp; to indulge his Curiosity at the Seat of The <code>Federal Government</code> . Having a good property both here , and in …</td>
+<td style="text-align: left;">text23034</td>
+<td style="text-align: left;">… a loss for the proper Address to Officers of the <code>Federal Government</code> - for the [ Former Reverence ] which we espouse …</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">text10795</td>
-<td style="text-align: left;">… in the late Convention of this State for Ratifying the <code>Federal Government</code> - is a man of Industry respectable abilities and firm …</td>
+<td style="text-align: left;">text3530</td>
+<td style="text-align: left;">… State will soon appear Conspicuous for its opposition to the <code>Federal Government</code> . We have scarcely any sensible Independent Man in the …</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">text25757</td>
-<td style="text-align: left;">… anxious to receive a communication from the officers of the <code>Federal Government</code> on the Subject . I have dispatched a messenger to …</td>
+<td style="text-align: left;">text21698</td>
+<td style="text-align: left;">… before the President , declaring that the seat of the <code>federal government</code> shall be transferred to the Patowmac in the year 1790 …</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">text1782</td>
-<td style="text-align: left;">… the implied insult offered to the good sense of the <code>federal government</code> in the newspaper ( &amp; as supposed ministerial ) paragraph …</td>
+<td style="text-align: left;">text1317</td>
+<td style="text-align: left;">… that there was of their committing the Consideration of the <code>Federal Government</code> to the People in the way prescribed by The Grand …</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">text5203</td>
-<td style="text-align: left;">… people of this State wou’d be perfectly Satisfied with the <code>federal Government</code> , if not misrepresented . I wish it were in …</td>
+<td style="text-align: left;">text21673</td>
+<td style="text-align: left;">… or Polly . The bill for the removal of the <code>federal government</code> to Philadelphia for 10 . years and then to Georgetown …</td>
 </tr>
 </tbody>
 </table>
@@ -588,6 +588,15 @@ states <- tigris::states(cb = TRUE) %>%
   data.frame() %>%
   select(STATEFP, STUSPS) %>%
   rename(state_code = STATEFP, state_abbrev = STUSPS)
+
+uscds <- tigris::congressional_districts(cb = TRUE) %>%
+  select(GEOID) %>%
+  mutate(state_code = substr(GEOID, 1, 2),
+         district_code = substr(GEOID, 3, 4)) 
+
+laea <- sf::st_crs("+proj=laea +lat_0=30 +lon_0=-95") 
+# Lambert equal area
+#uscds  <- sf::st_transform(uscds , laea)
 ```
 
 ``` r
@@ -624,8 +633,8 @@ base_viz <- gen %>%
   geom_density(alpha = 0.65,
                color = 'darkgray',
                adjust = 1) +
-  scale_fill_manual(values = 
-                      colorRampPalette(ggthemes::economist_pal()(8))(12)) +
+  scale_fill_manual(
+    values = colorRampPalette(ggthemes::economist_pal()(8))(12)) +
   facet_wrap(~variable, scale = 'free', ncol = 4)+
   theme_minimal() +
   theme(legend.position = "none",
@@ -699,42 +708,80 @@ white_ed <- tidycensus::get_acs(geography = 'congressional district',
          district_code, group, per, estimate)
 ```
 
-``` r
-uscds <- tigris::congressional_districts(cb = TRUE) %>%
-  select(GEOID) %>%
-  mutate(state_code = substr(GEOID, 1, 2),
-         district_code = substr(GEOID, 3, 4)) 
-
-laea <- sf::st_crs("+proj=laea +lat_0=30 +lon_0=-95") # Lambert equal area
-uscds  <- sf::st_transform(uscds , laea)
-```
-
 White working map — via equal-area –
 
 ``` r
-uscds %>%
+mplot <- uscds %>%
   filter(!state_code %in% nonx) %>%
   left_join(white_ed %>%
               filter(group == 'white_working'), 
-            by = c('state_code', 'district_code')) %>% 
+            by = c('state_code', 'district_code')) %>%
+    mutate(qt = cut(per, 
+                    quantile(per, 
+                             probs = 0:4/4), 
+                             include.lowest = TRUE),
+           rank = as.integer(qt))
+
+mins <- min(white_ed$per); maxs <- max(white_ed$per)
+
+# scale_colour_gradient(limit=range(c(d$z1,d$z2)))
+
+mplot %>% 
+  sf::st_transform(laea) %>%
   ggplot() + 
   geom_sf(aes(fill = per),
            color = 'white', size = .15) +
   
-  scale_fill_distiller(palette = "YlGnBu", direction = 1) +
+  scale_fill_distiller(palette = "YlGnBu", direction = 1, limit = range(c(mins, maxs))) +
   theme_minimal()+
   theme(axis.text.x=element_blank(),
         axis.text.y=element_blank(),
         axis.title.x=element_blank(),
         axis.title.y=element_blank(),
         panel.background = element_rect(fill = '#d5e4eb', color = NA),
-        legend.position = 'none') +
+        legend.position = 'right') +
 labs(title = "The American White Working Class")
 ```
 
-![](all-the-newness_files/figure-markdown_github/unnamed-chunk-28-1.png)
+![](all-the-newness_files/figure-markdown_github/unnamed-chunk-27-1.png)
 
 Zoom to cities –
+
+``` r
+sub_geos <- c('New York, NY', 'Los Angeles, CA',
+              'Chicago, IL', 'Houston, TX', 
+              'Dallas, TX', 'Philadelphia, PA',
+              'Phoenix, AZ', 'Boston, MA')
+
+main <- mplot
+plots <- lapply(sub_geos, function(x) {
+
+    lc <- tmaptools::geocode_OSM (q = x, as.sf = T)
+    lc$bbox <- sf::st_set_crs(lc$bbox, sf::st_crs(main))
+    cropped <- sf::st_crop(main, lc$bbox)
+
+    ggplot() + geom_sf(data = cropped,
+                       aes(fill = per),
+                       color = 'gray', size = .25) +
+
+      scale_fill_distiller(palette = "YlGnBu", 
+                           direction = 1, 
+                           limit = range(c(mins, maxs))) + #!
+      theme_minimal() +
+      theme(axis.title.x=element_blank(),
+            axis.text.x=element_blank(),
+            axis.title.y=element_blank(),
+            axis.text.y=element_blank(),
+            plot.title = element_text(size=9),
+            legend.position = 'none') +
+      ggtitle(gsub(',.*$', '', x))   })
+  
+
+patchwork::wrap_plots(plots, nrow = 2) +
+  patchwork::plot_annotation(title = 'In some American cities')
+```
+
+![](all-the-newness_files/figure-markdown_github/unnamed-chunk-28-1.png)
 
 ``` r
 set.seed(99)
@@ -762,7 +809,7 @@ white_ed %>%
        caption = 'Source: ACS 1-Year estimates, 2019, Table C15002')
 ```
 
-![](all-the-newness_files/figure-markdown_github/unnamed-chunk-30-1.png)
+![](all-the-newness_files/figure-markdown_github/unnamed-chunk-29-1.png)
 
 References
 ----------

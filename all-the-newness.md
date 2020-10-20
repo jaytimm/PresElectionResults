@@ -1,12 +1,7 @@
-TWEET language – Back by popular demand, a (re-) fresh — perspectives on
-a country-divided – and some data perspectives on how we got here – ish
--
+newness
+=======
 
-thread – via photos and descriptions –
-
-------------------------------------------------------------------------
-
-ggplot theme for this one:
+![](all-the-newness_files/figure-markdown_github/declaration.png)
 
 ``` r
 ## minimal -- 
@@ -269,7 +264,7 @@ vvo <- Rvoteview::download_metadata(type = 'members',
   filter(congress > 66 & chamber != 'President')
 ```
 
-    ## [1] "/tmp/RtmpL4TurW/Hall_members.csv"
+    ## [1] "/tmp/Rtmp6A0rpC/Hall_members.csv"
 
 ``` r
 house <- vvo %>%
@@ -408,6 +403,14 @@ ah2 <- strsplit(ah1, 'It has aptly been observed that Cato was the Tory-Cæsar t
 *SEARCH “FACTIONS”*
 
 ``` r
+setwd(ffc_dir)
+gfiles <- list.files(path = ffc_dir, 
+                     pattern = "rds", 
+                     recursive = TRUE) 
+
+ffc_washington <- readRDS(gfiles[8])
+
+
 qorp <- quanteda::corpus(ffc_washington)
 #quanteda::docnames(qorp) <- korpus$status_id
 
@@ -436,32 +439,32 @@ quicknews::qnews_search_contexts(qorp = qorp,
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">text2173</td>
-<td style="text-align: left;">… ; a wicked faction with Orange , and a wicked <code>faction</code> without . That both have been equally regardless of the …</td>
+<td style="text-align: left;">text4119</td>
+<td style="text-align: left;">… cure the hurts of thousands , allay the fury of <code>faction</code> &amp; re-laurel your brow . I have partly contracted for …</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">text25858</td>
-<td style="text-align: left;">… the continuance of the government or it’s overthrow by a <code>faction</code> depended , that we were still in time to give …</td>
+<td style="text-align: left;">text26305</td>
+<td style="text-align: left;">… as raked to publick view - and where the English <code>faction</code> domineering , would view with devouring pleasure whatever would tend …</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">text16502</td>
-<td style="text-align: left;">… that which now protects most of the leaders of the <code>faction</code> , and must now , desert my native Country or …</td>
+<td style="text-align: left;">text710</td>
+<td style="text-align: left;">… still necessary to maintain the tranquility . The two great <code>factions</code> which divide this people unite but in one sentiment , …</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">text18318</td>
-<td style="text-align: left;">… with stern integrity , and repulsing the bold attempts of <code>faction</code> with determined firmness . We are gratified in embracing opportunity …</td>
+<td style="text-align: left;">text21458</td>
+<td style="text-align: left;">… doubts that the expedition to Versailles was effected by a <code>faction</code> who had views of a very criminal nature . They …</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">text13503</td>
-<td style="text-align: left;">… how much easier will it be , to disperse the <code>factions</code> , which are rushing to this catastrophe , than to …</td>
+<td style="text-align: left;">text722</td>
+<td style="text-align: left;">… , which has hitherto been pursued by the Government . <code>Faction</code> at home may bawl , disappointment may invenom , external …</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">text1959</td>
-<td style="text-align: left;">… Influence , in so many other particulars , to a <code>Faction</code> , who are in opposition to the national Constitution as …</td>
+<td style="text-align: left;">text23965</td>
+<td style="text-align: left;">… in the Assembly . At the Head of the jacobine <code>Faction</code> is the Deputation of Bourdeaux , and that City is …</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">text17696</td>
-<td style="text-align: left;">… Station you fill ; at a time too , when <code>faction</code> is so active to embitter &amp; pall those enjoyments &amp; …</td>
+<td style="text-align: left;">text6754</td>
+<td style="text-align: left;">… , to repell the Efforts of a restless , Spirited <code>Faction</code> , Enemies to our peace , Security , prosperity and …</td>
 </tr>
 </tbody>
 </table>
@@ -506,6 +509,8 @@ Here, per presidential election, Party Senator !- Party President –
 
 Split means that folks from a given state sent a Senator from party X to
 the senate and sent electoral votes to President from party Y.
+
+*ADD Senate class and actual numbers underlying percentages* –
 
 ``` r
 splits <- uspols::uspols_wiki_pres %>% 

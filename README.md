@@ -161,14 +161,14 @@ uspols::uspols_dk_pres %>%
   head() %>% knitr::kable() 
 ```
 
-|  year| state\_abbrev | district\_code | winner       | party\_win | democrat | republican |
-|-----:|:--------------|:---------------|:-------------|:-----------|:---------|:-----------|
-|  2008| AK            | 00             | John McCain  | republican | 38.1     | 59.7       |
-|  2012| AK            | 00             | Mitt Romney  | republican | 41.2     | 55.3       |
-|  2016| AK            | 00             | Donald Trump | republican | 37.6     | 52.8       |
-|  2008| AL            | 01             | John McCain  | republican | 38.5     | 60.9       |
-|  2012| AL            | 01             | Mitt Romney  | republican | 37.4     | 61.8       |
-|  2016| AL            | 01             | Donald Trump | republican | 34.1     | 63.5       |
+|  year| state\_abbrev | district\_code | winner       | party\_win |  democrat|  republican|
+|-----:|:--------------|:---------------|:-------------|:-----------|---------:|-----------:|
+|  2008| AL            | 01             | John McCain  | republican |      38.5|        60.9|
+|  2012| AL            | 01             | Mitt Romney  | republican |      37.4|        61.8|
+|  2016| AL            | 01             | Donald Trump | republican |      34.1|        63.5|
+|  2008| AL            | 02             | John McCain  | republican |      35.0|        64.5|
+|  2012| AL            | 02             | Mitt Romney  | republican |      36.4|        62.9|
+|  2016| AL            | 02             | Donald Trump | republican |      33.0|        64.9|
 
 ------------------------------------------------------------------------
 
@@ -308,48 +308,20 @@ uspols::uspols_twitter_handles %>% head() %>% knitr::kable()
 ### § DailyKos: Simple feature geometries
 
 [States](https://docs.google.com/spreadsheets/d/1LrBXlqrtSZwyYOkpEEXFwQggvtR0bHHTxs9kq4kjOjw/edit#gid=1278876419)
-\| [Congressional
-Districts](https://docs.google.com/spreadsheets/d/1LrBXlqrtSZwyYOkpEEXFwQggvtR0bHHTxs9kq4kjOjw/edit#gid=1250379179)
+\|
 
 ``` r
 library(sf)
-uspols::sf_HexCDv21 %>%
+uspols::xsf_TileOutv10 %>% 
   ggplot() + 
   geom_sf(aes(fill = state),
            color = 'white') +
-  geom_sf(data = uspols::sf_HexSTv20, 
+  geom_sf(data = uspols::xsf_TileInv10, 
           fill = NA, 
           show.legend = F, 
           color="gray", 
           lwd=.5) +
-  ggsflabel::geom_sf_text(data = uspols::sf_HexCDv21,
-                           aes(label = district_code), 
-                           size = 2,
-                           color='black') +
-  # scale_fill_distiller(palette = "RdBu", direction=-1) +
-  theme_minimal()+
-  theme(axis.text.x=element_blank(),
-        axis.text.y=element_blank(),
-        axis.title.x=element_blank(),
-        axis.title.y=element_blank(),
-        legend.position = 'none') +
-labs(title = "Equal-area US Congressional District geometry",
-     caption = "Source: DailyKos")
-```
-
-![](figure-markdown_github/unnamed-chunk-8-1.png)
-
-``` r
-uspols::sf_TileOutv10 %>% 
-  ggplot() + 
-  geom_sf(aes(fill = state),
-           color = 'white') +
-  geom_sf(data = uspols::sf_TileInv10, 
-          fill = NA, 
-          show.legend = F, 
-          color="gray", 
-          lwd=.5) +
-  ggsflabel::geom_sf_text(data = uspols::sf_TileInv10,
+  ggsflabel::geom_sf_text(data = uspols::xsf_TileInv10,
                           aes(label = state_abbrev), 
                           size = 3,
                           color='black') +

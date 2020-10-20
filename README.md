@@ -307,8 +307,8 @@ uspols::uspols_twitter_handles %>% head() %>% knitr::kable()
 
 ### § DailyKos: Simple feature geometries
 
-[States](https://docs.google.com/spreadsheets/d/1LrBXlqrtSZwyYOkpEEXFwQggvtR0bHHTxs9kq4kjOjw/edit#gid=1278876419)
-\|
+[States
+shapefile](https://docs.google.com/spreadsheets/d/1LrBXlqrtSZwyYOkpEEXFwQggvtR0bHHTxs9kq4kjOjw/edit#gid=1278876419)
 
 ``` r
 library(sf)

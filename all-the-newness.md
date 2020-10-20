@@ -26,6 +26,7 @@ theme_guide <- function () {
 ### Some geo-spatial data
 
 ``` r
+library(sf)
 library(tigris)
 options(tigris_use_cache = TRUE, tigris_class = "sf")
 
@@ -54,8 +55,6 @@ laea <- sf::st_crs("+proj=laea +lat_0=30 +lon_0=-95")
 
 On impeachment
 --------------
-
-> Quote – TJ – scarecrows
 
 ### VoteView: Legislation & roll calls
 
@@ -206,9 +205,9 @@ last_dem <- uspols::uspols_wiki_pres %>%
   mutate(label = paste0(year, ' - ', winner))
 ```
 
-**Nine US states** have not voted for a Democratic Presidential
-candidate since LBJ. So, roughly 1/5 of the country (here, of total
-states) hasn’t voted for a Democrat since LBJ –
+> **Nine US states** have not voted for a Democratic Presidential
+> candidate since LBJ. So, roughly 1/5 of US States haven’t supported a
+> Democrat since LBJ –
 
 ``` r
 last_dem %>%
@@ -235,8 +234,6 @@ last_dem %>%
 ![](all-the-newness_files/figure-markdown_github/unnamed-chunk-11-1.png)
 
 ``` r
-library(sf)
-
 uspols::xsf_TileOutv10 %>% 
   left_join(last_dem %>%
               filter(party_win == 'democrat'), by ='state_abbrev') %>%
@@ -258,22 +255,20 @@ uspols::xsf_TileOutv10 %>%
 
 ![](all-the-newness_files/figure-markdown_github/unnamed-chunk-12-1.png)
 
-######### 
+I Wish I ~~Was~~ Were in Dixie
+------------------------------
 
-Dixie lives
------------
-
-The south = Dixie + KE & OK
+> Per VoteView definition: The South = Dixie + Kentucky + Oklahoma.
 
 ``` r
 library(tidyverse)
 south <- c('SC', 'MS', 'FL', 
            'AL', 'GA', 'LA', 'TX', 
-           'VA', 'AR', 'NC', 'TE',
-           'OK', 'KE')
+           'VA', 'AR', 'NC', 'TN',
+           'OK', 'KY')
 ```
 
-MAP — with area calculation – ??
+> Dixie Land in context:
 
 ``` r
 states_sf %>%
@@ -289,7 +284,7 @@ states_sf %>%
   theme(panel.background = 
           element_rect(fill = '#d5e4eb', color = NA)) +
   labs(title = "The American South",
-       subtitle = "Dixie + KE + OK")
+       subtitle = "= Dixie + KY + OK")
 ```
 
 ![](all-the-newness_files/figure-markdown_github/unnamed-chunk-14-1.png)
@@ -304,7 +299,7 @@ vvo <- Rvoteview::download_metadata(type = 'members',
   filter(congress > 66 & chamber != 'President')
 ```
 
-    ## [1] "/tmp/Rtmp5fAsXk/Hall_members.csv"
+    ## [1] "/tmp/Rtmp3c2440/Hall_members.csv"
 
 ``` r
 house <- vvo %>%
@@ -387,27 +382,45 @@ uspols::uspols_dk_pres %>%
 
 ![](all-the-newness_files/figure-markdown_github/unnamed-chunk-17-1.png)
 
-################## 
+Founding fathers corpus
+-----------------------
 
-Founding fathers —
+### A relevant correspondence
 
-1.  A relevant correspondence –
-
-An excerpt from this letter sent by Alexander Hamilton to George
-Washington on 1792-08-18, and quoted by Representative Adam Schiff on
-2020-1-22 during the impeachment trial of Donald J. Trump. Accessed here
-via this Git Hub resource that makes the Founders Online database of
-writings/correspondences available as a collection of RDS files.
-
-An excerpt from this letter sent by Alexander Hamilton to George
-Washington on 1792-08-18, and quoted by Representative Adam Schiff on
-2020-1-22 during the impeachment trial of Donald J. Trump. Accessed here
-via this Git Hub resource that makes the Founders Online database of
-writings/correspondences available as a collection of RDS files.
+> An excerpt from this letter sent by Alexander Hamilton to George
+> Washington on 1792-08-18, and quoted by Representative Adam Schiff on
+> 2020-1-22 during the impeachment trial of Donald J. Trump. Accessed
+> here via this Git Hub resource that makes the Founders Online database
+> of writings/correspondences available as a collection of RDS files.
 
 ``` r
-ffc_dir <- '/home/jtimm/jt_work/GitHub/git_projects/FoundersArchiveCorpus/data/'
+setwd(ffc_dir)
+gfiles <- list.files(path = ffc_dir, 
+                     pattern = "rds", 
+                     recursive = TRUE) 
+
+ffc_washington <- readRDS(gfiles[8])
+
+ah <- ffc_washington %>% 
+  filter(grepl('No popular Government was ever without its Catalines', og_text))
+
+ah1 <- strsplit(ah$og_text, 'Yet it would not be difficult to lay the finger upon some of their party who may justly be suspected.')[[1]][2]
+
+ah2 <- strsplit(ah1, 'It has aptly been observed that Cato was the Tory-Cæsar the whig of his day. ')[[1]][1]
 ```
+
+> When a man unprincipled in private life desperate in his fortune, bold
+> in his temper, possessed of considerable talents, having the advantage
+> of military habits—despotic in his ordinary demeanour—known to have
+> scoffed in private at the principles of liberty—when such a man is
+> seen to mount the hobby horse of popularity—to join in the cry of
+> danger to liberty—to take every opportunity of embarrassing the
+> General Government & bringing it under suspicion—to flatter and fall
+> in with all the non sense of the zealots of the day—It may justly be
+> suspected that his object is to throw things into confusion that he
+> may “ride the storm and direct the whirlwind.”
+
+### Scare-crows & impeachment
 
 ``` r
 setwd(ffc_dir)
@@ -474,110 +487,10 @@ quicknews::qnews_search_contexts(qorp = qorp,
 </tbody>
 </table>
 
-------------------------------------------------------------------------
+Presidential elections historically
+-----------------------------------
 
-``` r
-setwd(ffc_dir)
-gfiles <- list.files(path = ffc_dir, 
-                     pattern = "rds", 
-                     recursive = TRUE) 
-
-ffc_washington <- readRDS(gfiles[8])
-
-ah <- ffc_washington %>% 
-  filter(grepl('No popular Government was ever without its Catalines', og_text))
-
-ah1 <- strsplit(ah$og_text, 'Yet it would not be difficult to lay the finger upon some of their party who may justly be suspected.')[[1]][2]
-
-ah2 <- strsplit(ah1, 'It has aptly been observed that Cato was the Tory-Cæsar the whig of his day. ')[[1]][1]
-```
-
-> When a man unprincipled in private life desperate in his fortune, bold
-> in his temper, possessed of considerable talents, having the advantage
-> of military habits—despotic in his ordinary demeanour—known to have
-> scoffed in private at the principles of liberty—when such a man is
-> seen to mount the hobby horse of popularity—to join in the cry of
-> danger to liberty—to take every opportunity of embarrassing the
-> General Government & bringing it under suspicion—to flatter and fall
-> in with all the non sense of the zealots of the day—It may justly be
-> suspected that his object is to throw things into confusion that he
-> may “ride the storm and direct the whirlwind.”
-
-### Search -
-
-1.  search using `quicknews` –
-
-*SEARCH “FACTIONS”*
-
-``` r
-setwd(ffc_dir)
-gfiles <- list.files(path = ffc_dir, 
-                     pattern = "rds", 
-                     recursive = TRUE) 
-
-ffc_washington <- readRDS(gfiles[8])
-
-
-qorp <- quanteda::corpus(ffc_washington)
-#quanteda::docnames(qorp) <- korpus$status_id
-
-quicknews::qnews_search_contexts(qorp = qorp, 
-                                        search = " faction(s)?", 
-                                 ## need to check - should not require space
-                                        window = 10,
-                                        highlight_color = '|') %>%
-  #left_join(metas, by = c('docname' = 'link')) %>%
-  select(docname, context) %>%
-  sample_n(7)  %>%
-  knitr::kable(caption = 'Search-in-context: COVID-19 & coronavirus')
-```
-
-<table>
-<caption>Search-in-context: COVID-19 &amp; coronavirus</caption>
-<colgroup>
-<col style="width: 6%" />
-<col style="width: 93%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;">docname</th>
-<th style="text-align: left;">context</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">text22655</td>
-<td style="text-align: left;">… give reasonable hopes , I think , that anarchy and <code>faction</code> formerly the road to despotism , may now lead to …</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">text1126</td>
-<td style="text-align: left;">… our national Prgress . Why do we hear of a <code>Faction</code> at New York attempting to lessen the Influence of the …</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">text8899</td>
-<td style="text-align: left;">… of the most dangerousfatal tendency . They serve to organise <code>Faction</code> to give it an artificial force ; and to put …</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">text6110</td>
-<td style="text-align: left;">… Philadelphia , January , 1793 ] That the spirit of <code>Faction</code> is a common and one of the most fatal diseases …</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">text8588</td>
-<td style="text-align: left;">… the Government would go on that the passions incident to <code>faction</code> the natural disease of popular Governments would grow and multiply …</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">text21366</td>
-<td style="text-align: left;">… Government ? Would not such a periodical revision engender pernicious <code>factions</code> that might not otherwise come into existence ; and agitate …</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">text26891</td>
-<td style="text-align: left;">… my fellow citizens . It was even Genevese of the <code>faction</code> of the Marseillois who disputed the honour of being their …</td>
-</tr>
-</tbody>
-</table>
-
-Presidential elections historically –
--------------------------------------
+### Presidential results since 1956
 
 ``` r
 uspols::xsf_TileOutv10 %>%
@@ -603,7 +516,7 @@ uspols::xsf_TileOutv10 %>%
        caption = "Source: DailyKos")
 ```
 
-![](all-the-newness_files/figure-markdown_github/unnamed-chunk-22-1.png)
+![](all-the-newness_files/figure-markdown_github/unnamed-chunk-20-1.png)
 
 ### Split ticket voting –
 
@@ -642,13 +555,16 @@ splits %>%
         axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
-![](all-the-newness_files/figure-markdown_github/unnamed-chunk-23-1.png)
+![](all-the-newness_files/figure-markdown_github/unnamed-chunk-21-1.png)
 
 Mapping splits quickly – need to add CLASS information – !!
 
 And change dark blue color – sos to see – !! and note that no
 distinctions are made here wrt party affiliation – Although a simple
 cross-tab/typology will show – !!
+
+> All states with a Senator on the ballot in 2016 voted … as they did
+> the President.
 
 ``` r
 uspols::xsf_TileOutv10 %>%
@@ -673,7 +589,7 @@ uspols::xsf_TileOutv10 %>%
 labs(title = "Split tickets per General Election")
 ```
 
-![](all-the-newness_files/figure-markdown_github/unnamed-chunk-24-1.png)
+![](all-the-newness_files/figure-markdown_github/unnamed-chunk-22-1.png)
 
 Age – briefly –
 ---------------
@@ -695,7 +611,7 @@ house %>%
   theme(legend.position = "none")
 ```
 
-![](all-the-newness_files/figure-markdown_github/unnamed-chunk-25-1.png)
+![](all-the-newness_files/figure-markdown_github/unnamed-chunk-23-1.png)
 
 Profiling congressional districts
 ---------------------------------
@@ -754,10 +670,19 @@ base_viz +
        subtitle = "New Mexico's 2nd District")
 ```
 
-![](all-the-newness_files/figure-markdown_github/unnamed-chunk-28-1.png)
+![](all-the-newness_files/figure-markdown_github/unnamed-chunk-26-1.png)
 
 Some notes on rural America
 ---------------------------
+
+Swing states
+------------
+
+``` r
+swing_states <- c('Arizona', 'Flordia', 'Georgia', 
+                  'Michigan', 'Minnesota', 'North Carolina', 
+                  'Penssylvania', 'Wisconsin')
+```
 
 The White working class
 -----------------------
@@ -847,7 +772,7 @@ mplot %>%
   labs(title = "The American White Working Class")
 ```
 
-![](all-the-newness_files/figure-markdown_github/unnamed-chunk-31-1.png)
+![](all-the-newness_files/figure-markdown_github/unnamed-chunk-30-1.png)
 
 Zoom to cities –
 
@@ -872,8 +797,7 @@ plots <- lapply(sub_geos, function(x) {
                          direction = 1, 
                          limit = range(c(mins, maxs))) + #!
   theme_minimal() + theme_guide() +
-  theme(legend.position = 'bottom',
-        panel.background = element_rect(fill = '#d5e4eb', 
+  theme(panel.background = element_rect(fill = '#d5e4eb', 
                                         color = NA),
         plot.title = element_text(size=9)) +
       
@@ -884,7 +808,7 @@ patchwork::wrap_plots(plots, ncol = 4) +
   patchwork::plot_annotation(title = 'In some American cities')
 ```
 
-![](all-the-newness_files/figure-markdown_github/unnamed-chunk-32-1.png)
+![](all-the-newness_files/figure-markdown_github/unnamed-chunk-31-1.png)
 
 ``` r
 set.seed(99)
@@ -912,7 +836,7 @@ white_ed %>%
        caption = 'Source: ACS 1-Year estimates, 2019, Table C15002')
 ```
 
-![](all-the-newness_files/figure-markdown_github/unnamed-chunk-33-1.png)
+![](all-the-newness_files/figure-markdown_github/unnamed-chunk-32-1.png)
 
 References
 ----------

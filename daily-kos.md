@@ -1,13 +1,15 @@
-### DailyKos: Presidential returns by congressional district (2008-)
+DailyKos: Presidential returns by congressional district (2008-)
+----------------------------------------------------------------
 
 ``` r
 library(tidyverse)
 ```
 
-``` r
-# url <- 'https://docs.google.com/spreadsheets/d/1oRl7vxEJUUDWJCyrjo62cELJD2ONIVl-D9TSUKiK9jk/edit#gid=1178631925'
+### Load data per url
 
-url <- 'https://docs.google.com/spreadsheets/d/1zLNAuRqPauss00HDz4XbTH2HqsCzMe0pR8QmD1K8jk8/edit#gid=0'
+``` r
+url <- 
+  'https://docs.google.com/spreadsheets/d/1zLNAuRqPauss00HDz4XbTH2HqsCzMe0pR8QmD1K8jk8/edit#gid=0'
 
 house <- gsheet::gsheet2tbl(url) %>% janitor::clean_names()
 start_prez <- min(grep('president', colnames(house)))
@@ -23,7 +25,7 @@ colnames(house3)[1:7] <- c('code',
                            'John-McCain_2008_republican') # uniform to wiki set
 ```
 
-Clean things –
+### A simple clean
 
 ``` r
 dk <- house3 %>%
@@ -45,7 +47,7 @@ dk <- house3 %>%
   select(year, state_abbrev:republican)
 ```
 
-Some hand corrections:
+### Some hand corrections
 
 ``` r
 dk$winner[dk$state_abbrev == 'FL' & 

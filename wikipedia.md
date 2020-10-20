@@ -1,14 +1,21 @@
-### Wikipedia: Presidential returns by state (1864-)
+Wikipedia: Presidential returns by state (1864-)
+------------------------------------------------
+
+### Some introductories
 
 ``` r
 library(tidyverse)
-git_dir <- "/home/jtimm/jt_work/GitHub/packages/uspols/data-raw/"
+```
+
+> A simple summary of electoral presidential election results, and some
+> standard spellings
+
+``` r
 setwd(git_dir)
 pres <- read.csv('us_pres_1864.csv') 
 ```
 
 ``` r
-base_url <- 'https://en.wikipedia.org/wiki/United_States_presidential_elections_in_'
 options(tigris_use_cache = TRUE, tigris_class = "sf")
 states_full <- tigris::states(cb = TRUE) %>% 
   data.frame() %>%
@@ -21,7 +28,12 @@ states <- states_full %>%
   mutate(which_table = ifelse(NAME %in% c('New York', 'Missouri'), 3, 2)) 
 ```
 
-This piece gets the bulk of historical election returns.
+### Bulk of presidential results by state per Wikipedia
+
+``` r
+base_url <- 
+  'https://en.wikipedia.org/wiki/United_States_presidential_elections_in_'
+```
 
 ``` r
 states_correct <- list()
@@ -53,8 +65,12 @@ states_correct1 <- states_correct %>%
   filter(candidate != 'TBD')
 ```
 
-Election results for two states, California and Pennsylvania, are
-presented differently.
+### PA & CA results
+
+> Presidential election results for California and Pennsylvania are
+> structured differently on Wikipedia.
+
+#### Pennsylvania
 
 ``` r
 ##### PA -- 
@@ -86,6 +102,8 @@ returns1 <- rbind(x, y) %>%
   ungroup()
 ```
 
+#### California
+
 ``` r
 ##### CA -- 
 url <- 'https://en.wikipedia.org/wiki/United_States_presidential_elections_in_California'
@@ -116,39 +134,40 @@ returns_ca1 <- rbind(x, y) %>%
 ## hand corrections on the names --
 #pres <- write.csv(returns_ca1, 'ca_pres_1864xx.csv')
 setwd(git_dir)
-returns_ca2 <- read.csv('ca_pres_1864.csv')
+returns_ca <- read.csv('ca_pres_1864.csv')
 ```
 
-Lastly, we aggregate our different tables into a single … a full + clean
-version –
+### Piecing things together
 
 ``` r
 ###
 full <- bind_rows(states_correct1,
                   returns1,
-                  returns_ca2)%>%
+                  returns_ca)%>%
   mutate(vote_share = ifelse(year %in% c('1864', '1868') &
                                vote_share == 0,
                              NA, vote_share),
-         candidate = trimws(candidate)) %>%
+         candidate = trimws(candidate),
+         district_code = 'statewide') %>%
   na.omit() %>% 
   left_join(pres %>% select(-electoral_votes)) %>%
-  arrange(desc(vote_share)) %>%
-  group_by(state_name, year) %>%
-  ungroup()%>%
   rename(NAME = state_name) %>%
   
   left_join(states_full) %>%
-  select(year, state_abbrev, candidate:party) 
+  
+  select(year, state_abbrev, district_code, candidate:party) 
 ```
 
-thoughts re-structure – modified for most frequent application –
+### A quick re-structure
+
+> Modified for most frequent application-types/use-cases.
 
 ``` r
 full1 <- full %>%
   group_by(state_abbrev, year) %>%   
   mutate(winner = candidate[which.max(vote_share)],
-         party = tolower(party)) %>%
+         party = tolower(party),
+         party_win = party[which.max(vote_share)]) %>%
   ungroup() %>%
   select(-candidate) %>%
   spread(party, vote_share)

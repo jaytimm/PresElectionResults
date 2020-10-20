@@ -5,7 +5,7 @@ DailyKos: Presidential returns by congressional district (2008-)
 library(tidyverse)
 ```
 
-### Load data per url
+### § Load data per url
 
 ``` r
 url <- 
@@ -24,10 +24,11 @@ colnames(house3)[1:7] <- c('code',
                            'Barack-Obama_2012_democrat',
                            'Mitt-Romney_2012_republican',
                            'Barack-Obama_2008_democrat',
-                           'John-McCain_2008_republican') # uniform to wiki set
+                           'John-McCain_2008_republican') 
+# uniform to wiki set
 ```
 
-### A simple clean
+### § A simple clean
 
 ``` r
 dk <- house3 %>%
@@ -49,7 +50,7 @@ dk <- house3 %>%
   select(year, state_abbrev:republican)
 ```
 
-### Some hand corrections
+### § Some hand corrections
 
 ``` r
 dk$winner[dk$state_abbrev == 'FL' & 

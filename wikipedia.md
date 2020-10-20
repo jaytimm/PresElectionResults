@@ -1,7 +1,7 @@
 Wikipedia: Presidential returns by state (1864-)
 ------------------------------------------------
 
-### Some introductories
+### § Some introductories
 
 ``` r
 library(tidyverse)
@@ -24,7 +24,7 @@ states <- states_full %>%
   mutate(which_table = ifelse(NAME %in% c('New York', 'Missouri'), 3, 2)) 
 ```
 
-### Bulk of presidential results by state per Wikipedia
+### § Bulk of presidential results by state per Wikipedia
 
 ``` r
 base_url <- 
@@ -61,7 +61,7 @@ states_correct1 <- states_correct %>%
   filter(candidate != 'TBD')
 ```
 
-### PA & CA results
+### § PA & CA results
 
 > Presidential election results for California and Pennsylvania are
 > structured differently on Wikipedia.
@@ -125,7 +125,7 @@ returns_ca1 <- rbind(x, y) %>%
   select(state_name, year, candidate, vote_share)
 ```
 
-### Piecing things together
+### § Piecing things together
 
 ``` r
 ###
@@ -146,7 +146,7 @@ full <- bind_rows(states_correct1,
   select(year, state_abbrev, district_code, candidate:party) 
 ```
 
-### A quick re-structure
+### § A quick re-structure
 
 > Modified for most frequent application-types/use-cases.
 

@@ -11,7 +11,7 @@ medsl_house_file <-
 medsl_house <- read.csv(url(medsl_house_file), na.strings = c("", "NA"))
 ```
 
-### Load data & slight clean
+### § Load data & slight clean
 
 ``` r
 which <-  medsl_senate 
@@ -47,7 +47,7 @@ returns <- which %>%
   select(-candidatevotes)
 ```
 
-### Some small re-workings
+### § Some small re-workings
 
 ``` r
 hrs <- returns %>%
@@ -76,7 +76,7 @@ hrs <- returns %>%
   ungroup() 
 ```
 
-### Uniform output
+### § Uniform output
 
 ``` r
 final <- hrs %>%
@@ -98,13 +98,14 @@ final <- hrs %>%
   rename(district_code = district, state_abbrev = state_po) 
 ```
 
-### Add some VoteView details
+### § Some VoteView details
 
 ``` r
 vv <- lapply(c(94:116), function (x)
                     Rvoteview::member_search (
                       chamber = 'Senate', 
-                      congress = x)) %>% # better ways, but 'seo_name' is helpful for distance matching -- 
+                      congress = x)) %>% 
+  # better ways, but 'seo_name' is helpful for distance matching -- 
   bind_rows() %>%
   
 
@@ -118,7 +119,7 @@ vv <- lapply(c(94:116), function (x)
                              2, pad = 0)) 
 ```
 
-### Match MEDSL candidate-name & VoteView
+### § Match MEDSL candidate-name & VoteView
 
 > In MEDSL, per every election winner (no specials) & per every
 > year/state/district: find orthographically closest name from list of

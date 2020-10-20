@@ -1,9 +1,10 @@
-> Nothing could be more ill-judged than that intolerant spirit which
-> has, at all times, characterized political parties. \~ Alexander
-> Hamilton
+TWEET language – Back by popular demand, a (re-) fresh — perspectives on
+a country-divided – and some data perspectives on how we got here – ish
+-
 
-> Men by their constitutions are naturally divided into two parties. \~
-> Thomas Jefferson
+thread – via photos and descriptions –
+
+------------------------------------------------------------------------
 
 ggplot theme for this one:
 
@@ -30,8 +31,12 @@ theme_polisci_guide <- function (base_size = 11,
 }
 ```
 
-VoteView: LEgislation & roll calls
-----------------------------------
+On impeachment
+--------------
+
+> Quote – TJ – scarecrows
+
+### VoteView: Legislation & roll calls
 
 Fifteen US Senators served in the impeachment trials of both President
 Clinton in 1999 and President Trump in 2020. Here we take a quick look
@@ -241,8 +246,10 @@ uspols::xsf_TileOutv10 %>%
 
 ######### 
 
+Dixie lives
+-----------
+
 The south = Dixie + KE & OK
----------------------------
 
 ``` r
 library(tidyverse)
@@ -252,8 +259,7 @@ south <- c('SC', 'MS', 'FL',
            'OK', 'KE')
 ```
 
-Rvoteview: House composition
-----------------------------
+### Rvoteview: House composition
 
 *Obviously do this the once* –
 
@@ -263,7 +269,7 @@ vvo <- Rvoteview::download_metadata(type = 'members',
   filter(congress > 66 & chamber != 'President')
 ```
 
-    ## [1] "/tmp/Rtmp1wDg8X/Hall_members.csv"
+    ## [1] "/tmp/RtmpL4TurW/Hall_members.csv"
 
 ``` r
 house <- vvo %>%
@@ -285,8 +291,7 @@ house <- vvo %>%
                        congress = c(67:116)), by = 'congress') 
 ```
 
-Southern states versus non-Southern states
-------------------------------------------
+### Southern states versus non-Southern states
 
 \~75% of GOP House members are from Dixie. In 1960, this % was less than
 10.
@@ -420,8 +425,8 @@ quicknews::qnews_search_contexts(qorp = qorp,
 <table>
 <caption>Search-in-context: COVID-19 &amp; coronavirus</caption>
 <colgroup>
-<col style="width: 7%" />
-<col style="width: 92%" />
+<col style="width: 6%" />
+<col style="width: 93%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -431,32 +436,32 @@ quicknews::qnews_search_contexts(qorp = qorp,
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">text26971</td>
-<td style="text-align: left;">… . On the subject of the Debt , the Treasury <code>faction</code> is spouting on the policy of paying it off as …</td>
+<td style="text-align: left;">text2173</td>
+<td style="text-align: left;">… ; a wicked faction with Orange , and a wicked <code>faction</code> without . That both have been equally regardless of the …</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">text18922</td>
-<td style="text-align: left;">… How many opportunities do they afford to tamper with domestic <code>factions</code> , to practice the acts of seduction , to mislead …</td>
+<td style="text-align: left;">text25858</td>
+<td style="text-align: left;">… the continuance of the government or it’s overthrow by a <code>faction</code> depended , that we were still in time to give …</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">text17301</td>
-<td style="text-align: left;">… it would have a direct tendency to encourage animosities , <code>factions</code> and divisions among ourselves . 3d Resolved , that we …</td>
+<td style="text-align: left;">text16502</td>
+<td style="text-align: left;">… that which now protects most of the leaders of the <code>faction</code> , and must now , desert my native Country or …</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">text780</td>
-<td style="text-align: left;">… a pretty example of what results from the dependence of <code>factions</code> upon the aid of foreign powers . Poland annihilated . …</td>
+<td style="text-align: left;">text18318</td>
+<td style="text-align: left;">… with stern integrity , and repulsing the bold attempts of <code>faction</code> with determined firmness . We are gratified in embracing opportunity …</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">text17696</td>
-<td style="text-align: left;">… Station you fill ; at a time too , when <code>faction</code> is so active to embitter &amp; pall those enjoyments &amp; …</td>
+<td style="text-align: left;">text13503</td>
+<td style="text-align: left;">… how much easier will it be , to disperse the <code>factions</code> , which are rushing to this catastrophe , than to …</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">text1959</td>
 <td style="text-align: left;">… Influence , in so many other particulars , to a <code>Faction</code> , who are in opposition to the national Constitution as …</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">text19104</td>
-<td style="text-align: left;">… of our transactions shall be marked by that asperity of <code>faction</code> that disgraced their predecessors . [ " ] I have …</td>
+<td style="text-align: left;">text17696</td>
+<td style="text-align: left;">… Station you fill ; at a time too , when <code>faction</code> is so active to embitter &amp; pall those enjoyments &amp; …</td>
 </tr>
 </tbody>
 </table>
@@ -522,6 +527,7 @@ splits %>%
            fill = 'steelblue',  
            color = 'lightgray') +  
   geom_text(size = 3, nudge_y = 1) +
+  scale_x_continuous(breaks=seq(1976, 2016, 4)) +
   labs(title = "Senator-President Splits") +
   theme_minimal()+
   ylab('') + xlab('') +
@@ -538,7 +544,7 @@ distinctions are made here wrt party affiliation – Although a simple
 cross-tab/typology will show – !!
 
 ``` r
-uspols::xsf_TileOutv10 %>%
+cc <- uspols::xsf_TileOutv10 %>%
   left_join(splits, by = 'state_abbrev') %>% 
   ggplot() + 
   geom_sf(aes(fill = as.character(split)),
@@ -564,8 +570,6 @@ uspols::xsf_TileOutv10 %>%
 labs(title = "Split tickets per General Election")
 ```
 
-![](all-the-newness_files/figure-markdown_github/unnamed-chunk-19-1.png)
-
 Age – briefly –
 ---------------
 
@@ -588,7 +592,8 @@ house %>%
 
 ![](all-the-newness_files/figure-markdown_github/unnamed-chunk-20-1.png)
 
-### Profiling congressional districts via census data
+Profiling congressional districts
+---------------------------------
 
 ``` r
 library(tigris); options(tigris_use_cache = TRUE, tigris_class = "sf")
@@ -601,6 +606,9 @@ states <- tigris::states(cb = TRUE) %>%
 
 uscds <- tigris::congressional_districts(cb = TRUE) %>%
   select(GEOID) %>%
+  mutate(CD_AREA = round(log(as.numeric(gsub(' m^2]', '', sf::st_area(.)))), 2)) %>%
+  # calculate cd area --
+  
   mutate(state_code = substr(GEOID, 1, 2),
          district_code = substr(GEOID, 3, 4)) 
 
@@ -665,8 +673,11 @@ base_viz +
 
 ![](all-the-newness_files/figure-markdown_github/unnamed-chunk-25-1.png)
 
-White working class
--------------------
+Some notes on rural America
+---------------------------
+
+The White working class
+-----------------------
 
 ``` r
 white_ed_vars <- c(white_m_bach = 'C15002H_006',
@@ -756,7 +767,7 @@ mplot %>%
 labs(title = "The American White Working Class")
 ```
 
-![](all-the-newness_files/figure-markdown_github/unnamed-chunk-27-1.png)
+![](all-the-newness_files/figure-markdown_github/unnamed-chunk-28-1.png)
 
 Zoom to cities –
 
@@ -795,7 +806,7 @@ patchwork::wrap_plots(plots, ncol = 4) +
   patchwork::plot_annotation(title = 'In some American cities')
 ```
 
-![](all-the-newness_files/figure-markdown_github/unnamed-chunk-28-1.png)
+![](all-the-newness_files/figure-markdown_github/unnamed-chunk-29-1.png)
 
 ``` r
 set.seed(99)
@@ -823,7 +834,7 @@ white_ed %>%
        caption = 'Source: ACS 1-Year estimates, 2019, Table C15002')
 ```
 
-![](all-the-newness_files/figure-markdown_github/unnamed-chunk-29-1.png)
+![](all-the-newness_files/figure-markdown_github/unnamed-chunk-30-1.png)
 
 References
 ----------

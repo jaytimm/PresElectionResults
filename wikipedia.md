@@ -5,13 +5,9 @@ Wikipedia: Presidential returns by state (1864-)
 
 ``` r
 library(tidyverse)
-```
-
-> A simple summary of electoral presidential election results, and some
-> standard spellings
-
-``` r
 setwd(git_dir)
+## A simple summary of electoral presidential election results, 
+## and some standard spellings
 pres <- read.csv('us_pres_1864.csv') 
 ```
 
@@ -70,13 +66,15 @@ states_correct1 <- states_correct %>%
 > Presidential election results for California and Pennsylvania are
 > structured differently on Wikipedia.
 
+``` r
+pa_url <- 'https://en.wikipedia.org/wiki/United_States_presidential_elections_in_Pennsylvania'
+ca_url <- 'https://en.wikipedia.org/wiki/United_States_presidential_elections_in_California'
+```
+
 #### Pennsylvania
 
 ``` r
-##### PA -- 
-url <- 'https://en.wikipedia.org/wiki/United_States_presidential_elections_in_Pennsylvania'
-
-returns <- url %>%
+returns <- pa_url %>%
   xml2::read_html() %>%
   rvest::html_node(xpath = '//*[@id="mw-content-text"]/div/table[2]') %>%
   rvest::html_table(fill = TRUE)  
@@ -105,10 +103,7 @@ returns1 <- rbind(x, y) %>%
 #### California
 
 ``` r
-##### CA -- 
-url <- 'https://en.wikipedia.org/wiki/United_States_presidential_elections_in_California'
-
-returns_ca <- url %>%
+returns_ca <- ca_url %>%
   xml2::read_html() %>%
   rvest::html_node(xpath = '//*[@id="mw-content-text"]/div/table[2]') %>%
   rvest::html_table(fill = TRUE) 
@@ -128,13 +123,6 @@ returns_ca1 <- rbind(x, y) %>%
          state_name = 'California') %>%
   filter(candidate != 'TBD')  %>%
   select(state_name, year, candidate, vote_share)
-```
-
-``` r
-## hand corrections on the names --
-#pres <- write.csv(returns_ca1, 'ca_pres_1864xx.csv')
-setwd(git_dir)
-returns_ca <- read.csv('ca_pres_1864.csv')
 ```
 
 ### Piecing things together

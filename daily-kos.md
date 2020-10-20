@@ -10,7 +10,9 @@ library(tidyverse)
 ``` r
 url <- 
   'https://docs.google.com/spreadsheets/d/1zLNAuRqPauss00HDz4XbTH2HqsCzMe0pR8QmD1K8jk8/edit#gid=0'
+```
 
+``` r
 house <- gsheet::gsheet2tbl(url) %>% janitor::clean_names()
 start_prez <- min(grep('president', colnames(house)))
 end_prez <-  min(grep('house', colnames(house))) - 1

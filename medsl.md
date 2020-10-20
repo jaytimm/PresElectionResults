@@ -92,7 +92,8 @@ final <- hrs %>%
   left_join(data.frame(year = c(1974 + 2*rep(c(1:22))), 
                        congress = c(95:116)), by = 'year') %>%
   
-  select(year, congress, state_po, district, winner, party_win, democrat, republican, other) %>%
+  select(year, congress, state_po, district, winner, 
+         party_win, democrat, republican, other) %>%
   mutate(district = stringr::str_pad (district, 2, pad = 0)) %>%
   rename(district_code = district, state_abbrev = state_po) 
 ```
@@ -112,7 +113,9 @@ vv <- lapply(c(94:116), function (x)
   mutate(x = length(unique(district_code))) %>%
   ungroup() %>%
   mutate(district_code = ifelse(x==1, 0, district_code)) %>%
-  mutate(district_code = stringr::str_pad (as.numeric(district_code), 2, pad = 0)) 
+  mutate(district_code = 
+           stringr::str_pad (as.numeric(district_code), 
+                             2, pad = 0)) 
 ```
 
 ### Match MEDSL candidate-name & VoteView

@@ -4,26 +4,52 @@ newness
 ![](all-the-newness_files/figure-markdown_github/declaration.png)
 
 ``` r
-## minimal -- 
-theme_polisci_guide <- function (base_size = 11, 
-                                 base_family = "", 
-                                 base_line_size = base_size/22,
-                                 base_rect_size = base_size/22) {
+library(tidyverse)
+```
+
+### A simple add-on map theme
+
+``` r
+# not really a guide -- but adds for mapping in theme_minimal()
+theme_guide <- function () {
   
-  theme_bw(base_size = base_size, 
-           base_family = base_family,
-           base_line_size = base_line_size, 
-           base_rect_size = base_rect_size) %+replace% 
-    
-    theme(axis.ticks = element_blank(), 
-          legend.background = element_blank(),
-          legend.key = element_blank(), 
-          panel.background = element_blank(),
-          panel.border = element_blank(), 
-          strip.background = element_blank(),
-          plot.background = element_blank(), 
-          complete = TRUE)
+    theme(axis.title.x=element_blank(), 
+          axis.text.x=element_blank(),
+          axis.title.y=element_blank(),
+          axis.text.y=element_blank(),
+          legend.title=element_blank(),
+          legend.position = 'none', 
+          complete = F)
 }
+```
+
+### Some geo-spatial data
+
+``` r
+library(tigris)
+options(tigris_use_cache = TRUE, tigris_class = "sf")
+
+nonx <- c('78', '69', '66', '72', '60', '15', '02')
+
+states_sf <- tigris::states(cb = TRUE) %>%
+  rename(state_code = STATEFP, state_abbrev = STUSPS)
+
+states <- states_sf %>%
+  data.frame() %>%
+  select(state_code, state_abbrev)
+  
+uscds <- tigris::congressional_districts(cb = TRUE) %>%
+  select(GEOID) %>%
+  mutate(CD_AREA = round(log(as.numeric(
+    gsub(' m^2]', '', sf::st_area(.)))), 2)) %>%
+  # calculate cd area --
+  
+  mutate(state_code = substr(GEOID, 1, 2),
+         district_code = substr(GEOID, 3, 4)) 
+
+laea <- sf::st_crs("+proj=laea +lat_0=30 +lon_0=-95") 
+# Lambert equal area
+#uscds  <- sf::st_transform(uscds , laea)
 ```
 
 On impeachment
@@ -44,8 +70,6 @@ Article I and against Article II in the 2020 impeachment trial of
 President Trump.)
 
 ``` r
-library(tidyverse)
-
 res <- Rvoteview::voteview_search("impeachment") %>%
   filter(chamber == 'Senate' & 
            date %in% c('2020-02-05', '1999-02-12')) %>%
@@ -208,7 +232,7 @@ last_dem %>%
   theme(legend.position = "none")
 ```
 
-![](all-the-newness_files/figure-markdown_github/unnamed-chunk-8-1.png)
+![](all-the-newness_files/figure-markdown_github/unnamed-chunk-11-1.png)
 
 ``` r
 library(sf)
@@ -226,18 +250,13 @@ uspols::xsf_TileOutv10 %>%
                           aes(label = state_abbrev), 
                           size = 3,
                           color = 'white') +
-  theme_minimal() +
+  theme_minimal() + theme_guide() + 
+  theme(legend.position = 'right') +
   ggthemes::scale_fill_economist()+
-  theme(axis.title.x=element_blank(),  ## add a simple theme --
-        axis.text.x=element_blank(),
-        axis.title.y=element_blank(),
-        axis.text.y=element_blank(),
-        legend.title=element_blank(),
-        legend.position = 'right') +
   labs(title = "Last vote for a Democratic Presidential candidate")
 ```
 
-![](all-the-newness_files/figure-markdown_github/unnamed-chunk-9-1.png)
+![](all-the-newness_files/figure-markdown_github/unnamed-chunk-12-1.png)
 
 ######### 
 
@@ -254,6 +273,27 @@ south <- c('SC', 'MS', 'FL',
            'OK', 'KE')
 ```
 
+MAP — with area calculation – ??
+
+``` r
+states_sf %>%
+  mutate(south = ifelse(state_abbrev %in% south, 
+                        'south', 'not-south')) %>%
+  sf::st_transform(laea) %>%
+  
+  ggplot() + 
+  geom_sf(aes(fill = south),
+           color = 'white', size = .15) +
+  ggthemes::scale_fill_few () + 
+  theme_minimal() + theme_guide() +
+  theme(panel.background = 
+          element_rect(fill = '#d5e4eb', color = NA)) +
+  labs(title = "The American South",
+       subtitle = "Dixie + KE + OK")
+```
+
+![](all-the-newness_files/figure-markdown_github/unnamed-chunk-14-1.png)
+
 ### Rvoteview: House composition
 
 *Obviously do this the once* –
@@ -264,7 +304,7 @@ vvo <- Rvoteview::download_metadata(type = 'members',
   filter(congress > 66 & chamber != 'President')
 ```
 
-    ## [1] "/tmp/Rtmp6A0rpC/Hall_members.csv"
+    ## [1] "/tmp/Rtmp5fAsXk/Hall_members.csv"
 
 ``` r
 house <- vvo %>%
@@ -313,7 +353,7 @@ house %>%
   labs(title="Republican percentage of House seats, since 1919") 
 ```
 
-![](all-the-newness_files/figure-markdown_github/unnamed-chunk-12-1.png)
+![](all-the-newness_files/figure-markdown_github/unnamed-chunk-16-1.png)
 
 A comparison of ideal points for members of the 111th, 113th & 115th
 Houses & Presidential vote margins for the 2008, 2012 & 2016 elections,
@@ -345,7 +385,7 @@ uspols::uspols_dk_pres %>%
   labs(title="Presidential Election Margins & DW-Nominate scores")
 ```
 
-![](all-the-newness_files/figure-markdown_github/unnamed-chunk-13-1.png)
+![](all-the-newness_files/figure-markdown_github/unnamed-chunk-17-1.png)
 
 ################## 
 
@@ -357,17 +397,84 @@ An excerpt from this letter sent by Alexander Hamilton to George
 Washington on 1792-08-18, and quoted by Representative Adam Schiff on
 2020-1-22 during the impeachment trial of Donald J. Trump. Accessed here
 via this Git Hub resource that makes the Founders Online database of
-writings/correspondances available as a collection of RDS files.
+writings/correspondences available as a collection of RDS files.
 
 An excerpt from this letter sent by Alexander Hamilton to George
 Washington on 1792-08-18, and quoted by Representative Adam Schiff on
 2020-1-22 during the impeachment trial of Donald J. Trump. Accessed here
 via this Git Hub resource that makes the Founders Online database of
-writings/correspondances available as a collection of RDS files.
+writings/correspondences available as a collection of RDS files.
 
 ``` r
 ffc_dir <- '/home/jtimm/jt_work/GitHub/git_projects/FoundersArchiveCorpus/data/'
 ```
+
+``` r
+setwd(ffc_dir)
+gfiles <- list.files(path = ffc_dir, 
+                     pattern = "rds", 
+                     recursive = TRUE) 
+
+ffc_tj <- readRDS(gfiles[6])
+
+qorp <- quanteda::corpus(ffc_tj)
+#quanteda::docnames(qorp) <- korpus$status_id
+
+quicknews::qnews_search_contexts(qorp = qorp, 
+                                        search = "scare-crow", 
+                                 ## need to check - should not require space
+                                        window = 10,
+                                        highlight_color = '|') %>%
+  #left_join(metas, by = c('docname' = 'link')) %>%
+  select(docname, context) %>%
+  #sample_n(7)  %>%
+  knitr::kable()
+```
+
+<table>
+<colgroup>
+<col style="width: 6%" />
+<col style="width: 93%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">docname</th>
+<th style="text-align: left;">context</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">text9164</td>
+<td style="text-align: left;">… that the impeachment it has provided is not even a <code>scare-crow</code> ; that such opinions as the one you combat , …</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">text10132</td>
+<td style="text-align: left;">… experience that impeachmt is an impracticable thing , a mere <code>scare-crow</code> , they consider themselves secure for life ; they sculk …</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">text10260</td>
+<td style="text-align: left;">… instead of that we have substituted impeachment , a mere <code>scare-crow</code> , &amp; which experience proves impractitiable . but from these …</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">text10277</td>
+<td style="text-align: left;">… beyond responsibility , impeachment being found in practice a mere <code>scare-crow</code> . yet a respect for the high parties in the …</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">text10690</td>
+<td style="text-align: left;">… an irresponsible body , ( for impeachment is scarcely a <code>scare-crow</code> ) working like gravity by night and by day , …</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">text11349</td>
+<td style="text-align: left;">… to no authority ( for impeachment is not even a <code>scare-crow</code> ) advancing with a noiseless and steady pace to the …</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">text12944</td>
+<td style="text-align: left;">… members , who would not hang me up as a <code>scare-crow</code> and enemy to a constitution on which many believe the …</td>
+</tr>
+</tbody>
+</table>
+
+------------------------------------------------------------------------
 
 ``` r
 setwd(ffc_dir)
@@ -439,32 +546,32 @@ quicknews::qnews_search_contexts(qorp = qorp,
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">text4119</td>
-<td style="text-align: left;">… cure the hurts of thousands , allay the fury of <code>faction</code> &amp; re-laurel your brow . I have partly contracted for …</td>
+<td style="text-align: left;">text22655</td>
+<td style="text-align: left;">… give reasonable hopes , I think , that anarchy and <code>faction</code> formerly the road to despotism , may now lead to …</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">text26305</td>
-<td style="text-align: left;">… as raked to publick view - and where the English <code>faction</code> domineering , would view with devouring pleasure whatever would tend …</td>
+<td style="text-align: left;">text1126</td>
+<td style="text-align: left;">… our national Prgress . Why do we hear of a <code>Faction</code> at New York attempting to lessen the Influence of the …</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">text710</td>
-<td style="text-align: left;">… still necessary to maintain the tranquility . The two great <code>factions</code> which divide this people unite but in one sentiment , …</td>
+<td style="text-align: left;">text8899</td>
+<td style="text-align: left;">… of the most dangerousfatal tendency . They serve to organise <code>Faction</code> to give it an artificial force ; and to put …</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">text21458</td>
-<td style="text-align: left;">… doubts that the expedition to Versailles was effected by a <code>faction</code> who had views of a very criminal nature . They …</td>
+<td style="text-align: left;">text6110</td>
+<td style="text-align: left;">… Philadelphia , January , 1793 ] That the spirit of <code>Faction</code> is a common and one of the most fatal diseases …</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">text722</td>
-<td style="text-align: left;">… , which has hitherto been pursued by the Government . <code>Faction</code> at home may bawl , disappointment may invenom , external …</td>
+<td style="text-align: left;">text8588</td>
+<td style="text-align: left;">… the Government would go on that the passions incident to <code>faction</code> the natural disease of popular Governments would grow and multiply …</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">text23965</td>
-<td style="text-align: left;">… in the Assembly . At the Head of the jacobine <code>Faction</code> is the Deputation of Bourdeaux , and that City is …</td>
+<td style="text-align: left;">text21366</td>
+<td style="text-align: left;">… Government ? Would not such a periodical revision engender pernicious <code>factions</code> that might not otherwise come into existence ; and agitate …</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">text6754</td>
-<td style="text-align: left;">… , to repell the Efforts of a restless , Spirited <code>Faction</code> , Enemies to our peace , Security , prosperity and …</td>
+<td style="text-align: left;">text26891</td>
+<td style="text-align: left;">… my fellow citizens . It was even Genevese of the <code>faction</code> of the Marseillois who disputed the honour of being their …</td>
 </tr>
 </tbody>
 </table>
@@ -491,17 +598,12 @@ uspols::xsf_TileOutv10 %>%
                           color='black') +
   scale_fill_distiller(palette = "RdBu", direction=-1) +
   facet_wrap(~year) +
-  theme_minimal()+
-  theme(axis.text.x=element_blank(),
-        axis.text.y=element_blank(),
-        axis.title.x=element_blank(),
-        axis.title.y=element_blank(),
-        legend.position = 'none') +
-labs(title = "Equal-area US State geometry",
-     caption = "Source: DailyKos")
+  theme_minimal()+ theme_guide() +
+  labs(title = "Equal-area US State geometry",
+       caption = "Source: DailyKos")
 ```
 
-![](all-the-newness_files/figure-markdown_github/unnamed-chunk-17-1.png)
+![](all-the-newness_files/figure-markdown_github/unnamed-chunk-22-1.png)
 
 ### Split ticket voting –
 
@@ -540,7 +642,7 @@ splits %>%
         axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
-![](all-the-newness_files/figure-markdown_github/unnamed-chunk-18-1.png)
+![](all-the-newness_files/figure-markdown_github/unnamed-chunk-23-1.png)
 
 Mapping splits quickly – need to add CLASS information – !!
 
@@ -549,7 +651,7 @@ distinctions are made here wrt party affiliation – Although a simple
 cross-tab/typology will show – !!
 
 ``` r
-cc <- uspols::xsf_TileOutv10 %>%
+uspols::xsf_TileOutv10 %>%
   left_join(splits, by = 'state_abbrev') %>% 
   ggplot() + 
   geom_sf(aes(fill = as.character(split)),
@@ -566,14 +668,12 @@ cc <- uspols::xsf_TileOutv10 %>%
   #scale_fill_distiller(palette = "RdBu", direction=-1) +
   ggthemes::scale_fill_few () + 
   facet_wrap(~year) +
-  theme_minimal()+
-  theme(axis.text.x=element_blank(),
-        axis.text.y=element_blank(),
-        axis.title.x=element_blank(),
-        axis.title.y=element_blank(),
-        legend.position = 'bottom') +
+  theme_minimal() + theme_guide() +
+  theme(legend.position = 'bottom') +
 labs(title = "Split tickets per General Election")
 ```
+
+![](all-the-newness_files/figure-markdown_github/unnamed-chunk-24-1.png)
 
 Age – briefly –
 ---------------
@@ -595,32 +695,10 @@ house %>%
   theme(legend.position = "none")
 ```
 
-![](all-the-newness_files/figure-markdown_github/unnamed-chunk-20-1.png)
+![](all-the-newness_files/figure-markdown_github/unnamed-chunk-25-1.png)
 
 Profiling congressional districts
 ---------------------------------
-
-``` r
-library(tigris); options(tigris_use_cache = TRUE, tigris_class = "sf")
-nonx <- c('78', '69', '66', '72', '60', '15', '02')
-
-states <- tigris::states(cb = TRUE) %>%
-  data.frame() %>%
-  select(STATEFP, STUSPS) %>%
-  rename(state_code = STATEFP, state_abbrev = STUSPS)
-
-uscds <- tigris::congressional_districts(cb = TRUE) %>%
-  select(GEOID) %>%
-  mutate(CD_AREA = round(log(as.numeric(gsub(' m^2]', '', sf::st_area(.)))), 2)) %>%
-  # calculate cd area --
-  
-  mutate(state_code = substr(GEOID, 1, 2),
-         district_code = substr(GEOID, 3, 4)) 
-
-laea <- sf::st_crs("+proj=laea +lat_0=30 +lon_0=-95") 
-# Lambert equal area
-#uscds  <- sf::st_transform(uscds , laea)
-```
 
 ``` r
 #Define census query
@@ -676,7 +754,7 @@ base_viz +
        subtitle = "New Mexico's 2nd District")
 ```
 
-![](all-the-newness_files/figure-markdown_github/unnamed-chunk-25-1.png)
+![](all-the-newness_files/figure-markdown_github/unnamed-chunk-28-1.png)
 
 Some notes on rural America
 ---------------------------
@@ -762,17 +840,14 @@ mplot %>%
   scale_fill_distiller(palette = "YlGnBu", 
                        direction = 1, 
                        limit = range(c(mins, maxs))) +
-  theme_minimal()+
-  theme(axis.text.x=element_blank(),
-        axis.text.y=element_blank(),
-        axis.title.x=element_blank(),
-        axis.title.y=element_blank(),
-        panel.background = element_rect(fill = '#d5e4eb', color = NA),
-        legend.position = 'bottom') +
-labs(title = "The American White Working Class")
+  theme_minimal() + theme_guide() +
+  theme(legend.position = 'bottom',
+        panel.background = element_rect(fill = '#d5e4eb', 
+                                        color = NA)) +
+  labs(title = "The American White Working Class")
 ```
 
-![](all-the-newness_files/figure-markdown_github/unnamed-chunk-28-1.png)
+![](all-the-newness_files/figure-markdown_github/unnamed-chunk-31-1.png)
 
 Zoom to cities –
 
@@ -796,22 +871,20 @@ plots <- lapply(sub_geos, function(x) {
     scale_fill_distiller(palette = "YlGnBu", 
                          direction = 1, 
                          limit = range(c(mins, maxs))) + #!
-    theme_minimal() +
-    theme(axis.title.x=element_blank(),
-          axis.text.x=element_blank(),
-          axis.title.y=element_blank(),
-          axis.text.y=element_blank(),
-          panel.background = element_rect(fill = '#d5e4eb', color = NA),
-          plot.title = element_text(size=9),
-          legend.position = 'none') +
-    ggtitle(gsub(',.*$', '', x))   })
+  theme_minimal() + theme_guide() +
+  theme(legend.position = 'bottom',
+        panel.background = element_rect(fill = '#d5e4eb', 
+                                        color = NA),
+        plot.title = element_text(size=9)) +
+      
+      ggtitle(gsub(',.*$', '', x))   })
   
 
 patchwork::wrap_plots(plots, ncol = 4) +
   patchwork::plot_annotation(title = 'In some American cities')
 ```
 
-![](all-the-newness_files/figure-markdown_github/unnamed-chunk-29-1.png)
+![](all-the-newness_files/figure-markdown_github/unnamed-chunk-32-1.png)
 
 ``` r
 set.seed(99)
@@ -839,7 +912,7 @@ white_ed %>%
        caption = 'Source: ACS 1-Year estimates, 2019, Table C15002')
 ```
 
-![](all-the-newness_files/figure-markdown_github/unnamed-chunk-30-1.png)
+![](all-the-newness_files/figure-markdown_github/unnamed-chunk-33-1.png)
 
 References
 ----------

@@ -1,5 +1,9 @@
-American political data & R (APD+R)
-===================================
+American political data & R
+===========================
+
+An open-source guide to … (apdr)
+
+*Updated: 2020-10-20*
 
 ![](all-the-newness_files/figure-markdown_github/collage1.png)
 
@@ -300,7 +304,7 @@ vvo <- Rvoteview::download_metadata(type = 'members',
   filter(congress > 66 & chamber != 'President')
 ```
 
-    ## [1] "/tmp/Rtmpq0iF2o/Hall_members.csv"
+    ## [1] "/tmp/Rtmppf3ZxX/Hall_members.csv"
 
 ``` r
 house <- vvo %>%

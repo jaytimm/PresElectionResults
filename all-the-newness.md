@@ -255,10 +255,11 @@ uspols::xsf_TileOutv10 %>%
 
 ![](all-the-newness_files/figure-markdown_github/unnamed-chunk-12-1.png)
 
-I Wish I ~~Was~~ Were in Dixie
+I wish I ~~was~~ were in Dixie
 ------------------------------
 
-> Per VoteView definition: The South = Dixie + Kentucky + Oklahoma.
+> Per VoteView definition: The South = Dixie + Kentucky + Oklahoma. Away
+> down south in Dixie.
 
 ``` r
 library(tidyverse)
@@ -299,7 +300,7 @@ vvo <- Rvoteview::download_metadata(type = 'members',
   filter(congress > 66 & chamber != 'President')
 ```
 
-    ## [1] "/tmp/Rtmp3c2440/Hall_members.csv"
+    ## [1] "/tmp/RtmpIShMNH/Hall_members.csv"
 
 ``` r
 house <- vvo %>%
@@ -525,8 +526,6 @@ Here, per presidential election, Party Senator !- Party President –
 Split means that folks from a given state sent a Senator from party X to
 the senate and sent electoral votes to President from party Y.
 
-*ADD Senate class and actual numbers underlying percentages* –
-
 ``` r
 splits <- uspols::uspols_wiki_pres %>% 
   rename(party_pres = party_win) %>%
@@ -535,7 +534,15 @@ splits <- uspols::uspols_wiki_pres %>%
   inner_join(uspols::uspols_medsl_senate, 
          by = c('year', 'state_abbrev')) %>%
   mutate(split = ifelse(party_pres != party_win, 1, 0)) 
+```
 
+*ADD Senate class and actual numbers underlying percentages* –
+
+``` r
+#splits1 <- splits %>%
+```
+
+``` r
 splits %>%
   group_by(year) %>%
   summarize(per_split = round(mean(split)*100, 1)) %>%
@@ -555,7 +562,7 @@ splits %>%
         axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
-![](all-the-newness_files/figure-markdown_github/unnamed-chunk-21-1.png)
+![](all-the-newness_files/figure-markdown_github/unnamed-chunk-23-1.png)
 
 Mapping splits quickly – need to add CLASS information – !!
 
@@ -589,10 +596,10 @@ uspols::xsf_TileOutv10 %>%
 labs(title = "Split tickets per General Election")
 ```
 
-![](all-the-newness_files/figure-markdown_github/unnamed-chunk-22-1.png)
+![](all-the-newness_files/figure-markdown_github/unnamed-chunk-24-1.png)
 
-Age – briefly –
----------------
+Age in the House
+----------------
 
 ``` r
 house %>%
@@ -611,7 +618,7 @@ house %>%
   theme(legend.position = "none")
 ```
 
-![](all-the-newness_files/figure-markdown_github/unnamed-chunk-23-1.png)
+![](all-the-newness_files/figure-markdown_github/unnamed-chunk-25-1.png)
 
 Profiling congressional districts
 ---------------------------------
@@ -644,6 +651,8 @@ gen <-  tidycensus::get_acs(geography = 'congressional district',
   select(state_abbrev, district_code, variable, estimate, moe)
 ```
 
+> A quick look at New Mexico’s 2nd district.
+
 ``` r
 base_viz <- gen %>% 
   ggplot( aes(estimate, fill = variable)) +
@@ -670,7 +679,7 @@ base_viz +
        subtitle = "New Mexico's 2nd District")
 ```
 
-![](all-the-newness_files/figure-markdown_github/unnamed-chunk-26-1.png)
+![](all-the-newness_files/figure-markdown_github/unnamed-chunk-28-1.png)
 
 Some notes on rural America
 ---------------------------
@@ -679,9 +688,12 @@ Swing states
 ------------
 
 ``` r
-swing_states <- c('Arizona', 'Flordia', 'Georgia', 
+swing_states <- c('Arizona', 'Florida', 'Georgia', 
                   'Michigan', 'Minnesota', 'North Carolina', 
-                  'Penssylvania', 'Wisconsin')
+                  'Pennsylvania', 'Wisconsin')
+
+swing <- c('AZ', 'FL', 'GA', 'MI', 
+           'MN', 'NC', 'PA', 'WI')
 ```
 
 The White working class
@@ -715,6 +727,7 @@ white_ed <- tidycensus::get_acs(geography = 'congressional district',
          white_working =
            white_pop -
            white_college,
+         
          non_white_college =
            all_m_xbach +
            all_w_xbach +
@@ -736,6 +749,29 @@ white_ed <- tidycensus::get_acs(geography = 'congressional district',
   left_join(states, by = c('state_code')) %>%
   select(GEOID, state_code, state_abbrev, 
          district_code, group, per, estimate)
+```
+
+### America’s silent plurality
+
+``` r
+white_ed %>%
+  mutate(swing = ifelse(state_abbrev %in% swing, 'swing', 'not-swing')) %>%
+  group_by(group) %>%
+  summarise(estimate = sum(estimate)) %>%
+  mutate(per = round(estimate/sum(estimate) * 100, 1),
+         estimate = format(estimate, big.mark = ',') ) %>%
+  knitr::kable()
+```
+
+| group               | estimate   |   per|
+|:--------------------|:-----------|-----:|
+| non\_white\_college | 21,955,537 |   9.7|
+| non\_white\_working | 61,012,235 |  26.9|
+| white\_college      | 53,172,694 |  23.4|
+| white\_working      | 91,059,837 |  40.1|
+
+``` r
+  #janitor::adorn_totals()
 ```
 
 White working map — via equal-area –
@@ -772,7 +808,7 @@ mplot %>%
   labs(title = "The American White Working Class")
 ```
 
-![](all-the-newness_files/figure-markdown_github/unnamed-chunk-30-1.png)
+![](all-the-newness_files/figure-markdown_github/unnamed-chunk-33-1.png)
 
 Zoom to cities –
 
@@ -808,7 +844,11 @@ patchwork::wrap_plots(plots, ncol = 4) +
   patchwork::plot_annotation(title = 'In some American cities')
 ```
 
-![](all-the-newness_files/figure-markdown_github/unnamed-chunk-31-1.png)
+![](all-the-newness_files/figure-markdown_github/unnamed-chunk-34-1.png)
+
+### White working profiles
+
+> Culture wars, identity politics, etc.
 
 ``` r
 set.seed(99)
@@ -836,7 +876,12 @@ white_ed %>%
        caption = 'Source: ACS 1-Year estimates, 2019, Table C15002')
 ```
 
-![](all-the-newness_files/figure-markdown_github/unnamed-chunk-32-1.png)
+![](all-the-newness_files/figure-markdown_github/unnamed-chunk-35-1.png)
+
+### Swing states & white working class
+
+White working class voters in swing states – and other American
+happenings –
 
 References
 ----------

@@ -1,7 +1,7 @@
 newness
 =======
 
-![](all-the-newness_files/figure-markdown_github/declaration.png)
+![](all-the-newness_files/figure-markdown_github/collage1.png)
 
 ``` r
 library(tidyverse)
@@ -300,7 +300,7 @@ vvo <- Rvoteview::download_metadata(type = 'members',
   filter(congress > 66 & chamber != 'President')
 ```
 
-    ## [1] "/tmp/RtmpIShMNH/Hall_members.csv"
+    ## [1] "/tmp/RtmpQSnjKp/Hall_members.csv"
 
 ``` r
 house <- vvo %>%
@@ -760,7 +760,7 @@ white_ed %>%
   summarise(estimate = sum(estimate)) %>%
   mutate(per = round(estimate/sum(estimate) * 100, 1),
          estimate = format(estimate, big.mark = ',') ) %>%
-  knitr::kable()
+  knitr::kable()  #janitor::adorn_totals()
 ```
 
 | group               | estimate   |   per|
@@ -769,10 +769,6 @@ white_ed %>%
 | non\_white\_working | 61,012,235 |  26.9|
 | white\_college      | 53,172,694 |  23.4|
 | white\_working      | 91,059,837 |  40.1|
-
-``` r
-  #janitor::adorn_totals()
-```
 
 White working map — via equal-area –
 

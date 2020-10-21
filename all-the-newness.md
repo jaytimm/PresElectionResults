@@ -1,5 +1,5 @@
-newness
-=======
+American political data & R (APD+R)
+===================================
 
 ![](all-the-newness_files/figure-markdown_github/collage1.png)
 
@@ -300,7 +300,7 @@ vvo <- Rvoteview::download_metadata(type = 'members',
   filter(congress > 66 & chamber != 'President')
 ```
 
-    ## [1] "/tmp/RtmpQSnjKp/Hall_members.csv"
+    ## [1] "/tmp/Rtmpq0iF2o/Hall_members.csv"
 
 ``` r
 house <- vvo %>%

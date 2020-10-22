@@ -202,22 +202,24 @@ uspols::uspols_twitter_handles %>% head() %>% knitr::kable()
 
 <table>
 <colgroup>
-<col style="width: 7%" />
+<col style="width: 6%" />
 <col style="width: 6%" />
 <col style="width: 4%" />
-<col style="width: 15%" />
 <col style="width: 9%" />
-<col style="width: 13%" />
-<col style="width: 10%" />
+<col style="width: 14%" />
+<col style="width: 8%" />
+<col style="width: 12%" />
+<col style="width: 9%" />
+<col style="width: 9%" />
 <col style="width: 9%" />
 <col style="width: 10%" />
-<col style="width: 11%" />
 </colgroup>
 <thead>
 <tr class="header">
 <th style="text-align: right;">congress</th>
 <th style="text-align: left;">chamber</th>
 <th style="text-align: right;">icpsr</th>
+<th style="text-align: left;">bioguide_id</th>
 <th style="text-align: left;">member</th>
 <th style="text-align: left;">party_name</th>
 <th style="text-align: left;">screen_name</th>
@@ -232,6 +234,7 @@ uspols::uspols_twitter_handles %>% head() %>% knitr::kable()
 <td style="text-align: right;">115</td>
 <td style="text-align: left;">House</td>
 <td style="text-align: right;">21565</td>
+<td style="text-align: left;">C001108</td>
 <td style="text-align: left;">James Comer</td>
 <td style="text-align: left;">republican</td>
 <td style="text-align: left;">KYCOMER</td>
@@ -244,6 +247,7 @@ uspols::uspols_twitter_handles %>% head() %>% knitr::kable()
 <td style="text-align: right;">115</td>
 <td style="text-align: left;">House</td>
 <td style="text-align: right;">21743</td>
+<td style="text-align: left;">R000608</td>
 <td style="text-align: left;">Jacky Rosen</td>
 <td style="text-align: left;">democratic</td>
 <td style="text-align: left;">REPJACKYROSEN</td>
@@ -256,6 +260,7 @@ uspols::uspols_twitter_handles %>% head() %>% knitr::kable()
 <td style="text-align: right;">115</td>
 <td style="text-align: left;">House</td>
 <td style="text-align: right;">21715</td>
+<td style="text-align: left;">E000297</td>
 <td style="text-align: left;">Adriano Espaillat</td>
 <td style="text-align: left;">democratic</td>
 <td style="text-align: left;">REPESPAILLAT</td>
@@ -268,6 +273,7 @@ uspols::uspols_twitter_handles %>% head() %>% knitr::kable()
 <td style="text-align: right;">115</td>
 <td style="text-align: left;">House</td>
 <td style="text-align: right;">21725</td>
+<td style="text-align: left;">H001074</td>
 <td style="text-align: left;">Trey Hollingsworth</td>
 <td style="text-align: left;">republican</td>
 <td style="text-align: left;">REPTREY</td>
@@ -280,6 +286,7 @@ uspols::uspols_twitter_handles %>% head() %>% knitr::kable()
 <td style="text-align: right;">115</td>
 <td style="text-align: left;">House</td>
 <td style="text-align: right;">21566</td>
+<td style="text-align: left;">E000296</td>
 <td style="text-align: left;">Dwight Evans</td>
 <td style="text-align: left;">democratic</td>
 <td style="text-align: left;">REPDWIGHTEVANS</td>
@@ -292,6 +299,7 @@ uspols::uspols_twitter_handles %>% head() %>% knitr::kable()
 <td style="text-align: right;">115</td>
 <td style="text-align: left;">House</td>
 <td style="text-align: right;">21734</td>
+<td style="text-align: left;">M001198</td>
 <td style="text-align: left;">Roger Marshall</td>
 <td style="text-align: left;">republican</td>
 <td style="text-align: left;">ROGERMARSHALLMD</td>
@@ -337,3 +345,63 @@ labs(title = "Equal-area US State geometry",
 ```
 
 ![](figure-markdown_github/unnamed-chunk-9-1.png)
+
+### § Wikiedia: Trump timeline
+
+``` r
+uspols::uspols_wiki_timeline() %>%
+  slice(1:2) %>%
+  knitr::kable()
+```
+
+<table>
+<colgroup>
+<col style="width: 0%" />
+<col style="width: 0%" />
+<col style="width: 98%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">quarter</th>
+<th style="text-align: left;">date</th>
+<th style="text-align: left;">Events</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">2017_Q1</td>
+<td style="text-align: left;">2017-01-20</td>
+<td style="text-align: left;">45th President Donald Trump and 48th Vice President Mike Pence take the Oath of Office.</td>
+</tr>
+</tbody>
+</table>
+
+President Trump proclaims a National Day of Patriotic Devotion.
+According to contested reports in December 2017, while seated at Trump’s
+inauguration speech, forthcoming National Security Advisor Michael Flynn
+texts a former business partner that Russian sanctions blocking a
+private Russian-backed plan to build nuclear plants in the Middle East
+will now be ‘ripped up’. State officials in Florida, Delaware and New
+York confirm that they have not received paperwork that the President
+has relinquished control over his companies despite earlier promises to
+do so. President Trump issues Executive Order 13765 to scale back parts
+of the Affordable Care Act. The Trump administration suspends an Obama
+administration cut to Federal Housing Authority mortgage insurance
+premiums. President Trump signs a bill waiving a rule that requires
+military personnel to wait seven years after retiring before serving in
+a civilian post, to allow retired Marine general James Mattis to become
+U.S. Secretary of Defense. The Senate confirms Jim Mattis as the 26th
+U.S. Secretary of Defense in a vote of 98–1 and retired Marine general
+John F. Kelly as the 5th U.S. Secretary of Homeland Security in a vote
+of 88–11. Protests damage parts of downtown Washington, D.C. and lead to
+217 arrests and 9 injuries. \| \|2017\_Q1 \|2017-01-21 \|Four million
+people around the world attend the Women’s March protesting the new
+administration. It was the largest single-day protest in U.S. history.
+President Trump and Vice President Pence speak at the CIA headquarters.
+White House Press Secretary Sean Spicer accuses the media of
+inaccurately representing the presidential inauguration attendance.
+Spicer does not take questions from the press and is criticized for
+making inaccurate statements. President Trump appoints Michael Flynn as
+National Security Advisor. Two U.S. drone strikes in Yemen’s Al Bayda
+Governorate are the first reported drone actions under the Trump
+administration. \|

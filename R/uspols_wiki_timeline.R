@@ -1,12 +1,9 @@
-
-
 #'
 #' @name uspols_wiki_timeline
 #' @import data.table
 #'
 #' @export
 #' @rdname uspols_wiki_timeline
-
 uspols_wiki_timeline <- function() {
 
   qs <- c('_Q1', '_Q2', '_Q3', '_Q4')
@@ -53,9 +50,13 @@ uspols_wiki_timeline <- function() {
 
 
   ## by bullet point --
-  y1 <- y[, lapply(.SD, function(x) unlist(data.table::tstrsplit(x, "\n", fixed=TRUE))),
-          by = date]#[!is.na(director)]
+  y1 <- y[,
+          lapply(.SD,
+                 function(x) unlist(
+                   data.table::tstrsplit(x, "\n", fixed=TRUE))),
+          by = date]
+
   y1[, bullet := seq_len(.N), by = date]
-  y1[, c('quarter', 'date', 'id', 'Events')]
+  y1[, c('quarter', 'date', 'bullet', 'Events')]
 
 }

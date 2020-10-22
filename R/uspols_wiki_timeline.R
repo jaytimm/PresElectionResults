@@ -66,6 +66,7 @@ uspols_wiki_timeline <- function() {
 
   y1[, bullet := seq_len(.N), by = date]
 
-  zz <- y1[, c('quarter', 'weekof', 'daypres', 'date', 'bullet', 'Events')]
+  zz <- y1[, c('quarter', 'weekof', 'daypres', 'date',
+               'dow', 'bullet', 'Events')]
   return(zz)
 }

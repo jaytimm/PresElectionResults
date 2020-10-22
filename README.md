@@ -361,7 +361,7 @@ pages](https://en.wikipedia.org/wiki/Timeline_of_the_Donald_Trump_presidency).
 timeline <- uspols::uspols_wiki_timeline() 
 
 timeline %>%
-  select(-weekof, -daypres) %>%
+  select(-weekof, -daypres, -dow) %>%
   filter(date == '2017-01-20') %>%
   knitr::kable() ## Day 1 -- 20 Jan 2017 --
 ```

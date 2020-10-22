@@ -55,7 +55,7 @@ uspols_wiki_timeline <- function() {
   y$weekof <- lubridate::floor_date(as.Date(y$date, "%Y-%m-%d"),
                                  unit = 'week')
 
-  y$day_pres <- 1:nrow(y)
+  y$daypres <- 1:nrow(y)
 
   ## by bullet point --
   y1 <- y[,
@@ -66,6 +66,6 @@ uspols_wiki_timeline <- function() {
 
   y1[, bullet := seq_len(.N), by = date]
 
-  zz <- y1[, c('quarter', 'weekof', 'day_pres', 'date', 'bullet', 'Events')]
+  zz <- y1[, c('quarter', 'weekof', 'daypres', 'date', 'bullet', 'Events')]
   return(zz)
 }

@@ -40,16 +40,22 @@ uspols_wiki_timeline <- function() {
     out$Date <- gsub('\n', ' ', out$Date)
     out$Date <- gsub(',', '', out$Date)
 
-    out$day <- gsub(' .*$', '', out$Date)
+    out$dow <- gsub(' .*$', '', out$Date)
 
     out$date <-  as.Date(paste0(gsub('_..', '', out$quarter),
                                 gsub('^.*day ', '', out$Date)),
                          "%Y %B %d")
-    out[, c('quarter', 'date', 'day', 'Events')]
+    out[, c('quarter', 'date', 'dow', 'Events')]
   })
 
   y <- data.table::rbindlist(timeline)
+  y <- y[order(y$date),]
 
+  ## add `week of` and day #
+  y$weekof <- lubridate::floor_date(as.Date(y$date, "%Y-%m-%d"),
+                                 unit = 'week')
+
+  y$day_pres <- 1:nrow(y)
 
   ## by bullet point --
   y1 <- y[,
@@ -59,6 +65,7 @@ uspols_wiki_timeline <- function() {
           by = date]
 
   y1[, bullet := seq_len(.N), by = date]
-  y1[, c('quarter', 'date', 'bullet', 'Events')]
 
+  zz <- y1[, c('quarter', 'weekof', 'day_pres', 'date', 'bullet', 'Events')]
+  return(zz)
 }

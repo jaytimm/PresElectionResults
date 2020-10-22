@@ -348,16 +348,80 @@ labs(title = "Equal-area US State geometry",
 
 ### § Wikiedia: Trump timeline
 
+Certainly not gospel, but enough information to get your bearings.
+`uspols_wiki_timeline()`.
+
 ``` r
 timeline <- uspols::uspols_wiki_timeline() 
 
-cat(timeline$Events[1])  ## Day 1 -- 20 Jan 2017 --
-## 45th President Donald Trump and 48th Vice President Mike Pence take the Oath of Office.
-## President Trump proclaims a National Day of Patriotic Devotion.
-## According to contested reports in December 2017, while seated at Trump's inauguration speech, forthcoming National Security Advisor Michael Flynn texts a former business partner that Russian sanctions blocking a private Russian-backed plan to build nuclear plants in the Middle East will now be 'ripped up'.
-## State officials in Florida, Delaware and New York confirm that they have not received paperwork that the President has relinquished control over his companies despite earlier promises to do so.
-## President Trump issues Executive Order 13765 to scale back parts of the Affordable Care Act.
-## The Trump administration suspends an Obama administration cut to Federal Housing Authority mortgage insurance premiums.
-## President Trump signs a bill waiving a rule that requires military personnel to wait seven years after retiring before serving in a civilian post, to allow retired Marine general James Mattis to become U.S. Secretary of Defense. The Senate confirms Jim Mattis as the 26th U.S. Secretary of Defense in a vote of 98–1 and retired Marine general John F. Kelly as the 5th U.S. Secretary of Homeland Security in a vote of 88–11.
-## Protests damage parts of downtown Washington, D.C. and lead to 217 arrests and 9 injuries.
+timeline %>%
+  filter(date == '2017-01-20') %>%
+  knitr::kable() ## Day 1 -- 20 Jan 2017 --
 ```
+
+<table>
+<colgroup>
+<col style="width: 1%" />
+<col style="width: 2%" />
+<col style="width: 1%" />
+<col style="width: 94%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">quarter</th>
+<th style="text-align: left;">date</th>
+<th style="text-align: right;">bullet</th>
+<th style="text-align: left;">Events</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">2017_Q1</td>
+<td style="text-align: left;">2017-01-20</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">45th President Donald Trump and 48th Vice President Mike Pence take the Oath of Office.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">2017_Q1</td>
+<td style="text-align: left;">2017-01-20</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">President Trump proclaims a National Day of Patriotic Devotion.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">2017_Q1</td>
+<td style="text-align: left;">2017-01-20</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">According to contested reports in December 2017, while seated at Trump’s inauguration speech, forthcoming National Security Advisor Michael Flynn texts a former business partner that Russian sanctions blocking a private Russian-backed plan to build nuclear plants in the Middle East will now be ‘ripped up’.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">2017_Q1</td>
+<td style="text-align: left;">2017-01-20</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: left;">State officials in Florida, Delaware and New York confirm that they have not received paperwork that the President has relinquished control over his companies despite earlier promises to do so.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">2017_Q1</td>
+<td style="text-align: left;">2017-01-20</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: left;">President Trump issues Executive Order 13765 to scale back parts of the Affordable Care Act.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">2017_Q1</td>
+<td style="text-align: left;">2017-01-20</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: left;">The Trump administration suspends an Obama administration cut to Federal Housing Authority mortgage insurance premiums.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">2017_Q1</td>
+<td style="text-align: left;">2017-01-20</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: left;">President Trump signs a bill waiving a rule that requires military personnel to wait seven years after retiring before serving in a civilian post, to allow retired Marine general James Mattis to become U.S. Secretary of Defense. The Senate confirms Jim Mattis as the 26th U.S. Secretary of Defense in a vote of 98–1 and retired Marine general John F. Kelly as the 5th U.S. Secretary of Homeland Security in a vote of 88–11.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">2017_Q1</td>
+<td style="text-align: left;">2017-01-20</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: left;">Protests damage parts of downtown Washington, D.C. and lead to 217 arrests and 9 injuries.</td>
+</tr>
+</tbody>
+</table>

@@ -349,59 +349,15 @@ labs(title = "Equal-area US State geometry",
 ### § Wikiedia: Trump timeline
 
 ``` r
-uspols::uspols_wiki_timeline() %>%
-  slice(1:2) %>%
-  knitr::kable()
+timeline <- uspols::uspols_wiki_timeline() 
+
+cat(timeline$Events[1])  ## Day 1 -- 20 Jan 2017 --
+## 45th President Donald Trump and 48th Vice President Mike Pence take the Oath of Office.
+## President Trump proclaims a National Day of Patriotic Devotion.
+## According to contested reports in December 2017, while seated at Trump's inauguration speech, forthcoming National Security Advisor Michael Flynn texts a former business partner that Russian sanctions blocking a private Russian-backed plan to build nuclear plants in the Middle East will now be 'ripped up'.
+## State officials in Florida, Delaware and New York confirm that they have not received paperwork that the President has relinquished control over his companies despite earlier promises to do so.
+## President Trump issues Executive Order 13765 to scale back parts of the Affordable Care Act.
+## The Trump administration suspends an Obama administration cut to Federal Housing Authority mortgage insurance premiums.
+## President Trump signs a bill waiving a rule that requires military personnel to wait seven years after retiring before serving in a civilian post, to allow retired Marine general James Mattis to become U.S. Secretary of Defense. The Senate confirms Jim Mattis as the 26th U.S. Secretary of Defense in a vote of 98–1 and retired Marine general John F. Kelly as the 5th U.S. Secretary of Homeland Security in a vote of 88–11.
+## Protests damage parts of downtown Washington, D.C. and lead to 217 arrests and 9 injuries.
 ```
-
-<table>
-<colgroup>
-<col style="width: 0%" />
-<col style="width: 0%" />
-<col style="width: 98%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;">quarter</th>
-<th style="text-align: left;">date</th>
-<th style="text-align: left;">Events</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">2017_Q1</td>
-<td style="text-align: left;">2017-01-20</td>
-<td style="text-align: left;">45th President Donald Trump and 48th Vice President Mike Pence take the Oath of Office.</td>
-</tr>
-</tbody>
-</table>
-
-President Trump proclaims a National Day of Patriotic Devotion.
-According to contested reports in December 2017, while seated at Trump’s
-inauguration speech, forthcoming National Security Advisor Michael Flynn
-texts a former business partner that Russian sanctions blocking a
-private Russian-backed plan to build nuclear plants in the Middle East
-will now be ‘ripped up’. State officials in Florida, Delaware and New
-York confirm that they have not received paperwork that the President
-has relinquished control over his companies despite earlier promises to
-do so. President Trump issues Executive Order 13765 to scale back parts
-of the Affordable Care Act. The Trump administration suspends an Obama
-administration cut to Federal Housing Authority mortgage insurance
-premiums. President Trump signs a bill waiving a rule that requires
-military personnel to wait seven years after retiring before serving in
-a civilian post, to allow retired Marine general James Mattis to become
-U.S. Secretary of Defense. The Senate confirms Jim Mattis as the 26th
-U.S. Secretary of Defense in a vote of 98–1 and retired Marine general
-John F. Kelly as the 5th U.S. Secretary of Homeland Security in a vote
-of 88–11. Protests damage parts of downtown Washington, D.C. and lead to
-217 arrests and 9 injuries. \| \|2017\_Q1 \|2017-01-21 \|Four million
-people around the world attend the Women’s March protesting the new
-administration. It was the largest single-day protest in U.S. history.
-President Trump and Vice President Pence speak at the CIA headquarters.
-White House Press Secretary Sean Spicer accuses the media of
-inaccurately representing the presidential inauguration attendance.
-Spicer does not take questions from the press and is criticized for
-making inaccurate statements. President Trump appoints Michael Flynn as
-National Security Advisor. Two U.S. drone strikes in Yemen’s Al Bayda
-Governorate are the first reported drone actions under the Trump
-administration. \|

@@ -49,5 +49,13 @@ uspols_wiki_timeline <- function() {
     out[, c('quarter', 'date', 'Events')]
   })
 
-  data.table::rbindlist(timeline)
+  y <- data.table::rbindlist(timeline)
+
+
+  ## by bullet point --
+  y1 <- y[, lapply(.SD, function(x) unlist(data.table::tstrsplit(x, "\n", fixed=TRUE))),
+          by = date]#[!is.na(director)]
+  y1[, bullet := seq_len(.N), by = date]
+  y1[, c('quarter', 'date', 'id', 'Events')]
+
 }

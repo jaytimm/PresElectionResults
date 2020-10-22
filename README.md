@@ -353,8 +353,9 @@ labs(title = "Equal-area US State geometry",
 `uspols_wiki_timeline()`: Certainly not gospel, but enough information
 to get your bearings. Events for a given day have been separated into
 distinct rows per Wikipedia bullet points, and utilized here just to
-break the text up some.
-[Wikipedia](https://en.wikipedia.org/wiki/Timeline_of_the_Donald_Trump_presidency).
+break the text up some. Function call scrapes event data summarized in
+[this cache of Wikipedia
+pages](https://en.wikipedia.org/wiki/Timeline_of_the_Donald_Trump_presidency).
 
 ``` r
 timeline <- uspols::uspols_wiki_timeline() 

@@ -346,10 +346,12 @@ labs(title = "Equal-area US State geometry",
 
 ![](figure-markdown_github/unnamed-chunk-9-1.png)
 
-### § Wikiedia: Trump timeline
+### § Wikipedia: Trump timeline
 
-Certainly not gospel, but enough information to get your bearings.
-`uspols_wiki_timeline()`.
+`uspols_wiki_timeline()`: Certainly not gospel, but enough information
+to get your bearings. Events for a given day have been separated into
+distinct rows per Wikipedia bullet points, and utilized here just to
+break the text up some.
 
 ``` r
 timeline <- uspols::uspols_wiki_timeline() 

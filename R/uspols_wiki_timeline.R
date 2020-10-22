@@ -2,6 +2,7 @@
 
 #'
 #' @name uspols_wiki_timeline
+#' @import data.table
 #'
 #' @export
 #' @rdname uspols_wiki_timeline
@@ -37,12 +38,16 @@ uspols_wiki_timeline <- function() {
     out$quarter <- allqs[x]
     out <- subset(out, !grepl('\\[edit', Date))
     out$Events <- gsub('\\[[0-9]+\\]', '', out$Events)
-    out$Date <-  as.Date(paste0(gsub('_..', '', out$quarter),
-                                gsub('^.*,', '', out$Date)),
+
+
+    out$date <- gsub('\n', ' ', out$Date)
+    out$date <- gsub(',', '', out$date)
+
+    out$date <-  as.Date(paste0(gsub('_..', '', out$quarter),
+                                gsub('^.*day ', '', out$date)),
                          "%Y %B %d")
-    out[, c('quarter', 'Date', 'Events')]
+    out[, c('quarter', 'date', 'Events')]
   })
 
-  y <- data.table::rbindlist(timeline)
-  y[order(y$Date)]
+  data.table::rbindlist(timeline)
 }

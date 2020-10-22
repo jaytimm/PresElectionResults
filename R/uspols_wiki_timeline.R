@@ -37,13 +37,15 @@ uspols_wiki_timeline <- function() {
     out$Events <- gsub('\\[[0-9]+\\]', '', out$Events)
 
 
-    out$date <- gsub('\n', ' ', out$Date)
-    out$date <- gsub(',', '', out$date)
+    out$Date <- gsub('\n', ' ', out$Date)
+    out$Date <- gsub(',', '', out$Date)
+
+    out$day <- gsub(' .*$', '', out$Date)
 
     out$date <-  as.Date(paste0(gsub('_..', '', out$quarter),
-                                gsub('^.*day ', '', out$date)),
+                                gsub('^.*day ', '', out$Date)),
                          "%Y %B %d")
-    out[, c('quarter', 'date', 'Events')]
+    out[, c('quarter', 'date', 'day', 'Events')]
   })
 
   y <- data.table::rbindlist(timeline)

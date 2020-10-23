@@ -1,9 +1,15 @@
 uspols
 ======
 
-A simple collection of American political data, including federal
-election returns and Twitter details for US lawmakers, aggregated from
+A collection of US political data, including (1) federal election
+returns, (2) Twitter details for US lawmakers, and (3) some relevant
+political boundary files as simple feature geometries. Aggregated from
 existing resources as an **R data package**.
+
+Additionally included: an R function for scraping the time-line for the
+Trump presidency from Wikipedia.
+
+Election returns include:
 
 > -   House and Senate returns by congressional district and state,
 >     respectively, (from 1976 onward) made available via
@@ -14,9 +20,9 @@ existing resources as an **R data package**.
 > -   Presidential returns by state for elections since 1864, scraped
 >     from Wikipedia.
 
-Formats have been tweaked ever so slightly for a uniform output across
-data sets. Links to R code demonstrate all details of work-flow from raw
-data to package table.
+Formats have been tweaked for uniform output across data sets. Links to
+R code demonstrate all details of work-flow from raw data to package
+table.
 
 Installation
 ------------
@@ -34,11 +40,9 @@ library(uspols)
 Details
 -------
 
-### § MEDSL: Senate returns by states (1976-)
+### §1 MEDSL: House returns by congressional district (1976-)
 
-### § MEDSL: House returns by congressional district (1976-)
-
-[Code](https://github.com/jaytimm/uspols/blob/master/medsl.md)
+[Code](https://github.com/jaytimm/uspols/blob/master/mds/medsl.md)
 
 ``` r
 uspols::uspols_medsl_house %>%
@@ -148,12 +152,18 @@ uspols::uspols_medsl_house %>%
 </tbody>
 </table>
 
+### §2 MEDSL: Senate returns by states (1976-)
+
+``` r
+uspols::uspols_medsl_senate
+```
+
 ------------------------------------------------------------------------
 
-### § DailyKos: Presidential returns by congressional district (2008-)
+### §3 DailyKos: Presidential returns by congressional district (2008-)
 
-[Code](https://github.com/jaytimm/uspols/blob/master/daily-kos.md) \|
-[DailyKos
+[Code](https://github.com/jaytimm/uspols/blob/master/mds/daily-kos.md)
+\| [DailyKos
 dataset](https://docs.google.com/spreadsheets/d/1zLNAuRqPauss00HDz4XbTH2HqsCzMe0pR8QmD1K8jk8/edit#gid=0)
 
 ``` r
@@ -172,9 +182,9 @@ uspols::uspols_dk_pres %>%
 
 ------------------------------------------------------------------------
 
-### § Wikipedia: Presidential returns by state (1864-)
+### §4 Wikipedia: Presidential returns by state (1864-)
 
-[Code](https://github.com/jaytimm/uspols/blob/master/wikipedia.md)
+[Code](https://github.com/jaytimm/uspols/blob/master/mds/wikipedia.md)
 
 ``` r
 uspols::uspols_wiki_pres %>%
@@ -192,7 +202,7 @@ uspols::uspols_wiki_pres %>%
 
 ------------------------------------------------------------------------
 
-### § Lawmaker Twitter handles: Congresses 115 & 116
+### §5 Lawmaker Twitter handles: Congresses 115 & 116
 
 [Code](https://github.com/jaytimm/twitter-and-us-lawmakers/blob/master/twitter-handles.md)
 
@@ -313,7 +323,7 @@ uspols::uspols_twitter_handles %>% head() %>% knitr::kable()
 
 ------------------------------------------------------------------------
 
-### § DailyKos: Simple feature geometries
+### §6 DailyKos: Simple feature geometries
 
 [States
 shapefile](https://docs.google.com/spreadsheets/d/1LrBXlqrtSZwyYOkpEEXFwQggvtR0bHHTxs9kq4kjOjw/edit#gid=1278876419)
@@ -344,11 +354,11 @@ labs(title = "Equal-area US State geometry",
      caption = "Source: DailyKos")
 ```
 
-![](figure-markdown_github/unnamed-chunk-9-1.png)
+![](figure-markdown_github/unnamed-chunk-10-1.png)
 
 ------------------------------------------------------------------------
 
-### § Wikipedia: Trump timeline
+### §7 Wikipedia: Trump timeline
 
 `uspols_wiki_timeline()`: Certainly not gospel, but enough information
 to get your bearings. Events for a given day have been separated into

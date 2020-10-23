@@ -6,10 +6,10 @@ returns, (2) Twitter details for US lawmakers, and (3) some relevant
 political boundary files as simple feature geometries. Aggregated from
 existing resources as an **R data package**.
 
-Additionally included: an R function for scraping the time-line for the
-Trump presidency from Wikipedia.
+Additionally included: an R function for scraping time-line details for
+the Trump presidency from Wikipedia.
 
-Election returns include:
+Election returns included in package:
 
 > -   House and Senate returns by congressional district and state,
 >     respectively, (from 1976 onward) made available via

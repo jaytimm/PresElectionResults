@@ -34,8 +34,8 @@ uspols_wiki_timeline <- function() {
     out <- data.table::rbindlist(Filter(function(i) nrow(i) >= 3, new))
     out$quarter <- allqs[x]
     out <- subset(out, !grepl('\\[edit', Date))
-    out$Events <- gsub('\\[[0-9]+\\]', '', out$Events)
-
+    out$Events <- gsub('\\[[0-9]+\\]', '', out$Events) ## Citations
+    out$Events <- gsub('\\[citation needed\\]', '', out$Events)
 
     out$Date <- gsub('\n', ' ', out$Date)
     out$Date <- gsub(',', '', out$Date)

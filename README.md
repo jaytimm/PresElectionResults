@@ -360,12 +360,12 @@ labs(title = "Equal-area US State geometry",
 
 ### §7 Wikipedia: Trump timeline
 
-`uspols_wiki_timeline()`: Certainly not gospel, but enough information
-to get your bearings. Events for a given day have been separated into
-distinct rows per Wikipedia bullet points, and utilized here just to
-break the text up some. Function call scrapes event data summarized in
-[this cache of Wikipedia
-pages](https://en.wikipedia.org/wiki/Timeline_of_the_Donald_Trump_presidency).
+`uspols_wiki_timeline()`: a simple function for scraping a
+Wikipedia-based [timeline of the Trump
+presidency](https://en.wikipedia.org/wiki/Timeline_of_the_Donald_Trump_presidency).
+The function returns an up-to-date table of daily administration
+happenings from 20 Jan 2017 onward. Event data have been structured for
+a uniform output.
 
 ``` r
 timeline <- uspols::uspols_wiki_timeline() 

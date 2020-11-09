@@ -8,10 +8,6 @@ existing resources, eg, [MEDSL](https://github.com/MEDSL) and
 [DailyKos](https://www.dailykos.com/stories/2018/2/21/1742660/-The-ultimate-Daily-Kos-Elections-guide-to-all-of-our-data-sets#1),
 and included here as an **R data package**.
 
-Formats have been tweaked for uniform output across data sets. Links to
-R code demonstrate all details of work-flow from raw data to package
-table.
-
 -   [Installation](#installation)
 -   [Details](#details)
     -   [MEDSL - House returns by congressional district -
@@ -22,11 +18,17 @@ table.
         2008-2016](#dailykos---presidential-returns-by-congressional-district---2008-2016)
     -   [Wikipedia - Presidential returns by state -
         1864-2016](#wikipedia---presidential-returns-by-state---1864-2016)
+    -   [MEDSL - Presidential returns by county -
+        2000-2016](#medsl---presidential-returns-by-county---2000-2016)
     -   [Lawmaker Twitter handles - Congresses 115 and
         116](#lawmaker-twitter-handles---congresses-115-and-116)
     -   [DailyKos - Simple feature
         geometries](#dailykos---simple-feature-geometries)
     -   [Wikipedia - Trump timeline](#wikipedia---trump-timeline)
+
+Formats have been tweaked for uniform output across data sets. Links to
+R code demonstrate all details of work-flow from raw data to package
+table.
 
 Installation
 ------------
@@ -45,8 +47,6 @@ Details
 -------
 
 ### MEDSL - House returns by congressional district - 1976-2016
-
-(1976-)
 
 [Code](https://github.com/jaytimm/uspols/blob/master/mds/medsl.md)
 
@@ -208,6 +208,15 @@ uspols::uspols_wiki_pres %>%
 
 ------------------------------------------------------------------------
 
+### MEDSL - Presidential returns by county - 2000-2016
+
+``` r
+# uspols::uspols_wiki_pres %>%
+#   head() %>% knitr::kable()
+```
+
+------------------------------------------------------------------------
+
 ### Lawmaker Twitter handles - Congresses 115 and 116
 
 [Code](https://github.com/jaytimm/twitter-and-us-lawmakers/blob/master/twitter-handles.md)
@@ -360,7 +369,7 @@ labs(title = "Equal-area US State geometry",
      caption = "Source: DailyKos")
 ```
 
-![](figure-markdown_github/unnamed-chunk-11-1.png)
+![](figure-markdown_github/unnamed-chunk-12-1.png)
 
 ------------------------------------------------------------------------
 

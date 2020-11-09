@@ -12,6 +12,8 @@ url1 <- 'https://raw.githubusercontent.com/MEDSL/county-returns/master/countypre
 county <- read.csv(url1)
 ```
 
+### § Uniform output
+
 ``` r
 # 2000 - MO - Kansas City -
 ## only one version -- 

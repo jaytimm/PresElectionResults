@@ -3,26 +3,29 @@ uspols
 
 A collection of US political data, including (1) federal election
 returns, (2) Twitter details for US lawmakers, and (3) some relevant
-political boundary files as simple feature geometries. Aggregated from
-existing resources as an **R data package**.
+political boundary files as simple feature geometries. Collated from
+existing resources, eg, [MEDSL](https://github.com/MEDSL) and
+[DailyKos](https://www.dailykos.com/stories/2018/2/21/1742660/-The-ultimate-Daily-Kos-Elections-guide-to-all-of-our-data-sets#1),
+and included here as an **R data package**. Formats have been tweaked
+for uniform output across data sets. Links to R code demonstrate all
+details of work-flow from raw data to package table.
 
-Additionally included: an R function for scraping time-line details for
-the Trump presidency from Wikipedia.
-
-Election returns included in package:
-
-> -   House and Senate returns by congressional district and state,
->     respectively, (from 1976 onward) made available via
->     [MEDSL](https://github.com/MEDSL).  
-> -   Presidential returns by congressional district for 2008, 2012, and
->     2016 elections via [The
->     DailyKos](https://www.dailykos.com/stories/2018/2/21/1742660/-The-ultimate-Daily-Kos-Elections-guide-to-all-of-our-data-sets#1).
-> -   Presidential returns by state for elections since 1864, scraped
->     from Wikipedia.
-
-Formats have been tweaked for uniform output across data sets. Links to
-R code demonstrate all details of work-flow from raw data to package
-table.
+-   [uspols](#uspols)
+    -   [Installation](#installation)
+    -   [Details](#details)
+        -   [MEDSL: House returns by congressional district
+            (1976-)](#medsl:-house-returns-by-congressional-district-(1976-))
+        -   [MEDSL: Senate returns by states
+            (1976-)](#medsl:-senate-returns-by-states-(1976-))
+        -   [DailyKos: Presidential returns by congressional district
+            (2008-)](#dailykos:-presidential-returns-by-congressional-district-(2008-))
+        -   [Wikipedia: Presidential returns by state
+            (1864-)](#wikipedia:-presidential-returns-by-state-(1864-))
+        -   [Lawmaker Twitter handles: Congresses 115 &
+            116](#lawmaker-twitter-handles:-congresses-115-&-116)
+        -   [DailyKos: Simple feature
+            geometries](#dailykos:-simple-feature-geometries)
+        -   [Wikipedia: Trump timeline](#wikipedia:-trump-timeline)
 
 Installation
 ------------
@@ -354,7 +357,7 @@ labs(title = "Equal-area US State geometry",
      caption = "Source: DailyKos")
 ```
 
-![](figure-markdown_github/unnamed-chunk-10-1.png)
+![](figure-markdown_github/unnamed-chunk-11-1.png)
 
 ------------------------------------------------------------------------
 

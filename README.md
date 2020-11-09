@@ -14,19 +14,19 @@ table.
 
 -   [Installation](#installation)
 -   [Details](#details)
-    -   [MEDSL House returns by congressional district
-        1976-2016](#medsl-house-returns-by-congressional-district-1976-2016)
+    -   [MEDSL House returns by congressional district -
+        1976-2016](#medsl-house-returns-by-congressional-district---1976-2016)
     -   [MEDSL Senate returns by states
         1976-2016](#medsl-senate-returns-by-states-1976-2016)
-    -   [DailyKos: Presidential returns by congressional district
-        (2008-)](#dailykos:-presidential-returns-by-congressional-district-(2008-))
-    -   [Wikipedia: Presidential returns by state
-        (1864-)](#wikipedia:-presidential-returns-by-state-(1864-))
-    -   [Lawmaker Twitter handles: Congresses 115 &
-        116](#lawmaker-twitter-handles:-congresses-115-&-116)
-    -   [DailyKos: Simple feature
-        geometries](#dailykos:-simple-feature-geometries)
-    -   [Wikipedia: Trump timeline](#wikipedia:-trump-timeline)
+    -   [DailyKos - Presidential returns by congressional district -
+        2008-2016](#dailykos---presidential-returns-by-congressional-district---2008-2016)
+    -   [Wikipedia - Presidential returns by state -
+        1864-2016](#wikipedia---presidential-returns-by-state---1864-2016)
+    -   [Lawmaker Twitter handles - Congresses 115 and
+        116](#lawmaker-twitter-handles---congresses-115-and-116)
+    -   [DailyKos - Simple feature
+        geometries](#dailykos---simple-feature-geometries)
+    -   [Wikipedia - Trump timeline](#wikipedia---trump-timeline)
 
 Installation
 ------------
@@ -44,7 +44,7 @@ library(uspols)
 Details
 -------
 
-### MEDSL House returns by congressional district 1976-2016
+### MEDSL House returns by congressional district - 1976-2016
 
 (1976-)
 
@@ -166,7 +166,7 @@ uspols::uspols_medsl_senate
 
 ------------------------------------------------------------------------
 
-### DailyKos: Presidential returns by congressional district (2008-)
+### DailyKos - Presidential returns by congressional district - 2008-2016
 
 [Code](https://github.com/jaytimm/uspols/blob/master/mds/daily-kos.md)
 \| [DailyKos
@@ -188,7 +188,7 @@ uspols::uspols_dk_pres %>%
 
 ------------------------------------------------------------------------
 
-### Wikipedia: Presidential returns by state (1864-)
+### Wikipedia - Presidential returns by state - 1864-2016
 
 [Code](https://github.com/jaytimm/uspols/blob/master/mds/wikipedia.md)
 
@@ -208,7 +208,7 @@ uspols::uspols_wiki_pres %>%
 
 ------------------------------------------------------------------------
 
-### Lawmaker Twitter handles: Congresses 115 & 116
+### Lawmaker Twitter handles - Congresses 115 and 116
 
 [Code](https://github.com/jaytimm/twitter-and-us-lawmakers/blob/master/twitter-handles.md)
 
@@ -329,7 +329,7 @@ uspols::uspols_twitter_handles %>% head() %>% knitr::kable()
 
 ------------------------------------------------------------------------
 
-### DailyKos: Simple feature geometries
+### DailyKos - Simple feature geometries
 
 [States
 shapefile](https://docs.google.com/spreadsheets/d/1LrBXlqrtSZwyYOkpEEXFwQggvtR0bHHTxs9kq4kjOjw/edit#gid=1278876419)
@@ -364,7 +364,7 @@ labs(title = "Equal-area US State geometry",
 
 ------------------------------------------------------------------------
 
-### Wikipedia: Trump timeline
+### Wikipedia - Trump timeline
 
 `uspols_wiki_timeline()`: a simple function for scraping a
 Wikipedia-based [timeline of the Trump

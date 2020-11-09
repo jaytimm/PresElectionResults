@@ -16,8 +16,8 @@ table.
 -   [Details](#details)
     -   [MEDSL House returns by congressional
         district](#medsl-house-returns-by-congressional-district)
-    -   [MEDSL: Senate returns by states
-        (1976-)](#medsl:-senate-returns-by-states-(1976-))
+    -   [MEDSL Senate returns by states
+        (1976-)](#medsl-senate-returns-by-states-(1976-))
     -   [DailyKos: Presidential returns by congressional district
         (2008-)](#dailykos:-presidential-returns-by-congressional-district-(2008-))
     -   [Wikipedia: Presidential returns by state
@@ -158,7 +158,7 @@ uspols::uspols_medsl_house %>%
 </tbody>
 </table>
 
-### MEDSL: Senate returns by states (1976-)
+### MEDSL Senate returns by states (1976-)
 
 ``` r
 uspols::uspols_medsl_senate

@@ -14,10 +14,10 @@ table.
 
 -   [Installation](#installation)
 -   [Details](#details)
-    -   [MEDSL House returns by congressional district -
-        1976-2016](#medsl-house-returns-by-congressional-district---1976-2016)
-    -   [MEDSL Senate returns by states
-        1976-2016](#medsl-senate-returns-by-states-1976-2016)
+    -   [MEDSL - House returns by congressional district -
+        1976-2016](#medsl---house-returns-by-congressional-district---1976-2016)
+    -   [MEDSL - Senate returns by states
+        1976-2016](#medsl---senate-returns-by-states-1976-2016)
     -   [DailyKos - Presidential returns by congressional district -
         2008-2016](#dailykos---presidential-returns-by-congressional-district---2008-2016)
     -   [Wikipedia - Presidential returns by state -
@@ -44,7 +44,7 @@ library(uspols)
 Details
 -------
 
-### MEDSL House returns by congressional district - 1976-2016
+### MEDSL - House returns by congressional district - 1976-2016
 
 (1976-)
 
@@ -158,7 +158,7 @@ uspols::uspols_medsl_house %>%
 </tbody>
 </table>
 
-### MEDSL Senate returns by states 1976-2016
+### MEDSL - Senate returns by states 1976-2016
 
 ``` r
 uspols::uspols_medsl_senate

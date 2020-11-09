@@ -12,8 +12,8 @@ and included here as an **R data package**.
 -   [Details](#details)
     -   [MEDSL - House returns by congressional district -
         1976-2016](#medsl---house-returns-by-congressional-district---1976-2016)
-    -   [MEDSL - Senate returns by states
-        1976-2016](#medsl---senate-returns-by-states-1976-2016)
+    -   [MEDSL - Senate returns by states -
+        1976-2016](#medsl---senate-returns-by-states---1976-2016)
     -   [DailyKos - Presidential returns by congressional district -
         2008-2016](#dailykos---presidential-returns-by-congressional-district---2008-2016)
     -   [Wikipedia - Presidential returns by state -
@@ -24,7 +24,8 @@ and included here as an **R data package**.
         116](#lawmaker-twitter-handles---congresses-115-and-116)
     -   [DailyKos - Simple feature
         geometries](#dailykos---simple-feature-geometries)
-    -   [Wikipedia - Trump timeline](#wikipedia---trump-timeline)
+    -   [Wikipedia - Timeline of the Trump
+        presidency](#wikipedia---timeline-of-the-trump-presidency)
 
 Formats have been tweaked for uniform output across data sets. Links to
 R code demonstrate all details of work-flow from raw data to package
@@ -158,7 +159,7 @@ uspols::uspols_medsl_house %>%
 </tbody>
 </table>
 
-### MEDSL - Senate returns by states 1976-2016
+### MEDSL - Senate returns by states - 1976-2016
 
 ``` r
 uspols::uspols_medsl_senate
@@ -210,9 +211,19 @@ uspols::uspols_wiki_pres %>%
 
 ### MEDSL - Presidential returns by county - 2000-2016
 
+[Code](https://github.com/jaytimm/uspols/blob/master/mds/medsl-county.md)
+
 ``` r
-# uspols::uspols_wiki_pres %>%
-#   head() %>% knitr::kable()
+uspols::medsl_pres_county %>% head() 
+## # A tibble: 6 x 8
+##    year state_abbrev county   FIPS winner         party_win  democrat republican
+##   <int> <chr>        <chr>   <int> <chr>          <chr>         <dbl>      <dbl>
+## 1  2000 AL           Autauga  1001 George W. Bush republican     28.7       69.7
+## 2  2000 AL           Baldwin  1003 George W. Bush republican     24.8       72.4
+## 3  2000 AL           Barbour  1005 Al Gore        democrat       49.9       49  
+## 4  2000 AL           Bibb     1007 George W. Bush republican     38.2       60.2
+## 5  2000 AL           Blount   1009 George W. Bush republican     27.7       70.5
+## 6  2000 AL           Bullock  1011 Al Gore        democrat       69.2       29.2
 ```
 
 ------------------------------------------------------------------------
@@ -373,7 +384,7 @@ labs(title = "Equal-area US State geometry",
 
 ------------------------------------------------------------------------
 
-### Wikipedia - Trump timeline
+### Wikipedia - Timeline of the Trump presidency
 
 `uspols_wiki_timeline()`: a simple function for scraping a
 Wikipedia-based [timeline of the Trump

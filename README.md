@@ -6,14 +6,16 @@ returns, (2) Twitter details for US lawmakers, and (3) some relevant
 political boundary files as simple feature geometries. Collated from
 existing resources, eg, [MEDSL](https://github.com/MEDSL) and
 [DailyKos](https://www.dailykos.com/stories/2018/2/21/1742660/-The-ultimate-Daily-Kos-Elections-guide-to-all-of-our-data-sets#1),
-and included here as an **R data package**. Formats have been tweaked
-for uniform output across data sets. Links to R code demonstrate all
-details of work-flow from raw data to package table.
+and included here as an **R data package**.
+
+Formats have been tweaked for uniform output across data sets. Links to
+R code demonstrate all details of work-flow from raw data to package
+table.
 
 -   [Installation](#installation)
 -   [Details](#details)
-    -   [MEDSL: House returns by congressional district
-        (1976-)](#medsl:-house-returns-by-congressional-district-(1976-))
+    -   [MEDSL House returns by congressional
+        district](#medsl-house-returns-by-congressional-district)
     -   [MEDSL: Senate returns by states
         (1976-)](#medsl:-senate-returns-by-states-(1976-))
     -   [DailyKos: Presidential returns by congressional district
@@ -42,7 +44,9 @@ library(uspols)
 Details
 -------
 
-### MEDSL: House returns by congressional district (1976-)
+### MEDSL House returns by congressional district
+
+(1976-)
 
 [Code](https://github.com/jaytimm/uspols/blob/master/mds/medsl.md)
 

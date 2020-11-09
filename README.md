@@ -10,22 +10,21 @@ and included here as an **R data package**. Formats have been tweaked
 for uniform output across data sets. Links to R code demonstrate all
 details of work-flow from raw data to package table.
 
--   [uspols](#uspols)
-    -   [Installation](#installation)
-    -   [Details](#details)
-        -   [MEDSL: House returns by congressional district
-            (1976-)](#medsl:-house-returns-by-congressional-district-(1976-))
-        -   [MEDSL: Senate returns by states
-            (1976-)](#medsl:-senate-returns-by-states-(1976-))
-        -   [DailyKos: Presidential returns by congressional district
-            (2008-)](#dailykos:-presidential-returns-by-congressional-district-(2008-))
-        -   [Wikipedia: Presidential returns by state
-            (1864-)](#wikipedia:-presidential-returns-by-state-(1864-))
-        -   [Lawmaker Twitter handles: Congresses 115 &
-            116](#lawmaker-twitter-handles:-congresses-115-&-116)
-        -   [DailyKos: Simple feature
-            geometries](#dailykos:-simple-feature-geometries)
-        -   [Wikipedia: Trump timeline](#wikipedia:-trump-timeline)
+-   [Installation](#installation)
+-   [Details](#details)
+    -   [MEDSL: House returns by congressional district
+        (1976-)](#medsl:-house-returns-by-congressional-district-(1976-))
+    -   [MEDSL: Senate returns by states
+        (1976-)](#medsl:-senate-returns-by-states-(1976-))
+    -   [DailyKos: Presidential returns by congressional district
+        (2008-)](#dailykos:-presidential-returns-by-congressional-district-(2008-))
+    -   [Wikipedia: Presidential returns by state
+        (1864-)](#wikipedia:-presidential-returns-by-state-(1864-))
+    -   [Lawmaker Twitter handles: Congresses 115 &
+        116](#lawmaker-twitter-handles:-congresses-115-&-116)
+    -   [DailyKos: Simple feature
+        geometries](#dailykos:-simple-feature-geometries)
+    -   [Wikipedia: Trump timeline](#wikipedia:-trump-timeline)
 
 Installation
 ------------
@@ -43,7 +42,7 @@ library(uspols)
 Details
 -------
 
-### §1 MEDSL: House returns by congressional district (1976-)
+### MEDSL: House returns by congressional district (1976-)
 
 [Code](https://github.com/jaytimm/uspols/blob/master/mds/medsl.md)
 
@@ -155,7 +154,7 @@ uspols::uspols_medsl_house %>%
 </tbody>
 </table>
 
-### §2 MEDSL: Senate returns by states (1976-)
+### MEDSL: Senate returns by states (1976-)
 
 ``` r
 uspols::uspols_medsl_senate
@@ -163,7 +162,7 @@ uspols::uspols_medsl_senate
 
 ------------------------------------------------------------------------
 
-### §3 DailyKos: Presidential returns by congressional district (2008-)
+### DailyKos: Presidential returns by congressional district (2008-)
 
 [Code](https://github.com/jaytimm/uspols/blob/master/mds/daily-kos.md)
 \| [DailyKos
@@ -185,7 +184,7 @@ uspols::uspols_dk_pres %>%
 
 ------------------------------------------------------------------------
 
-### §4 Wikipedia: Presidential returns by state (1864-)
+### Wikipedia: Presidential returns by state (1864-)
 
 [Code](https://github.com/jaytimm/uspols/blob/master/mds/wikipedia.md)
 
@@ -205,7 +204,7 @@ uspols::uspols_wiki_pres %>%
 
 ------------------------------------------------------------------------
 
-### §5 Lawmaker Twitter handles: Congresses 115 & 116
+### Lawmaker Twitter handles: Congresses 115 & 116
 
 [Code](https://github.com/jaytimm/twitter-and-us-lawmakers/blob/master/twitter-handles.md)
 
@@ -326,7 +325,7 @@ uspols::uspols_twitter_handles %>% head() %>% knitr::kable()
 
 ------------------------------------------------------------------------
 
-### §6 DailyKos: Simple feature geometries
+### DailyKos: Simple feature geometries
 
 [States
 shapefile](https://docs.google.com/spreadsheets/d/1LrBXlqrtSZwyYOkpEEXFwQggvtR0bHHTxs9kq4kjOjw/edit#gid=1278876419)
@@ -361,7 +360,7 @@ labs(title = "Equal-area US State geometry",
 
 ------------------------------------------------------------------------
 
-### §7 Wikipedia: Trump timeline
+### Wikipedia: Trump timeline
 
 `uspols_wiki_timeline()`: a simple function for scraping a
 Wikipedia-based [timeline of the Trump

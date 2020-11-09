@@ -11,9 +11,9 @@ and included here as an **R data package**.
 -   [Installation](#installation)
 -   [Details](#details)
     -   [MEDSL - House returns by congressional district -
-        1976-2016](#medsl---house-returns-by-congressional-district---1976-2016)
+        1976-2018](#medsl---house-returns-by-congressional-district---1976-2018)
     -   [MEDSL - Senate returns by state -
-        1976-2016](#medsl---senate-returns-by-state---1976-2016)
+        1976-2018](#medsl---senate-returns-by-state---1976-2018)
     -   [DailyKos - Presidential returns by congressional district -
         2008-2016](#dailykos---presidential-returns-by-congressional-district---2008-2016)
     -   [Wikipedia - Presidential returns by state -
@@ -47,7 +47,7 @@ library(uspols)
 Details
 -------
 
-### MEDSL - House returns by congressional district - 1976-2016
+### MEDSL - House returns by congressional district - 1976-2018
 
 [Code](https://github.com/jaytimm/uspols/blob/master/mds/medsl.md)
 
@@ -159,7 +159,7 @@ uspols::uspols_medsl_house %>%
 </tbody>
 </table>
 
-### MEDSL - Senate returns by state - 1976-2016
+### MEDSL - Senate returns by state - 1976-2018
 
 ``` r
 uspols::uspols_medsl_senate

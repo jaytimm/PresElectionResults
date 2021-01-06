@@ -48,24 +48,20 @@ uspols_wiki_timeline <- function() {
     out[, c('quarter', 'date', 'dow', 'Events')]
   })
 
+
+  ####
   y <- data.table::rbindlist(timeline)
   y <- y[order(y$date),]
 
   ## add `week of` and day #
   y$weekof <- lubridate::floor_date(as.Date(y$date, "%Y-%m-%d"),
                                  unit = 'week')
-
   y$daypres <- 1:nrow(y)
 
-  ## by bullet point --
-  y1 <- y[,
-          lapply(.SD,
-                 function(x) unlist(
-                   data.table::tstrsplit(x, "\n", fixed=TRUE))),
-          by = date]
 
-  y1[, bullet := seq_len(.N), by = date]
-
+  ## by bullet point -- BREAKS NOW --
+  y1 <- tidyr::separate_rows(y, Events, sep = '\n')
+  y1$bullet <- sequence(rle(as.character(y1$date))$lengths)
   zz <- y1[, c('quarter', 'weekof', 'daypres', 'date',
                'dow', 'bullet', 'Events')]
   return(zz)

@@ -10,6 +10,7 @@ uspols_wiki_timeline <- function() {
   ys <- c(2017:2020)
   allqs <- do.call(paste0, expand.grid(ys, qs))
 
+  allqs <- gsub('2020_Q4', '2020_Q4–January_2021', allqs)
 
   timeline <- lapply(1:length(allqs), function(x) {
 

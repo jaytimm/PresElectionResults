@@ -41,20 +41,29 @@ uspols_wiki_timeline <- function() {
 
     out$Date <- gsub('\n', ' ', out$Date)
     out$Date <- gsub(',', '', out$Date)
-
     out$dow <- gsub(' .*$', '', out$Date)
 
+    ## --
     out$date <-  as.Date(paste0(gsub('_.*$', '', out$quarter),
                                 gsub('^.*day ', '', out$Date)),
                          "%Y %B %d")
+
     out[, c('quarter', 'date', 'dow', 'Events')]
   })
 
 
+  # ##  --
+  # out$date <- ifelse(grepl('January_2021', out$quarter) &&
+  #                      lubridate::month(out$date) == 1,
+  #                    out$date + 365,
+  #                    out$date)
 
 
   ####
   y <- data.table::rbindlist(timeline)
+  y$cc <-  ifelse((grepl('January_2021', y$quarter) &
+                       lubridate::month(y$date) == 1), 'y', 'n')
+  y[y$cc == 'y']$date <- y[y$cc == 'y']$date + 366
   y <- y[order(y$date),]
 
   ## add `week of` and day #

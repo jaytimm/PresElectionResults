@@ -339,6 +339,7 @@ pres_by_state |> head() |> knitr::kable()
 
 ``` r
 fnames <- c('HexCDv30wm',
+            'HexSTv30wm',
             'TileInv10', 
             'TileOutv10')
 
@@ -356,6 +357,10 @@ xsf_HexCDv30wm <- sfs$HexCDv30 |>
          district_code = stringr::str_pad (district_code, 2, pad = 0)) |>
   select(GEOID, state, state_abbrev, district_code)
 
+
+xsf_HexSTv30wm <- sfs$HexSTv30wm |>
+  rename(state_abbrev = STATEAB, state = STATENAME)
+    
 xsf_TileInv10 <- sfs$TileInv10 %>% select(5:7) %>%
   rename(state_abbrev = State, state = StateName)
 
@@ -388,6 +393,7 @@ usethis::use_data(pres_by_cd, overwrite=TRUE)
 usethis::use_data(pres_by_state, overwrite=TRUE)
 
 usethis::use_data(xsf_HexCDv30wm, overwrite=TRUE)
+usethis::use_data(xsf_HexSTv30wm, overwrite=TRUE)
 usethis::use_data(xsf_TileInv10, overwrite=TRUE)
 usethis::use_data(xsf_TileOutv10, overwrite=TRUE)
 ```

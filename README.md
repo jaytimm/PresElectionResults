@@ -95,22 +95,48 @@ PresElectionResults::pres_by_state |>
 ### Equal-area simple feature geometries – Daily Kos
 
 ``` r
+# devtools::install_github("yutannihilation/ggsflabel")
 library(sf)
 library(ggplot2)
-uspols::xsf_TileOutv10 %>% 
+PresElectionResults::xsf_HexCDv30wm |> 
   ggplot() + 
   geom_sf(aes(fill = state),
-           color = 'white') +
-  geom_sf(data = uspols::xsf_TileInv10, 
-          fill = NA, 
-          show.legend = F, 
-          color="gray", 
-          lwd=.5) +
-  # ggsflabel::geom_sf_text(data = uspols::xsf_TileInv10,
+          color = 'white') +
+
+  # ggsflabel::geom_sf_text(data = xsf_HexCDv30,
   #                         aes(label = state_abbrev), 
   #                         size = 3,
   #                         color='black') +
   # scale_fill_distiller(palette = "RdBu", direction=-1) +
+  theme_minimal()+
+  theme(axis.text.x=element_blank(),
+        axis.text.y=element_blank(),
+        axis.title.x=element_blank(),
+        axis.title.y=element_blank(),
+        legend.position = 'none') +
+labs(title = "Equal-area US Congressional District geometry",
+     caption = "Source: DailyKos")
+```
+
+![](figure-markdown_github/unnamed-chunk-9-1.png)
+
+``` r
+library(sf)
+library(ggplot2)
+PresElectionResults::xsf_TileOutv10 %>% 
+  ggplot() + 
+  geom_sf(aes(fill = state),
+           color = 'white') +
+  geom_sf(data = PresElectionResults::xsf_TileInv10, 
+          fill = NA, 
+          show.legend = F, 
+          color="gray", 
+          lwd=.5) +
+  ggsflabel::geom_sf_text(data = PresElectionResults::xsf_TileInv10,
+                          aes(label = state_abbrev),
+                          size = 3,
+                          color='black') +
+  ##scale_fill_distiller(palette = "RdBu", direction=-1) +
   theme_minimal()+
   theme(axis.text.x=element_blank(),
         axis.text.y=element_blank(),

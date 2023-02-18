@@ -80,10 +80,11 @@ PresElectionResults::pres_by_state |>
 
 ### Equal-area simple feature geometries -- Daily Kos
 
-```{r eval=FALSE, fig.height=6.5, message=FALSE, warning=FALSE, include=FALSE}
+```{r fig.height=6.5, message=FALSE, warning=FALSE}
+# devtools::install_github("yutannihilation/ggsflabel")
 library(sf)
 library(ggplot2)
-xsf_HexCDv30wm |> 
+PresElectionResults::xsf_HexCDv30wm |> 
   ggplot() + 
   geom_sf(aes(fill = state),
           color = 'white') +
@@ -108,20 +109,20 @@ labs(title = "Equal-area US Congressional District geometry",
 ```{r fig.height=6.5, message=FALSE, warning=FALSE}
 library(sf)
 library(ggplot2)
-uspols::xsf_TileOutv10 %>% 
+PresElectionResults::xsf_TileOutv10 %>% 
   ggplot() + 
   geom_sf(aes(fill = state),
            color = 'white') +
-  geom_sf(data = uspols::xsf_TileInv10, 
+  geom_sf(data = PresElectionResults::xsf_TileInv10, 
           fill = NA, 
           show.legend = F, 
           color="gray", 
           lwd=.5) +
-  # ggsflabel::geom_sf_text(data = uspols::xsf_TileInv10,
-  #                         aes(label = state_abbrev), 
-  #                         size = 3,
-  #                         color='black') +
-  # scale_fill_distiller(palette = "RdBu", direction=-1) +
+  ggsflabel::geom_sf_text(data = PresElectionResults::xsf_TileInv10,
+                          aes(label = state_abbrev),
+                          size = 3,
+                          color='black') +
+  ##scale_fill_distiller(palette = "RdBu", direction=-1) +
   theme_minimal()+
   theme(axis.text.x=element_blank(),
         axis.text.y=element_blank(),

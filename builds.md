@@ -37,7 +37,7 @@ fns <- data.frame(year = c(1789,
                   z = 1)
 
 
-ecs0 <- ecs |>
+pres_results <- ecs |>
   mutate(popular_votes = as.integer(gsub(',', '', popular_votes)),
          popular_percentage = as.numeric(popular_percentage),
          candidate = gsub('[0-9]', '', candidate) |> trimws(),
@@ -61,7 +61,7 @@ ecs0 <- ecs |>
 ```
 
 ``` r
-ecs0 |> tail() |> knitr::kable()
+pres_results |> tail() |> knitr::kable()
 ```
 
 | year | candidate       | party      | electoral_votes | popular_votes | popular_percentage |
@@ -79,35 +79,42 @@ ecs0 |> tail() |> knitr::kable()
 
 ``` r
 library(dplyr)
-setwd('/home/jtimm/pCloudDrive/GitHub/packages/uspols/data-raw')
+setwd(dataraw_dir)
 county <- read.csv('countypres_2000-2020.csv')
 
-county1 <- county |>
+pres_by_county <- county |>
   filter(!is.na(candidatevotes)) |>
   filter(mode == 'TOTAL') |>
   select(-state, -office, -version, -totalvotes) |>
+  mutate(#party = tolower(party),
+         party = gsub('DEMOCRAT', 'DEMOCRATIC', party),
+         party = stringr::str_to_title(tolower(party)),
+         county_name = stringr::str_to_title(tolower(county_name))) |>
+  
   group_by(year, state_po, county_name, county_fips) |>
   mutate(per = round(candidatevotes/sum(candidatevotes)*100, 1)) |>
 
   mutate(winner =  candidate[which.max(candidatevotes)],
+         winner = stringr::str_to_title(tolower(winner)),
          party_win = party[which.max(candidatevotes)]) |>
   ungroup() |>
   select(-candidate, -candidatevotes, -mode) |>
-  filter(party %in% c('REPUBLICAN', 'DEMOCRAT')) |>
-  mutate(party = tolower(party)) |>
+  filter(party %in% c('Republican', 'Democratic')) |>
   tidyr::spread(party, per) |>
   rename(state_abbrev = state_po)
 
-county1 |> slice(1:5) |> knitr::kable()
+colnames(pres_by_county) <- colnames(pres_by_county) |> tolower() 
+
+pres_by_county |> slice(1:5) |> knitr::kable()
 ```
 
-| year | state_abbrev | county_name | county_fips | winner         | party_win  | democrat | republican |
-|----:|:----------|:---------|---------:|:-----------|:--------|-------:|--------:|
-| 2000 | AL           | AUTAUGA     |        1001 | GEORGE W. BUSH | REPUBLICAN |     28.7 |       69.7 |
-| 2000 | AL           | BALDWIN     |        1003 | GEORGE W. BUSH | REPUBLICAN |     24.8 |       72.4 |
-| 2000 | AL           | BARBOUR     |        1005 | AL GORE        | DEMOCRAT   |     49.9 |       49.0 |
-| 2000 | AL           | BIBB        |        1007 | GEORGE W. BUSH | REPUBLICAN |     38.2 |       60.2 |
-| 2000 | AL           | BLOUNT      |        1009 | GEORGE W. BUSH | REPUBLICAN |     27.7 |       70.5 |
+| year | state_abbrev | county_name | county_fips | winner         | party_win  | democratic | republican |
+|----:|:----------|:---------|---------:|:-----------|:--------|--------:|--------:|
+| 2000 | AL           | Autauga     |        1001 | George W. Bush | Republican |       28.7 |       69.7 |
+| 2000 | AL           | Baldwin     |        1003 | George W. Bush | Republican |       24.8 |       72.4 |
+| 2000 | AL           | Barbour     |        1005 | Al Gore        | Democratic |       49.9 |       49.0 |
+| 2000 | AL           | Bibb        |        1007 | George W. Bush | Republican |       38.2 |       60.2 |
+| 2000 | AL           | Blount      |        1009 | George W. Bush | Republican |       27.7 |       70.5 |
 
 ## Presidential returns by congressional district (2020) via Daily Kos
 
@@ -116,28 +123,31 @@ county1 |> slice(1:5) |> knitr::kable()
 ``` r
 uro <- 'https://docs.google.com/spreadsheets/d/1CKngqOp8fzU22JOlypoxNsxL6KSAH920Whc-rd7ebuM/edit?skip_itp2_check=true&pli=1#gid=1871835782'
 
-house <- gsheet::gsheet2tbl(uro) |> 
+pres_by_cd <- gsheet::gsheet2tbl(uro) |> 
   janitor::clean_names() |>
   mutate(winner = ifelse(biden > trump, 
                          'Joe Biden', 
                          'Donald Trump'),
          party_win = ifelse(biden > trump, 
                             'Democratic', 
-                            'Republican')) |> 
-  select(-margin) |>
+                            'Republican'),
+         house_rep_party = ifelse(party == '\\(D\\)', 'Democratic', 'Republican')) |> 
   rename(democrat = biden,
-         republican = trump)
+         republican = trump,
+         house_rep = incumbent) |>
+  select(district, house_rep, house_rep_party,
+         winner, party_win, democrat, republican)
   
-house |> slice(1:5) |> knitr::kable()
+pres_by_cd |> slice(1:5) |> knitr::kable()
 ```
 
-| district | incumbent       | party | democrat | republican | winner       | party_win  |
-|:--------|:--------------|:------|--------:|----------:|:------------|:----------|
-| AK-AL    | Mary Peltola    | \(D\) |     43.0 |       53.1 | Donald Trump | Republican |
-| AL-01    | Jerry Carl      | \(R\) |     35.3 |       63.6 | Donald Trump | Republican |
-| AL-02    | Barry Moore     | \(R\) |     34.8 |       64.2 | Donald Trump | Republican |
-| AL-03    | Mike Rogers     | \(R\) |     32.5 |       66.6 | Donald Trump | Republican |
-| AL-04    | Robert Aderholt | \(R\) |     18.6 |       80.4 | Donald Trump | Republican |
+| district | house_rep       | house_rep_party | winner       | party_win  | democrat | republican |
+|:-------|:-------------|:-------------|:----------|:---------|-------:|---------:|
+| AK-AL    | Mary Peltola    | Republican      | Donald Trump | Republican |     43.0 |       53.1 |
+| AL-01    | Jerry Carl      | Republican      | Donald Trump | Republican |     35.3 |       63.6 |
+| AL-02    | Barry Moore     | Republican      | Donald Trump | Republican |     34.8 |       64.2 |
+| AL-03    | Mike Rogers     | Republican      | Donald Trump | Republican |     32.5 |       66.6 |
+| AL-04    | Robert Aderholt | Republican      | Donald Trump | Republican |     18.6 |       80.4 |
 
 ## Presidential returns by state (1864-) via Wikipedia
 
@@ -241,7 +251,7 @@ states_correct1 <- states_correct |>
 ### Resolve wiki and britannica candidate names
 
 ``` r
-brits <- unique(ecs0$candidate)
+brits <- unique(pres_results$candidate)
 wikis <- unique(states_correct1$candidate)
 ## setdiff(brits, wikis)
 
@@ -268,7 +278,7 @@ cross <- xx |>
 ### Final election return table
 
 ``` r
-full <- states_correct1 |>
+pres_by_state <- states_correct1 |>
   mutate(vote_share = ifelse(year %in% c('1864', '1868') &
                                vote_share == 0,
                              NA, vote_share),
@@ -277,7 +287,7 @@ full <- states_correct1 |>
   
   ## na.omit() |> 
   left_join(cross, by = c('candidate' = 'wiki')) |>
-  left_join(ecs0 |> select(year:party), by = c('brit' = 'candidate',
+  left_join(pres_results |> select(year:party), by = c('brit' = 'candidate',
                                                 'year' = 'year')) |>
   mutate(party = ifelse(candidate %in% c('Al Smith', 'Adlai Stevenson II'),
                         'Democratic', party)) |>
@@ -309,7 +319,7 @@ full <- states_correct1 |>
 ```
 
 ``` r
-full |> head() |> knitr::kable()
+pres_by_state |> head() |> knitr::kable()
 ```
 
 | year | state_abbrev | winner              | party_win  | Democratic | Other | Republican |
@@ -320,3 +330,5 @@ full |> head() |> knitr::kable()
 | 1864 | IA           | Abraham Lincoln     | Republican |      36.92 |    NA |      63.08 |
 | 1864 | IL           | Abraham Lincoln     | Republican |      45.60 |    NA |      54.40 |
 | 1864 | IN           | Abraham Lincoln     | Republican |      46.50 |    NA |      53.50 |
+
+## Equal-area shapes via Daily Kos

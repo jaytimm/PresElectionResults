@@ -9,7 +9,8 @@ output:
 # PresElectionResults
 
 ```{r include=FALSE}
-git_dir <- "/home/jtimm/pCloudDrive/GitHub/packages/uspols/data-raw"
+dataraw_dir <- "/home/jtimm/pCloudDrive/GitHub/packages/uspols/data-raw"
+data_dir <- '/home/jtimm/pCloudDrive/GitHub/packages/uspols/data/'
 ```
 
 
@@ -52,7 +53,7 @@ fns <- data.frame(year = c(1789,
                   z = 1)
 
 
-ecs0 <- ecs |>
+pres_results <- ecs |>
   mutate(popular_votes = as.integer(gsub(',', '', popular_votes)),
          popular_percentage = as.numeric(popular_percentage),
          candidate = gsub('[0-9]', '', candidate) |> trimws(),
@@ -77,7 +78,7 @@ ecs0 <- ecs |>
 
 
 ```{r}
-ecs0 |> tail() |> knitr::kable()
+pres_results |> tail() |> knitr::kable()
 ```
 
 
@@ -89,26 +90,33 @@ https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/VOQCHQ
 
 ```{r}
 library(dplyr)
-setwd('/home/jtimm/pCloudDrive/GitHub/packages/uspols/data-raw')
+setwd(dataraw_dir)
 county <- read.csv('countypres_2000-2020.csv')
 
-county1 <- county |>
+pres_by_county <- county |>
   filter(!is.na(candidatevotes)) |>
   filter(mode == 'TOTAL') |>
   select(-state, -office, -version, -totalvotes) |>
+  mutate(#party = tolower(party),
+         party = gsub('DEMOCRAT', 'DEMOCRATIC', party),
+         party = stringr::str_to_title(tolower(party)),
+         county_name = stringr::str_to_title(tolower(county_name))) |>
+  
   group_by(year, state_po, county_name, county_fips) |>
   mutate(per = round(candidatevotes/sum(candidatevotes)*100, 1)) |>
 
   mutate(winner =  candidate[which.max(candidatevotes)],
+         winner = stringr::str_to_title(tolower(winner)),
          party_win = party[which.max(candidatevotes)]) |>
   ungroup() |>
   select(-candidate, -candidatevotes, -mode) |>
-  filter(party %in% c('REPUBLICAN', 'DEMOCRAT')) |>
-  mutate(party = tolower(party)) |>
+  filter(party %in% c('Republican', 'Democratic')) |>
   tidyr::spread(party, per) |>
   rename(state_abbrev = state_po)
 
-county1 |> slice(1:5) |> knitr::kable()
+colnames(pres_by_county) <- colnames(pres_by_county) |> tolower() 
+
+pres_by_county |> slice(1:5) |> knitr::kable()
 ```
 
 
@@ -120,19 +128,22 @@ county1 |> slice(1:5) |> knitr::kable()
 ```{r}
 uro <- 'https://docs.google.com/spreadsheets/d/1CKngqOp8fzU22JOlypoxNsxL6KSAH920Whc-rd7ebuM/edit?skip_itp2_check=true&pli=1#gid=1871835782'
 
-house <- gsheet::gsheet2tbl(uro) |> 
+pres_by_cd <- gsheet::gsheet2tbl(uro) |> 
   janitor::clean_names() |>
   mutate(winner = ifelse(biden > trump, 
                          'Joe Biden', 
                          'Donald Trump'),
          party_win = ifelse(biden > trump, 
                             'Democratic', 
-                            'Republican')) |> 
-  select(-margin) |>
+                            'Republican'),
+         house_rep_party = ifelse(party == '\\(D\\)', 'Democratic', 'Republican')) |> 
   rename(democrat = biden,
-         republican = trump)
+         republican = trump,
+         house_rep = incumbent) |>
+  select(district, house_rep, house_rep_party,
+         winner, party_win, democrat, republican)
   
-house |> slice(1:5) |> knitr::kable()
+pres_by_cd |> slice(1:5) |> knitr::kable()
 ```
 
 
@@ -245,7 +256,7 @@ states_correct1 <- states_correct |>
 ### Resolve wiki and britannica candidate names
 
 ```{r}
-brits <- unique(ecs0$candidate)
+brits <- unique(pres_results$candidate)
 wikis <- unique(states_correct1$candidate)
 ## setdiff(brits, wikis)
 
@@ -275,7 +286,7 @@ cross <- xx |>
 ### Final election return table
 
 ```{r message=FALSE, warning=FALSE}
-full <- states_correct1 |>
+pres_by_state <- states_correct1 |>
   mutate(vote_share = ifelse(year %in% c('1864', '1868') &
                                vote_share == 0,
                              NA, vote_share),
@@ -284,7 +295,7 @@ full <- states_correct1 |>
   
   ## na.omit() |> 
   left_join(cross, by = c('candidate' = 'wiki')) |>
-  left_join(ecs0 |> select(year:party), by = c('brit' = 'candidate',
+  left_join(pres_results |> select(year:party), by = c('brit' = 'candidate',
                                                 'year' = 'year')) |>
   mutate(party = ifelse(candidate %in% c('Al Smith', 'Adlai Stevenson II'),
                         'Democratic', party)) |>
@@ -317,14 +328,17 @@ full <- states_correct1 |>
 
 
 ```{r}
-full |> head() |> knitr::kable()
+pres_by_state |> head() |> knitr::kable()
 ```
 
 
 
-```{r eval=FALSE, include=FALSE}
-uspols_wiki_pres <- full1
-setwd('/home/jtimm/pCloudDrive/GitHub/packages/uspols/data/')
-#devtools::use_data(uspols_dk, overwrite=TRUE)
-usethis::use_data(uspols_wiki_pres, overwrite=TRUE)
+## Equal-area shapes via Daily Kos
+
+```{r eval=TRUE, include=FALSE}
+setwd(data_dir)
+usethis::use_data(pres_results, overwrite=TRUE)
+usethis::use_data(pres_by_county, overwrite=TRUE)
+usethis::use_data(pres_by_cd, overwrite=TRUE)
+usethis::use_data(pres_by_state, overwrite=TRUE)
 ```

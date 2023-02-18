@@ -349,7 +349,6 @@ sfs <- lapply(fnames, function(x) {
   sf::st_read(dsn = paste0(dataraw_dir, x),
                      layer = x,
                      quiet = TRUE) })
-
 names(sfs) <- fnames
 
 xsf_HexCDv30wm <- sfs$HexCDv30 |>
@@ -364,6 +363,8 @@ xsf_TileInv10 <- sfs$TileInv10 %>% select(5:7) %>%
 
 xsf_TileOutv10 <- sfs$TileOutv10 %>% select(5:7) %>%
   rename(state_abbrev = State, state = StateName)
+
+xsf_HexCDv30wm |> head()
 ```
 
 
@@ -394,7 +395,7 @@ labs(title = "Equal-area US State geometry",
 
 ## Output
 
-```{r eval=TRUE, include=TRUE}
+```{r eval=TRUE, message=FALSE, warning=FALSE, include=TRUE}
 setwd(data_dir)
 usethis::use_data(pres_results, overwrite=TRUE)
 usethis::use_data(pres_by_county, overwrite=TRUE)

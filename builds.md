@@ -347,7 +347,6 @@ sfs <- lapply(fnames, function(x) {
   sf::st_read(dsn = paste0(dataraw_dir, x),
                      layer = x,
                      quiet = TRUE) })
-
 names(sfs) <- fnames
 
 xsf_HexCDv30wm <- sfs$HexCDv30 |>
@@ -362,7 +361,22 @@ xsf_TileInv10 <- sfs$TileInv10 %>% select(5:7) %>%
 
 xsf_TileOutv10 <- sfs$TileOutv10 %>% select(5:7) %>%
   rename(state_abbrev = State, state = StateName)
+
+xsf_HexCDv30wm |> head()
 ```
+
+    ## Simple feature collection with 6 features and 4 fields
+    ## Geometry type: MULTIPOLYGON
+    ## Dimension:     XY
+    ## Bounding box:  xmin: -13819550 ymin: 3690450 xmax: -12273940 ymax: 5728412
+    ## Projected CRS: Mercator_2SP
+    ##   GEOID      state state_abbrev district_code                       geometry
+    ## 1  0402    Arizona           AZ            02 MULTIPOLYGON (((-12305045 3...
+    ## 2  0405    Arizona           AZ            05 MULTIPOLYGON (((-12305045 3...
+    ## 3  0606 California           CA            06 MULTIPOLYGON (((-13696151 5...
+    ## 4  0608 California           CA            08 MULTIPOLYGON (((-13588284 5...
+    ## 5  0610 California           CA            10 MULTIPOLYGON (((-13694006 5...
+    ## 6  0614 California           CA            14 MULTIPOLYGON (((-13685745 5...
 
 ``` r
 library(sf)
@@ -394,50 +408,11 @@ labs(title = "Equal-area US State geometry",
 ``` r
 setwd(data_dir)
 usethis::use_data(pres_results, overwrite=TRUE)
-```
-
-    ## ✔ Setting active project to '/home/jtimm/pCloudDrive/GitHub/packages/uspols'
-    ## ✔ Saving 'pres_results' to 'data/pres_results.rda'
-    ## • Document your data (see 'https://r-pkgs.org/data.html')
-
-``` r
 usethis::use_data(pres_by_county, overwrite=TRUE)
-```
-
-    ## ✔ Saving 'pres_by_county' to 'data/pres_by_county.rda'
-    ## • Document your data (see 'https://r-pkgs.org/data.html')
-
-``` r
 usethis::use_data(pres_by_cd, overwrite=TRUE)
-```
-
-    ## ✔ Saving 'pres_by_cd' to 'data/pres_by_cd.rda'
-    ## • Document your data (see 'https://r-pkgs.org/data.html')
-
-``` r
 usethis::use_data(pres_by_state, overwrite=TRUE)
-```
 
-    ## ✔ Saving 'pres_by_state' to 'data/pres_by_state.rda'
-    ## • Document your data (see 'https://r-pkgs.org/data.html')
-
-``` r
 usethis::use_data(xsf_HexCDv30wm, overwrite=TRUE)
-```
-
-    ## ✔ Saving 'xsf_HexCDv30wm' to 'data/xsf_HexCDv30wm.rda'
-    ## • Document your data (see 'https://r-pkgs.org/data.html')
-
-``` r
 usethis::use_data(xsf_TileInv10, overwrite=TRUE)
-```
-
-    ## ✔ Saving 'xsf_TileInv10' to 'data/xsf_TileInv10.rda'
-    ## • Document your data (see 'https://r-pkgs.org/data.html')
-
-``` r
 usethis::use_data(xsf_TileOutv10, overwrite=TRUE)
 ```
-
-    ## ✔ Saving 'xsf_TileOutv10' to 'data/xsf_TileOutv10.rda'
-    ## • Document your data (see 'https://r-pkgs.org/data.html')

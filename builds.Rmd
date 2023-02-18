@@ -77,11 +77,6 @@ pres_results <- ecs |>
 ```
 
 
-```{r}
-pres_results |> tail() |> knitr::kable()
-```
-
-
 
 ## Presidential election results by county (2000-2020) -- MIT Election Data and Science Lab (MEDSL)
 
@@ -115,8 +110,6 @@ pres_by_county <- county |>
   rename(state_abbrev = state_po)
 
 colnames(pres_by_county) <- colnames(pres_by_county) |> tolower() 
-
-pres_by_county |> slice(1:5) |> knitr::kable()
 ```
 
 
@@ -142,8 +135,6 @@ pres_by_cd <- gsheet::gsheet2tbl(uro) |>
          house_rep = incumbent) |>
   select(district, house_rep, house_rep_party,
          winner, party_win, democrat, republican)
-  
-pres_by_cd |> slice(1:5) |> knitr::kable()
 ```
 
 
@@ -328,10 +319,6 @@ pres_by_state <- states_correct1 |>
 colnames(pres_by_state) <- colnames(pres_by_state) |> tolower() 
 ```
 
-
-```{r}
-pres_by_state |> head() |> knitr::kable()
-```
 
 
 

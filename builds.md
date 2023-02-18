@@ -332,3 +332,62 @@ pres_by_state |> head() |> knitr::kable()
 | 1864 | IN           | Abraham Lincoln     | Republican |      46.50 |    NA |      53.50 |
 
 ## Equal-area shapes via Daily Kos
+
+<https://docs.google.com/spreadsheets/d/1LrBXlqrtSZwyYOkpEEXFwQggvtR0bHHTxs9kq4kjOjw/edit#gid=0>
+
+``` r
+fnames <- c('HexCDv30wm',
+            'TileInv10', 
+            'TileOutv10')
+
+sfs <- lapply(fnames, function(x) {
+
+  sf::st_read(dsn = paste0(dataraw_dir, x),
+                     layer = x,
+                     quiet = TRUE) })
+
+names(sfs) <- fnames
+
+xsf_HexCDv30wm <- sfs$HexCDv30 |>
+  rename(state_abbrev = STATEAB,
+         state = STATENAME) |>
+  mutate(district_code = gsub('[A-Z][A-Z]', 0, CDLABEL),
+         district_code = stringr::str_pad (district_code, 2, pad = 0)) |>
+  select(GEOID, state, state_abbrev, district_code)
+
+xsf_TileInv10 <- sfs$TileInv10 %>% select(5:7) %>%
+  rename(state_abbrev = State, state = StateName)
+
+xsf_TileOutv10 <- sfs$TileOutv10 %>% select(5:7) %>%
+  rename(state_abbrev = State, state = StateName)
+```
+
+``` r
+library(sf)
+```
+
+    ## Linking to GEOS 3.10.2, GDAL 3.4.1, PROJ 8.2.1; sf_use_s2() is TRUE
+
+``` r
+library(ggplot2)
+xsf_HexCDv30wm |> 
+  ggplot() + 
+  geom_sf(aes(fill = state),
+          color = 'white') +
+
+  # ggsflabel::geom_sf_text(data = xsf_HexCDv30,
+  #                         aes(label = state_abbrev), 
+  #                         size = 3,
+  #                         color='black') +
+  # scale_fill_distiller(palette = "RdBu", direction=-1) +
+  theme_minimal()+
+  theme(axis.text.x=element_blank(),
+        axis.text.y=element_blank(),
+        axis.title.x=element_blank(),
+        axis.title.y=element_blank(),
+        legend.position = 'none') +
+labs(title = "Equal-area US State geometry",
+     caption = "Source: DailyKos")
+```
+
+![](builds_files/figure-markdown_github/unnamed-chunk-14-1.png)

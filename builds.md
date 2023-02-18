@@ -316,13 +316,15 @@ pres_by_state <- states_correct1 |>
   
   unique() |>
   tidyr::spread(party, vote_share)
+
+colnames(pres_by_state) <- colnames(pres_by_state) |> tolower() 
 ```
 
 ``` r
 pres_by_state |> head() |> knitr::kable()
 ```
 
-| year | state_abbrev | winner              | party_win  | Democratic | Other | Republican |
+| year | state_abbrev | winner              | party_win  | democratic | other | republican |
 |-----:|:-----------|:-----------------|:----------|----------:|-----:|----------:|
 | 1864 | CA           | Abraham Lincoln     | Republican |      41.40 |    NA |      58.60 |
 | 1864 | CT           | Abraham Lincoln     | Republican |      48.62 |    NA |      51.38 |
@@ -364,11 +366,6 @@ xsf_TileOutv10 <- sfs$TileOutv10 %>% select(5:7) %>%
 
 ``` r
 library(sf)
-```
-
-    ## Linking to GEOS 3.10.2, GDAL 3.4.1, PROJ 8.2.1; sf_use_s2() is TRUE
-
-``` r
 library(ggplot2)
 xsf_HexCDv30wm |> 
   ggplot() + 
@@ -391,3 +388,56 @@ labs(title = "Equal-area US State geometry",
 ```
 
 ![](builds_files/figure-markdown_github/unnamed-chunk-14-1.png)
+
+## Output
+
+``` r
+setwd(data_dir)
+usethis::use_data(pres_results, overwrite=TRUE)
+```
+
+    ## ✔ Setting active project to '/home/jtimm/pCloudDrive/GitHub/packages/uspols'
+    ## ✔ Saving 'pres_results' to 'data/pres_results.rda'
+    ## • Document your data (see 'https://r-pkgs.org/data.html')
+
+``` r
+usethis::use_data(pres_by_county, overwrite=TRUE)
+```
+
+    ## ✔ Saving 'pres_by_county' to 'data/pres_by_county.rda'
+    ## • Document your data (see 'https://r-pkgs.org/data.html')
+
+``` r
+usethis::use_data(pres_by_cd, overwrite=TRUE)
+```
+
+    ## ✔ Saving 'pres_by_cd' to 'data/pres_by_cd.rda'
+    ## • Document your data (see 'https://r-pkgs.org/data.html')
+
+``` r
+usethis::use_data(pres_by_state, overwrite=TRUE)
+```
+
+    ## ✔ Saving 'pres_by_state' to 'data/pres_by_state.rda'
+    ## • Document your data (see 'https://r-pkgs.org/data.html')
+
+``` r
+usethis::use_data(xsf_HexCDv30wm, overwrite=TRUE)
+```
+
+    ## ✔ Saving 'xsf_HexCDv30wm' to 'data/xsf_HexCDv30wm.rda'
+    ## • Document your data (see 'https://r-pkgs.org/data.html')
+
+``` r
+usethis::use_data(xsf_TileInv10, overwrite=TRUE)
+```
+
+    ## ✔ Saving 'xsf_TileInv10' to 'data/xsf_TileInv10.rda'
+    ## • Document your data (see 'https://r-pkgs.org/data.html')
+
+``` r
+usethis::use_data(xsf_TileOutv10, overwrite=TRUE)
+```
+
+    ## ✔ Saving 'xsf_TileOutv10' to 'data/xsf_TileOutv10.rda'
+    ## • Document your data (see 'https://r-pkgs.org/data.html')

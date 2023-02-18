@@ -324,6 +324,8 @@ pres_by_state <- states_correct1 |>
   
   unique() |>
   tidyr::spread(party, vote_share)
+
+colnames(pres_by_state) <- colnames(pres_by_state) |> tolower() 
 ```
 
 
@@ -365,7 +367,7 @@ xsf_TileOutv10 <- sfs$TileOutv10 %>% select(5:7) %>%
 ```
 
 
-```{r fig.height=6}
+```{r fig.height=6, message=FALSE, warning=FALSE}
 library(sf)
 library(ggplot2)
 xsf_HexCDv30wm |> 
@@ -390,8 +392,9 @@ labs(title = "Equal-area US State geometry",
 
 
 
+## Output
 
-```{r eval=TRUE, include=FALSE}
+```{r eval=TRUE, include=TRUE}
 setwd(data_dir)
 usethis::use_data(pres_results, overwrite=TRUE)
 usethis::use_data(pres_by_county, overwrite=TRUE)

@@ -6,8 +6,6 @@ library(dplyr)
 
 ## United States Presidential Election Results via Britannica
 
-> Historical, With elctoral counts – from Britannica.com
-
 ``` r
 url99 <- 'https://www.britannica.com/topic/United-States-Presidential-Election-Results-1788863'
 
@@ -111,9 +109,9 @@ county1 |> slice(1:5) |> knitr::kable()
 | 2000 | AL           | BIBB        |        1007 | GEORGE W. BUSH | REPUBLICAN |     38.2 |       60.2 |
 | 2000 | AL           | BLOUNT      |        1009 | GEORGE W. BUSH | REPUBLICAN |     27.7 |       70.5 |
 
-## Presidential returns by congressional (2020) via Daily Kos
+## Presidential returns by congressional district (2020) via Daily Kos
 
-> Recast – to new districts –
+> Per 2022 district boundaries
 
 ``` r
 uro <- 'https://docs.google.com/spreadsheets/d/1CKngqOp8fzU22JOlypoxNsxL6KSAH920Whc-rd7ebuM/edit?skip_itp2_check=true&pli=1#gid=1871835782'
@@ -291,7 +289,8 @@ full <- states_correct1 |>
   filter(year >= 1864, !is.na(vote_share)) |>
   select(-votes) |>
   unique() |>
-  mutate(party = ifelse(!party %in% c('Democratic', 'Republican'), 'Other', party)) |>
+  mutate(party = ifelse(!party %in% c('Democratic', 'Republican'), 
+                        'Other', party)) |>
   
   group_by(year, state_abbrev, party) |>
   filter(vote_share == max(vote_share)) |>

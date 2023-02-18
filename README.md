@@ -1,19 +1,18 @@
 # PresElectionResults
 
 -   [Installation](#installation)
--   [Details](#details)
-    -   [Presidential Election Results –
-        Britannica](#presidential-election-results----britannica)
-    -   [Presidential election results by county (2000-2020) – MIT
-        Election Data and Science Lab
-        (MEDSL)](#presidential-election-results-by-county-(2000-2020)----mit-election-data-and-science-lab-(medsl))
-    -   [Presidential election results by congressional district (2020)
-        – Daily
-        Kos](#presidential-election-results-by-congressional-district-(2020)----daily-kos)
-    -   [Presidential election results by state (1864-) –
-        Wikipedia](#presidential-election-results-by-state-(1864-)----wikipedia)
-    -   [Equal-area simple feature geometries – Daily
-        Kos](#equal-area-simple-feature-geometries----daily-kos)
+-   [Presidential Election Results via
+    Britannica](#presidential-election-results-via-britannica)
+-   [Presidential election results by county (2000-2020) via MIT
+    Election Data and Science Lab
+    (MEDSL)](#presidential-election-results-by-county-(2000-2020)-via-mit-election-data-and-science-lab-(medsl))
+-   [Presidential election results by congressional district (2020) via
+    Daily
+    Kos](#presidential-election-results-by-congressional-district-(2020)-via-daily-kos)
+-   [Presidential election results by state (1864-) via
+    Wikipedia](#presidential-election-results-by-state-(1864-)-via-wikipedia)
+-   [Equal-area simple feature geometries via Daily
+    Kos](#equal-area-simple-feature-geometries-via-daily-kos)
 
 ## Installation
 
@@ -26,9 +25,7 @@ library(devtools)
 devtools::install_github("jaytimm/PresElectionResults")
 ```
 
-## Details
-
-### Presidential Election Results – Britannica
+## Presidential Election Results via Britannica
 
 ``` r
 PresElectionResults::pres_results |>
@@ -44,7 +41,7 @@ PresElectionResults::pres_results |>
 | 2020 | Joe Biden       | Democratic |             306 |      81268924 |               51.3 |
 | 2020 | Donald Trump    | Republican |             232 |      74216154 |               46.9 |
 
-### Presidential election results by county (2000-2020) – MIT Election Data and Science Lab (MEDSL)
+## Presidential election results by county (2000-2020) via MIT Election Data and Science Lab (MEDSL)
 
 ``` r
 PresElectionResults::pres_by_county |>
@@ -60,7 +57,7 @@ PresElectionResults::pres_by_county |>
 | 2000 | AL           | Blount      |        1009 | George W. Bush | Republican |       27.7 |       70.5 |
 | 2000 | AL           | Bullock     |        1011 | Al Gore        | Democratic |       69.2 |       29.2 |
 
-### Presidential election results by congressional district (2020) – Daily Kos
+## Presidential election results by congressional district (2020) via Daily Kos
 
 ``` r
 PresElectionResults::pres_by_cd |>
@@ -76,7 +73,7 @@ PresElectionResults::pres_by_cd |>
 | AL-04    | Robert Aderholt | Republican      | Donald Trump | Republican |     18.6 |       80.4 |
 | AL-05    | Dale Strong     | Republican      | Donald Trump | Republican |     35.6 |       62.7 |
 
-### Presidential election results by state (1864-) – Wikipedia
+## Presidential election results by state (1864-) via Wikipedia
 
 ``` r
 PresElectionResults::pres_by_state |>
@@ -92,7 +89,7 @@ PresElectionResults::pres_by_state |>
 | 1864 | IL           | Abraham Lincoln     | Republican |      45.60 |    NA |      54.40 |
 | 1864 | IN           | Abraham Lincoln     | Republican |      46.50 |    NA |      53.50 |
 
-### Equal-area simple feature geometries – Daily Kos
+## Equal-area simple feature geometries via Daily Kos
 
 ``` r
 # devtools::install_github("yutannihilation/ggsflabel")

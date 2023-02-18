@@ -43,9 +43,8 @@ devtools::install_github("jaytimm/PresElectionResults")
 ```
 
 
-## Details 
 
-### Presidential Election Results -- Britannica
+## Presidential Election Results via Britannica
 
 ```{r}
 PresElectionResults::pres_results |>
@@ -53,7 +52,7 @@ PresElectionResults::pres_results |>
 ```
 
 
-### Presidential election results by county (2000-2020) -- MIT Election Data and Science Lab (MEDSL)
+## Presidential election results by county (2000-2020) via MIT Election Data and Science Lab (MEDSL)
 
 ```{r}
 PresElectionResults::pres_by_county |>
@@ -61,7 +60,7 @@ PresElectionResults::pres_by_county |>
 ```
 
 
-### Presidential election results by congressional district (2020) -- Daily Kos
+## Presidential election results by congressional district (2020) via Daily Kos
 
 ```{r}
 PresElectionResults::pres_by_cd |>
@@ -69,7 +68,7 @@ PresElectionResults::pres_by_cd |>
 ```
 
 
-### Presidential election results by state (1864-) -- Wikipedia
+## Presidential election results by state (1864-) via Wikipedia
 
 ```{r}
 PresElectionResults::pres_by_state |>
@@ -78,7 +77,7 @@ PresElectionResults::pres_by_state |>
 
 
 
-### Equal-area simple feature geometries -- Daily Kos
+## Equal-area simple feature geometries via Daily Kos
 
 ```{r fig.height=6.5, message=FALSE, warning=FALSE}
 # devtools::install_github("yutannihilation/ggsflabel")

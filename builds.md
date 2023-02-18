@@ -4,7 +4,7 @@
 library(dplyr)
 ```
 
-## United States Presidential Election Results via Britannica
+## Presidential Election Results – Britannica
 
 ``` r
 url99 <- 'https://www.britannica.com/topic/United-States-Presidential-Election-Results-1788863'
@@ -73,7 +73,7 @@ pres_results |> tail() |> knitr::kable()
 | 2020 | Joe Biden       | Democratic |             306 |      81268924 |               51.3 |
 | 2020 | Donald Trump    | Republican |             232 |      74216154 |               46.9 |
 
-## Presidential returns by county (2000-2020) via MIT Election Data and Science Lab (MEDSL)
+## Presidential returnselection results by county (2000-2020) – MIT Election Data and Science Lab (MEDSL)
 
 <https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/VOQCHQ>
 
@@ -116,7 +116,7 @@ pres_by_county |> slice(1:5) |> knitr::kable()
 | 2000 | AL           | Bibb        |        1007 | George W. Bush | Republican |       38.2 |       60.2 |
 | 2000 | AL           | Blount      |        1009 | George W. Bush | Republican |       27.7 |       70.5 |
 
-## Presidential returns by congressional district (2020) via Daily Kos
+## Presidential election results by congressional district (2020) – Daily Kos
 
 > Per 2022 district boundaries
 
@@ -149,7 +149,7 @@ pres_by_cd |> slice(1:5) |> knitr::kable()
 | AL-03    | Mike Rogers     | Republican      | Donald Trump | Republican |     32.5 |       66.6 |
 | AL-04    | Robert Aderholt | Republican      | Donald Trump | Republican |     18.6 |       80.4 |
 
-## Presidential returns by state (1864-) via Wikipedia
+## Presidential election results by state (1864-) – Wikipedia
 
 ### Table details by state
 
@@ -333,7 +333,7 @@ pres_by_state |> head() |> knitr::kable()
 | 1864 | IL           | Abraham Lincoln     | Republican |      45.60 |    NA |      54.40 |
 | 1864 | IN           | Abraham Lincoln     | Republican |      46.50 |    NA |      53.50 |
 
-## Equal-area shapes via Daily Kos
+## Equal-area simple feature geometries – Daily Kos
 
 <https://docs.google.com/spreadsheets/d/1LrBXlqrtSZwyYOkpEEXFwQggvtR0bHHTxs9kq4kjOjw/edit#gid=0>
 

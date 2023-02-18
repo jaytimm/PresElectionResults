@@ -19,7 +19,7 @@ library(dplyr)
 ```
 
 
-## United States Presidential Election Results via Britannica
+## Presidential Election Results -- Britannica
 
 
 ```{r message=FALSE, warning=FALSE}
@@ -83,7 +83,7 @@ pres_results |> tail() |> knitr::kable()
 
 
 
-## Presidential returns by county (2000-2020) via MIT Election Data and Science Lab (MEDSL)
+## Presidential returnselection results by county (2000-2020) -- MIT Election Data and Science Lab (MEDSL)
 
 https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/VOQCHQ
 
@@ -121,7 +121,7 @@ pres_by_county |> slice(1:5) |> knitr::kable()
 
 
 
-## Presidential returns by congressional district (2020) via Daily Kos
+## Presidential election results by congressional district (2020) -- Daily Kos
 
 > Per 2022 district boundaries
 
@@ -148,7 +148,7 @@ pres_by_cd |> slice(1:5) |> knitr::kable()
 
 
 
-## Presidential returns by state (1864-) via Wikipedia
+## Presidential election results by state (1864-) -- Wikipedia
 
 ### Table details by state
 
@@ -335,7 +335,7 @@ pres_by_state |> head() |> knitr::kable()
 
 
 
-## Equal-area shapes via Daily Kos
+## Equal-area simple feature geometries -- Daily Kos
 
 https://docs.google.com/spreadsheets/d/1LrBXlqrtSZwyYOkpEEXFwQggvtR0bHHTxs9kq4kjOjw/edit#gid=0
 

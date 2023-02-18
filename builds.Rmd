@@ -9,8 +9,8 @@ output:
 # PresElectionResults
 
 ```{r include=FALSE}
-dataraw_dir <- "/home/jtimm/pCloudDrive/GitHub/packages/uspols/data-raw/"
-data_dir <- '/home/jtimm/pCloudDrive/GitHub/packages/uspols/data/'
+dataraw_dir <- "/home/jtimm/pCloudDrive/GitHub/packages/PresElectionResults/data-raw/"
+data_dir <- '/home/jtimm/pCloudDrive/GitHub/packages/PresElectionResults/data/'
 ```
 
 
@@ -83,7 +83,7 @@ pres_results |> tail() |> knitr::kable()
 
 
 
-## Presidential returnselection results by county (2000-2020) -- MIT Election Data and Science Lab (MEDSL)
+## Presidential election results by county (2000-2020) -- MIT Election Data and Science Lab (MEDSL)
 
 https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/VOQCHQ
 
@@ -367,29 +367,6 @@ xsf_TileOutv10 <- sfs$TileOutv10 %>% select(5:7) %>%
 xsf_HexCDv30wm |> head()
 ```
 
-
-```{r fig.height=6, message=FALSE, warning=FALSE}
-library(sf)
-library(ggplot2)
-xsf_HexCDv30wm |> 
-  ggplot() + 
-  geom_sf(aes(fill = state),
-          color = 'white') +
-
-  # ggsflabel::geom_sf_text(data = xsf_HexCDv30,
-  #                         aes(label = state_abbrev), 
-  #                         size = 3,
-  #                         color='black') +
-  # scale_fill_distiller(palette = "RdBu", direction=-1) +
-  theme_minimal()+
-  theme(axis.text.x=element_blank(),
-        axis.text.y=element_blank(),
-        axis.title.x=element_blank(),
-        axis.title.y=element_blank(),
-        legend.position = 'none') +
-labs(title = "Equal-area US State geometry",
-     caption = "Source: DailyKos")
-```
 
 
 

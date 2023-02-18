@@ -73,7 +73,7 @@ pres_results |> tail() |> knitr::kable()
 | 2020 | Joe Biden       | Democratic |             306 |      81268924 |               51.3 |
 | 2020 | Donald Trump    | Republican |             232 |      74216154 |               46.9 |
 
-## Presidential returnselection results by county (2000-2020) – MIT Election Data and Science Lab (MEDSL)
+## Presidential election results by county (2000-2020) – MIT Election Data and Science Lab (MEDSL)
 
 <https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/VOQCHQ>
 
@@ -377,31 +377,6 @@ xsf_HexCDv30wm |> head()
     ## 4  0608 California           CA            08 MULTIPOLYGON (((-13588284 5...
     ## 5  0610 California           CA            10 MULTIPOLYGON (((-13694006 5...
     ## 6  0614 California           CA            14 MULTIPOLYGON (((-13685745 5...
-
-``` r
-library(sf)
-library(ggplot2)
-xsf_HexCDv30wm |> 
-  ggplot() + 
-  geom_sf(aes(fill = state),
-          color = 'white') +
-
-  # ggsflabel::geom_sf_text(data = xsf_HexCDv30,
-  #                         aes(label = state_abbrev), 
-  #                         size = 3,
-  #                         color='black') +
-  # scale_fill_distiller(palette = "RdBu", direction=-1) +
-  theme_minimal()+
-  theme(axis.text.x=element_blank(),
-        axis.text.y=element_blank(),
-        axis.title.x=element_blank(),
-        axis.title.y=element_blank(),
-        legend.position = 'none') +
-labs(title = "Equal-area US State geometry",
-     caption = "Source: DailyKos")
-```
-
-![](builds_files/figure-markdown_github/unnamed-chunk-14-1.png)
 
 ## Output
 

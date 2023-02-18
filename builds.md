@@ -1,7 +1,7 @@
 # PresElectionResults
 
 ``` r
-library(tidyverse)
+library(dplyr)
 ```
 
 ## United States Presidential Election Results via Britannica
@@ -12,7 +12,7 @@ library(tidyverse)
 url99 <- 'https://www.britannica.com/topic/United-States-Presidential-Election-Results-1788863'
 
 ecs <- url99 |>
-   xml2::read_html() %>%
+   xml2::read_html() |>
     rvest::html_node(
       xpath = '//*[@class="md-raw-html"]/div/table/tbody') |>
     rvest::html_table(fill = TRUE) 
@@ -62,17 +62,6 @@ ecs0 <- ecs |>
   select(-z)
 ```
 
-    ## Warning in mask$eval_all_mutate(quo): NAs introduced by coercion
-
-    ## Joining, by = c("year", "candidate")
-
-``` r
-###
-x <- c('Unpledged Democratic electors',
-       'T. Coleman Andrews/Unpledged Electors',
-       'Unpledged electors')
-```
-
 ``` r
 ecs0 |> tail() |> knitr::kable()
 ```
@@ -100,7 +89,7 @@ county1 <- county |>
   filter(mode == 'TOTAL') |>
   select(-state, -office, -version, -totalvotes) |>
   group_by(year, state_po, county_name, county_fips) |>
-  mutate(per = round(candidatevotes/sum(candidatevotes)*100, 1)) %>%
+  mutate(per = round(candidatevotes/sum(candidatevotes)*100, 1)) |>
 
   mutate(winner =  candidate[which.max(candidatevotes)],
          party_win = party[which.max(candidatevotes)]) |>
@@ -158,9 +147,9 @@ house |> slice(1:5) |> knitr::kable()
 
 ``` r
 options(tigris_use_cache = TRUE, tigris_class = "sf")
-states_full <- tigris::states(cb = TRUE) %>% 
-  data.frame() %>%
-  select(NAME, STATEFP, STUSPS) %>%
+states_full <- tigris::states(cb = TRUE) |> 
+  data.frame() |>
+  select(NAME, STATEFP, STUSPS) |>
   rename(state_abbrev = STUSPS)
 
 ###
@@ -215,11 +204,11 @@ states_correct <- list()
 for (i in 1:nrow(states)) {
   
   states_correct[[i]] <- 
-    paste0(base_url, gsub(' ', '_', states$NAME[i])) %>%
-    xml2::read_html() %>%
+    paste0(base_url, gsub(' ', '_', states$NAME[i])) |>
+    xml2::read_html() |>
     rvest::html_node(
       xpath = paste0('//*[@id="mw-content-text"]/div/table[', 
-                     states$ns[i],']')) %>%
+                     states$ns[i],']')) |>
     rvest::html_table(fill = TRUE) 
   
   if(nrow(states_correct[[i]]) > 2){
@@ -229,21 +218,17 @@ for (i in 1:nrow(states)) {
     y <- states_correct[[i]][, states$l2[i] |> unlist()]
     colnames(y) <- c('year', 'candidate', 'votes', 'vote_share')
     
-    states_correct[[i]] <- rbind(x, y) %>%
+    states_correct[[i]] <- rbind(x, y) |>
       mutate(year = gsub("\\D+", "", year),
              year = as.integer(substr(year, 1,4)),
              vote_share = as.character(vote_share)
              )
   } else(states_correct[[i]] <- states_correct[[i]])
-  } 
-```
+} 
 
-### Aggregate tables
-
-``` r
 names(states_correct) <- states$NAME
-states_correct1 <- states_correct %>%
-  bind_rows(.id = 'state_name')  %>%
+states_correct1 <- states_correct |>
+  bind_rows(.id = 'state_name')  |>
   mutate(votes = as.integer(gsub('\\(.*\\)|,', '', votes))) |>
   mutate(vote_share = gsub('(^.*\\()(.*)(\\)$)', '\\2', vote_share),
          vote_share =as.numeric(gsub('%', '', vote_share)),
@@ -254,10 +239,6 @@ states_correct1 <- states_correct %>%
          nchar(candidate) > 5,
          !is.na(year))
 ```
-
-    ## Warning in mask$eval_all_mutate(quo): NAs introduced by coercion
-
-    ## Warning in mask$eval_all_mutate(quo): NAs introduced by coercion
 
 ### Resolve wiki and britannica candidate names
 
@@ -294,17 +275,17 @@ full <- states_correct1 |>
                                vote_share == 0,
                              NA, vote_share),
          
-         candidate = trimws(candidate)) %>%
+         candidate = trimws(candidate)) |>
   
-  ## na.omit() %>% 
+  ## na.omit() |> 
   left_join(cross, by = c('candidate' = 'wiki')) |>
-  left_join(ecs0 %>% select(year:party), by = c('brit' = 'candidate',
+  left_join(ecs0 |> select(year:party), by = c('brit' = 'candidate',
                                                 'year' = 'year')) |>
   mutate(party = ifelse(candidate %in% c('Al Smith', 'Adlai Stevenson II'),
                         'Democratic', party)) |>
   
-  rename(NAME = state_name) %>%
-  left_join(states) %>%
+  rename(NAME = state_name) |>
+  left_join(states) |>
   select(year, state_abbrev, brit, party, votes:vote_share) |>
   rename(candidate = brit) |>
   filter(year >= 1864, !is.na(vote_share)) |>
@@ -316,16 +297,16 @@ full <- states_correct1 |>
   filter(vote_share == max(vote_share)) |>
   ungroup() |>
   
-  group_by(state_abbrev, year) %>%   
+  group_by(state_abbrev, year) |>   
   mutate(winner = candidate[which.max(vote_share)],
          #party = tolower(party),
-         party_win = party[which.max(vote_share)]) %>%
-  ungroup() %>%
+         party_win = party[which.max(vote_share)]) |>
+  ungroup() |>
   
-  select(-candidate) %>%
+  select(-candidate) |>
   
   unique() |>
-  spread(party, vote_share)
+  tidyr::spread(party, vote_share)
 ```
 
 ``` r

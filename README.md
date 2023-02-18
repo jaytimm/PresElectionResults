@@ -103,11 +103,12 @@ PresElectionResults::xsf_HexCDv30wm |>
   geom_sf(aes(fill = state),
           color = 'white') +
 
-  # ggsflabel::geom_sf_text(data = xsf_HexCDv30,
-  #                         aes(label = state_abbrev), 
-  #                         size = 3,
-  #                         color='black') +
-  # scale_fill_distiller(palette = "RdBu", direction=-1) +
+  ggsflabel::geom_sf_text(data = PresElectionResults::xsf_HexSTv30wm,
+                          aes(label = state_abbrev),
+                          size = 3,
+                          color='black') +
+  
+  ## scale_fill_distiller(palette = "RdBu", direction=-1) +
   theme_minimal()+
   theme(axis.text.x=element_blank(),
         axis.text.y=element_blank(),

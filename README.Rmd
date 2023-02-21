@@ -21,6 +21,7 @@ source("/home/jtimm/pCloudDrive/GitHub/packages/render_toc.R")
 
 # PresElectionResults
 
+A brief reference package to US Presidential Elections.
 
 ```{r echo=FALSE}
 render_toc("/home/jtimm/pCloudDrive/GitHub/packages/PresElectionResults/README.Rmd",

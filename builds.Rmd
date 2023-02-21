@@ -4,6 +4,7 @@ output:
     variant: markdown_github
 ---
 
+** Dave Leif's Atlas of US Presidential Elections -- 
 
 
 # PresElectionResults
@@ -21,6 +22,7 @@ library(dplyr)
 
 ## Presidential Election Results -- Britannica
 
+> Sources: Electoral and popular vote totals based on data from the Office of the Clerk of the U.S. House of Representatives; the United States Office of the Federal Register; the Federal Election Commission; Congressional Quarterly's Guide to U.S. Elections, 4th ed. (2001); and the official certified state vote totals.
 
 ```{r message=FALSE, warning=FALSE}
 url99 <- 'https://www.britannica.com/topic/United-States-Presidential-Election-Results-1788863'
@@ -34,9 +36,9 @@ ecs <- url99 |>
 colnames(ecs) <- c('year', 
                    'candidate', 
                    'party', 
-                   'electoral_votes', 
-                   'popular_votes', 
-                   'popular_percentage')
+                   'ec_votes', 
+                   'pop_votes', 
+                   'pop_per')
 
 
 fns <- data.frame(year = c(1789,
@@ -54,27 +56,37 @@ fns <- data.frame(year = c(1789,
 
 
 pres_results <- ecs |>
-  mutate(popular_votes = as.integer(gsub(',', '', popular_votes)),
-         popular_percentage = as.numeric(popular_percentage),
+  mutate(pop_votes = as.integer(gsub(',', '', pop_votes)),
+         pop_per = as.numeric(pop_per),
          candidate = gsub('[0-9]', '', candidate) |> trimws(),
          candidate = gsub('George Bush$', 'George H.W. Bush', candidate),
+         
+         # Horace Greeley
+         party = gsub('/Liberal Republican', '', party),
          party = gsub('[0-9]', '', party),
          party = gsub('no distinct party designations|no formally organized parties', 
                                 '', 
-                                party)) |>
-  filter(!party %in% 'not a candidate',
-         !candidate %in% 'not voted') |>
+                                party),
+         party = trimws(party)) |>
+
   left_join(fns) |>
-  mutate(electoral_votes = ifelse(!is.na(z), 
-                                  gsub('.$', '', electoral_votes), 
-                                  electoral_votes),
-         electoral_votes = ifelse(candidate == 'Al Gore', 
-                                  gsub('.$', '', electoral_votes), 
-                                  electoral_votes),
+  mutate(ec_votes = ifelse(!is.na(z), 
+                           gsub('.$', '', ec_votes), 
+                           ec_votes),
+         ec_votes = ifelse(candidate == 'Al Gore', 
+                           gsub('.$', '', ec_votes), 
+                           ec_votes),
          
-         electoral_votes = as.integer(electoral_votes)) |>
-  select(-z)
+         ec_votes = as.integer(ec_votes)) |>
+  select(-z) |>
+  
+  group_by(year) |>
+  mutate(ec_total = sum(ec_votes, na.rm = T)) |> ungroup() |>
+  filter(!party %in% 'not a candidate',
+         !candidate %in% 'not voted')
 ```
+
+
 
 
 
@@ -83,33 +95,34 @@ pres_results <- ecs |>
 https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/VOQCHQ
 
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 library(dplyr)
 setwd(dataraw_dir)
 county <- read.csv('countypres_2000-2020.csv')
 
 pres_by_county <- county |>
   filter(!is.na(candidatevotes)) |>
-  filter(mode == 'TOTAL') |>
-  select(-state, -office, -version, -totalvotes) |>
-  mutate(#party = tolower(party),
-         party = gsub('DEMOCRAT', 'DEMOCRATIC', party),
-         party = stringr::str_to_title(tolower(party)),
+  group_by_at(vars(all_of(colnames(county)[c(1:8,10)]))) |>
+  summarize(candidatevotes = sum(candidatevotes),
+            totalvotes = mean(totalvotes)) |> ungroup() |>
+  mutate(per = round(candidatevotes/totalvotes*100, 1)) |>
+  
+  mutate(party = tolower(party),
+         #party = stringr::str_to_title(tolower(party)),
          county_name = stringr::str_to_title(tolower(county_name))) |>
   
   group_by(year, state_po, county_name, county_fips) |>
-  mutate(per = round(candidatevotes/sum(candidatevotes)*100, 1)) |>
 
   mutate(winner =  candidate[which.max(candidatevotes)],
          winner = stringr::str_to_title(tolower(winner)),
          party_win = party[which.max(candidatevotes)]) |>
   ungroup() |>
-  select(-candidate, -candidatevotes, -mode) |>
-  filter(party %in% c('Republican', 'Democratic')) |>
+  select(-candidate, -candidatevotes) |>
+  filter(party %in% c('republican', 'democrat')) |>
   tidyr::spread(party, per) |>
-  rename(state_abbrev = state_po)
-
-colnames(pres_by_county) <- colnames(pres_by_county) |> tolower() 
+  rename(state_abbrev = state_po)|>
+  mutate(GEOID = stringr::str_pad(county_fips, 5, pad = "0")) |>
+  select(1, 3, 4, 12, 8:11) 
 ```
 
 
@@ -127,14 +140,22 @@ pres_by_cd <- gsheet::gsheet2tbl(uro) |>
                          'Joe Biden', 
                          'Donald Trump'),
          party_win = ifelse(biden > trump, 
-                            'Democratic', 
-                            'Republican'),
-         house_rep_party = ifelse(party == '\\(D\\)', 'Democratic', 'Republican')) |> 
+                            'democrat', 
+                            'republican'),
+         house_rep_party = ifelse(party == '\\(D\\)', 
+                                  'democrat', 
+                                  'republican')) |> 
+  
   rename(democrat = biden,
          republican = trump,
          house_rep = incumbent) |>
-  select(district, house_rep, house_rep_party,
-         winner, party_win, democrat, republican)
+  
+  tidyr::separate(district, into = c('state_abbrev', 'district_code'), sep = '-') |>
+  mutate(district_code = gsub('AL', '00', district_code)) |>
+  select(state_abbrev, district_code, 
+         house_rep, house_rep_party,
+         winner, party_win, 
+         democrat, republican)
 ```
 
 
@@ -163,7 +184,7 @@ w3d <- c('California')
 w5 <- c('Nebraska')
 w4a <- c('Maine')
 w4b <- c('Utah')
-w6 <- c('Arkansas')
+w6 <- c('Arkansas', 'Florida')
 
 states <- states_full |>
   
@@ -286,10 +307,12 @@ pres_by_state <- states_correct1 |>
   
   ## na.omit() |> 
   left_join(cross, by = c('candidate' = 'wiki')) |>
-  left_join(pres_results |> select(year:party), by = c('brit' = 'candidate',
+  left_join(pres_results |> select(year:party) |>
+              mutate(party = ifelse(party %in% 'Democratic', 'Democrat', party)), 
+            by = c('brit' = 'candidate',
                                                 'year' = 'year')) |>
   mutate(party = ifelse(candidate %in% c('Al Smith', 'Adlai Stevenson II'),
-                        'Democratic', party)) |>
+                        'Democrat', party)) |>
   
   rename(NAME = state_name) |>
   left_join(states) |>
@@ -298,7 +321,7 @@ pres_by_state <- states_correct1 |>
   filter(year >= 1864, !is.na(vote_share)) |>
   select(-votes) |>
   unique() |>
-  mutate(party = ifelse(!party %in% c('Democratic', 'Republican'), 
+  mutate(party = ifelse(!party %in% c('Democrat', 'Republican'), 
                         'Other', party)) |>
   
   group_by(year, state_abbrev, party) |>
@@ -308,7 +331,7 @@ pres_by_state <- states_correct1 |>
   group_by(state_abbrev, year) |>   
   mutate(winner = candidate[which.max(vote_share)],
          #party = tolower(party),
-         party_win = party[which.max(vote_share)]) |>
+         party_win = tolower(party[which.max(vote_share)])) |>
   ungroup() |>
   
   select(-candidate) |>
@@ -360,6 +383,43 @@ xsf_HexCDv30wm |> head()
 ```
 
 
+## FRED Historical Population data
+
+https://fred.stlouisfed.org/release/tables?rid=118&eid=259194&od=#
+
+```{r}
+freds <- lapply(1900:2022, function(x){
+  
+  ur <- paste0('https://fred.stlouisfed.org/release/tables?rid=118&eid=259194&od=', x, '-01-01#')
+  
+  ur |>
+   xml2::read_html() |>
+    rvest::html_node(
+      xpath = '//*[@class="table-responsive"]/table/tbody') |>
+    rvest::html_table(fill = TRUE) |>
+    
+    mutate(year = x,
+           NAME = X2) |>
+    
+    rowwise() |>
+    mutate(population = ifelse(x < 1950, 
+                               gsub('\\.|,', '', X4) |> as.integer(),
+                               gsub('\\.|,', '', X3) |> as.integer())) |>
+    ungroup() |>
+    select(year, NAME, population)
+  
+})
+
+fred_pop_by_state <- freds |>
+  bind_rows() |>
+  #filter(!is.na(population)) |>
+  left_join(states_full) |>
+  select(1,5,2, 3)
+
+fred_pop_by_state |>
+  head()|>
+  knitr::kable()
+```
 
 
 ## Output
@@ -370,6 +430,8 @@ usethis::use_data(pres_results, overwrite=TRUE)
 usethis::use_data(pres_by_county, overwrite=TRUE)
 usethis::use_data(pres_by_cd, overwrite=TRUE)
 usethis::use_data(pres_by_state, overwrite=TRUE)
+
+usethis::use_data(fred_pop_by_state, overwrite=TRUE)
 
 usethis::use_data(xsf_HexCDv30wm, overwrite=TRUE)
 usethis::use_data(xsf_HexSTv30wm, overwrite=TRUE)

@@ -181,7 +181,7 @@ w3c <- c('Pennsylvania')
 w3d <- c('California')
 w5 <- c('Nebraska')
 w4a <- c('Maine')
-w4b <- c('Utah')
+w4b <- c('Utah', 'Wyoming')
 w6 <- c('Arkansas', 'Florida')
 
 states <- states_full |>
@@ -424,10 +424,11 @@ fred_pop_by_state |>
 
 ```{r eval=TRUE, message=FALSE, warning=FALSE, include=TRUE}
 setwd(data_dir)
-usethis::use_data(pres_results, overwrite=TRUE)
+## usethis::use_data(pres_by_state, overwrite=TRUE)
+
 usethis::use_data(pres_by_county, overwrite=TRUE)
+usethis::use_data(pres_results, overwrite=TRUE)
 usethis::use_data(pres_by_cd, overwrite=TRUE)
-usethis::use_data(pres_by_state, overwrite=TRUE)
 
 usethis::use_data(fred_pop_by_state, overwrite=TRUE)
 

@@ -4,8 +4,6 @@ output:
     variant: markdown_github
 ---
 
-** Dave Leif's Atlas of US Presidential Elections -- 
-
 
 # PresElectionResults
 
@@ -387,7 +385,7 @@ xsf_HexCDv30wm |> head()
 
 https://fred.stlouisfed.org/release/tables?rid=118&eid=259194&od=#
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 freds <- lapply(1900:2022, function(x){
   
   ur <- paste0('https://fred.stlouisfed.org/release/tables?rid=118&eid=259194&od=', x, '-01-01#')

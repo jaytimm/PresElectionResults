@@ -1,5 +1,7 @@
 # PresElectionResults
 
+A brief reference package to US Presidential Elections.
+
 -   [Installation](#installation)
 -   [Presidential Election Results via
     Britannica](#presidential-election-results-via-britannica)
@@ -13,6 +15,7 @@
     Wikipedia](#presidential-election-results-by-state-(1864-)-via-wikipedia)
 -   [Equal-area simple feature geometries via Daily
     Kos](#equal-area-simple-feature-geometries-via-daily-kos)
+-   [FRED Historical Population Data](#fred-historical-population-data)
 
 ## Installation
 
@@ -32,14 +35,14 @@ PresElectionResults::pres_results |>
   tail() |> knitr::kable()
 ```
 
-| year | candidate       | party      | electoral_votes | popular_votes | popular_percentage |
-|-----:|:-------------|:---------|-------------:|------------:|----------------:|
-| 2012 | Barack Obama    | Democratic |             332 |      65446032 |               50.9 |
-| 2012 | Mitt Romney     | Republican |             206 |      60589084 |               47.1 |
-| 2016 | Donald Trump    | Republican |             304 |      62979636 |               46.0 |
-| 2016 | Hillary Clinton | Democratic |             227 |      65844610 |               48.1 |
-| 2020 | Joe Biden       | Democratic |             306 |      81268924 |               51.3 |
-| 2020 | Donald Trump    | Republican |             232 |      74216154 |               46.9 |
+| year | candidate       | party      | ec_votes | pop_votes | pop_per | ec_total |
+|-----:|:----------------|:-----------|---------:|----------:|--------:|---------:|
+| 2012 | Barack Obama    | Democratic |      332 |  65446032 |    50.9 |      538 |
+| 2012 | Mitt Romney     | Republican |      206 |  60589084 |    47.1 |      538 |
+| 2016 | Donald Trump    | Republican |      304 |  62979636 |    46.0 |      538 |
+| 2016 | Hillary Clinton | Democratic |      227 |  65844610 |    48.1 |      538 |
+| 2020 | Joe Biden       | Democratic |      306 |  81268924 |    51.3 |      538 |
+| 2020 | Donald Trump    | Republican |      232 |  74216154 |    46.9 |      538 |
 
 ## Presidential election results by county (2000-2020) via MIT Election Data and Science Lab (MEDSL)
 
@@ -48,14 +51,14 @@ PresElectionResults::pres_by_county |>
   head() |> knitr::kable()
 ```
 
-| year | state_abbrev | county_name | county_fips | winner         | party_win  | democratic | republican |
-|----:|:----------|:---------|---------:|:-----------|:--------|--------:|--------:|
-| 2000 | AL           | Autauga     |        1001 | George W. Bush | Republican |       28.7 |       69.7 |
-| 2000 | AL           | Baldwin     |        1003 | George W. Bush | Republican |       24.8 |       72.4 |
-| 2000 | AL           | Barbour     |        1005 | Al Gore        | Democratic |       49.9 |       49.0 |
-| 2000 | AL           | Bibb        |        1007 | George W. Bush | Republican |       38.2 |       60.2 |
-| 2000 | AL           | Blount      |        1009 | George W. Bush | Republican |       27.7 |       70.5 |
-| 2000 | AL           | Bullock     |        1011 | Al Gore        | Democratic |       69.2 |       29.2 |
+| year | state_abbrev | county_name | GEOID | winner         | party_win  | democrat | republican |
+|----:|:----------|:----------|:-----|:------------|:---------|-------:|---------:|
+| 2000 | AL           | Autauga     | 01001 | George W. Bush | republican |     28.7 |       69.7 |
+| 2000 | AL           | Baldwin     | 01003 | George W. Bush | republican |     24.8 |       72.4 |
+| 2000 | AL           | Barbour     | 01005 | Al Gore        | democrat   |     49.9 |       49.0 |
+| 2000 | AL           | Bibb        | 01007 | George W. Bush | republican |     38.2 |       60.2 |
+| 2000 | AL           | Blount      | 01009 | George W. Bush | republican |     27.7 |       70.5 |
+| 2000 | AL           | Bullock     | 01011 | Al Gore        | democrat   |     69.2 |       29.2 |
 
 ## Presidential election results by congressional district (2020) via Daily Kos
 
@@ -64,14 +67,14 @@ PresElectionResults::pres_by_cd |>
   head() |> knitr::kable()
 ```
 
-| district | house_rep       | house_rep_party | winner       | party_win  | democrat | republican |
-|:-------|:-------------|:-------------|:----------|:---------|-------:|---------:|
-| AK-AL    | Mary Peltola    | Republican      | Donald Trump | Republican |     43.0 |       53.1 |
-| AL-01    | Jerry Carl      | Republican      | Donald Trump | Republican |     35.3 |       63.6 |
-| AL-02    | Barry Moore     | Republican      | Donald Trump | Republican |     34.8 |       64.2 |
-| AL-03    | Mike Rogers     | Republican      | Donald Trump | Republican |     32.5 |       66.6 |
-| AL-04    | Robert Aderholt | Republican      | Donald Trump | Republican |     18.6 |       80.4 |
-| AL-05    | Dale Strong     | Republican      | Donald Trump | Republican |     35.6 |       62.7 |
+| state_abbrev | district_code | house_rep       | house_rep_party | winner       | party_win  | democrat | republican |
+|:--------|:---------|:----------|:----------|:--------|:-------|------:|-------:|
+| AK           | 00            | Mary Peltola    | republican      | Donald Trump | republican |     43.0 |       53.1 |
+| AL           | 01            | Jerry Carl      | republican      | Donald Trump | republican |     35.3 |       63.6 |
+| AL           | 02            | Barry Moore     | republican      | Donald Trump | republican |     34.8 |       64.2 |
+| AL           | 03            | Mike Rogers     | republican      | Donald Trump | republican |     32.5 |       66.6 |
+| AL           | 04            | Robert Aderholt | republican      | Donald Trump | republican |     18.6 |       80.4 |
+| AL           | 05            | Dale Strong     | republican      | Donald Trump | republican |     35.6 |       62.7 |
 
 ## Presidential election results by state (1864-) via Wikipedia
 
@@ -80,14 +83,14 @@ PresElectionResults::pres_by_state |>
   head() |> knitr::kable()
 ```
 
-| year | state_abbrev | winner              | party_win  | democratic | other | republican |
-|-----:|:-----------|:-----------------|:----------|----------:|-----:|----------:|
-| 1864 | CA           | Abraham Lincoln     | Republican |      41.40 |    NA |      58.60 |
-| 1864 | CT           | Abraham Lincoln     | Republican |      48.62 |    NA |      51.38 |
-| 1864 | DE           | George B. McClellan | Democratic |      51.80 |    NA |      48.20 |
-| 1864 | IA           | Abraham Lincoln     | Republican |      36.92 |    NA |      63.08 |
-| 1864 | IL           | Abraham Lincoln     | Republican |      45.60 |    NA |      54.40 |
-| 1864 | IN           | Abraham Lincoln     | Republican |      46.50 |    NA |      53.50 |
+| year | state_abbrev | winner              | party_win  | democrat | other | republican |
+|-----:|:------------|:------------------|:----------|--------:|------:|----------:|
+| 1864 | CA           | Abraham Lincoln     | republican |    41.40 |    NA |      58.60 |
+| 1864 | CT           | Abraham Lincoln     | republican |    48.62 |    NA |      51.38 |
+| 1864 | DE           | George B. McClellan | democrat   |    51.80 |    NA |      48.20 |
+| 1864 | IA           | Abraham Lincoln     | republican |    36.92 |    NA |      63.08 |
+| 1864 | IL           | Abraham Lincoln     | republican |    45.60 |    NA |      54.40 |
+| 1864 | IN           | Abraham Lincoln     | republican |    46.50 |    NA |      53.50 |
 
 ## Equal-area simple feature geometries via Daily Kos
 
@@ -146,3 +149,20 @@ labs(title = "Equal-area US State geometry",
 ```
 
 ![](figure-markdown_github/unnamed-chunk-10-1.png)
+
+## FRED Historical Population Data
+
+``` r
+PresElectionResults::fred_pop_by_state |>
+  head()|>
+  knitr::kable()
+```
+
+| year | state_abbrev | NAME       | population |
+|-----:|:-------------|:-----------|-----------:|
+| 1900 | AL           | Alabama    |    1830000 |
+| 1900 | AK           | Alaska     |         NA |
+| 1900 | AZ           | Arizona    |     124000 |
+| 1900 | AR           | Arkansas   |    1314000 |
+| 1900 | CA           | California |    1490000 |
+| 1900 | CO           | Colorado   |     543000 |

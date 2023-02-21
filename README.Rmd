@@ -137,6 +137,13 @@ labs(title = "Equal-area US State geometry",
 
 
 
+## FRED Historical Population Data
+
+```{r}
+PresElectionResults::fred_pop_by_state |>
+  head()|>
+  knitr::kable()
+```
 
 
 

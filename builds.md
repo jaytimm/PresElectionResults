@@ -1,5 +1,3 @@
-\*\* Dave Leif’s Atlas of US Presidential Elections –
-
 # PresElectionResults
 
 ``` r
@@ -396,11 +394,7 @@ fred_pop_by_state <- freds |>
   #filter(!is.na(population)) |>
   left_join(states_full) |>
   select(1,5,2, 3)
-```
 
-    ## Joining, by = "NAME"
-
-``` r
 fred_pop_by_state |>
   head()|>
   knitr::kable()

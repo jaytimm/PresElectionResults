@@ -67,14 +67,14 @@ PresElectionResults::pres_by_cd |>
   head() |> knitr::kable()
 ```
 
-| state_abbrev | district_code | house_rep       | house_rep_party | winner       | party_win  | democrat | republican |
-|:--------|:---------|:----------|:----------|:--------|:-------|------:|-------:|
-| AK           | 00            | Mary Peltola    | republican      | Donald Trump | republican |     43.0 |       53.1 |
-| AL           | 01            | Jerry Carl      | republican      | Donald Trump | republican |     35.3 |       63.6 |
-| AL           | 02            | Barry Moore     | republican      | Donald Trump | republican |     34.8 |       64.2 |
-| AL           | 03            | Mike Rogers     | republican      | Donald Trump | republican |     32.5 |       66.6 |
-| AL           | 04            | Robert Aderholt | republican      | Donald Trump | republican |     18.6 |       80.4 |
-| AL           | 05            | Dale Strong     | republican      | Donald Trump | republican |     35.6 |       62.7 |
+| icpsr | state_abbrev | district_code | house_rep       | house_rep_party | winner       | party_win  | democrat | republican |
+|----:|:--------|:--------|:----------|:----------|:--------|:-------|------:|-------:|
+| 22168 | AK           | 00            | Mary Peltola    | democrat        | Donald Trump | republican |     43.0 |       53.1 |
+| 22108 | AL           | 01            | Jerry Carl      | republican      | Donald Trump | republican |     35.3 |       63.6 |
+| 22140 | AL           | 02            | Barry Moore     | republican      | Donald Trump | republican |     34.8 |       64.2 |
+| 20301 | AL           | 03            | Mike Rogers     | republican      | Donald Trump | republican |     32.5 |       66.6 |
+| 29701 | AL           | 04            | Robert Aderholt | republican      | Donald Trump | republican |     18.6 |       80.4 |
+| 22366 | AL           | 05            | Dale Strong     | republican      | Donald Trump | republican |     35.6 |       62.7 |
 
 ## Presidential election results by state (1864-) via Wikipedia
 

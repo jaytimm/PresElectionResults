@@ -115,7 +115,7 @@ pres_by_county <- county |>
 ``` r
 uro <- 'https://docs.google.com/spreadsheets/d/1CKngqOp8fzU22JOlypoxNsxL6KSAH920Whc-rd7ebuM/edit?skip_itp2_check=true&pli=1#gid=1871835782'
 
-pres_by_cd <- gsheet::gsheet2tbl(uro) |> 
+pres_by_cd00 <- gsheet::gsheet2tbl(uro) |> 
   janitor::clean_names() |>
   mutate(winner = ifelse(biden > trump, 
                          'Joe Biden', 
@@ -123,7 +123,7 @@ pres_by_cd <- gsheet::gsheet2tbl(uro) |>
          party_win = ifelse(biden > trump, 
                             'democrat', 
                             'republican'),
-         house_rep_party = ifelse(party == '\\(D\\)', 
+         house_rep_party = ifelse(party == '(D)', 
                                   'democrat', 
                                   'republican')) |> 
   
@@ -136,7 +136,63 @@ pres_by_cd <- gsheet::gsheet2tbl(uro) |>
   select(state_abbrev, district_code, 
          house_rep, house_rep_party,
          winner, party_win, 
-         democrat, republican)
+         democrat, republican) |>
+  
+  mutate(last = gsub('^.* ', '', house_rep) |> toupper(),
+         nn_kos = house_rep |> tolower() |> trimws()) |>
+  group_by(last) |>
+  mutate(last_n = n()) |> ungroup()
+```
+
+### Add ICPSR info from VoteView
+
+``` r
+hm1 <- Rvoteview::download_metadata(type = 'members',
+                                    chamber = 'house',
+                                    congress = '118') |>
+  
+  mutate(bioname = stringi::stri_trans_general(bioname, id = "Latin-ASCII"),
+         nn_vv = gsub(', Jr\\.', '', bioname),
+         nn_vv = gsub('(.*)(, )(.*$)', '\\3 \\1', nn_vv),
+         nn_vv = stringr::str_to_title(nn_vv), 
+         nn_vv = gsub(' [A-Z]\\.', '', nn_vv) |> tolower() |> trimws(),
+         last = gsub(',.*$', '', bioname) |> trimws()) |>
+  group_by(last) |>
+  mutate(last_n = n()) |> ungroup()
+```
+
+    ## [1] "/tmp/Rtmp5F1UuU/H118_members.csv"
+
+``` r
+pbd <- pres_by_cd00 |>
+  left_join(hm1 |> filter(last_n == 1) |> select(nn_vv, last),
+            by = 'last') |>
+  select(nn_kos, nn_vv)
+
+kos <- pbd |> filter(is.na(nn_vv))
+         
+strReverse <- function(x) sapply(lapply(strsplit(x, NULL), rev), paste, collapse="")
+
+get_closest <- function(x, y) {
+  
+  y[stringdist::stringdist(x |> strReverse(), 
+                         hm1$nn_vv |> strReverse(), 
+                         method = "jw") |>  which.min()]
+}
+
+pbd0 <- pbd |>
+  rowwise() |>
+  mutate(nn_vv = ifelse(is.na(nn_vv),
+                        get_closest(x = nn_kos, y = hm1$nn_vv),
+                        nn_vv))
+
+pres_by_cd <- pbd0 |>
+  mutate(nn_vv = ifelse(nn_kos == 'chris smith', 'christopher henry smith', nn_vv),
+         nn_vv = ifelse(nn_kos == 'sanford bishop', 'sanford dixon bishop', nn_vv),
+         nn_vv = ifelse(nn_kos == 'hal rogers', 'harold dallas (hal) rogers', nn_vv)) |>
+  left_join(hm1 |> select(nn_vv, icpsr)) |>
+  inner_join(pres_by_cd00) |>
+  select(3:11)
 ```
 
 ## Presidential election results by state (1864-) – Wikipedia
@@ -162,7 +218,7 @@ w3c <- c('Pennsylvania')
 w3d <- c('California')
 w5 <- c('Nebraska')
 w4a <- c('Maine')
-w4b <- c('Utah')
+w4b <- c('Utah', 'Wyoming')
 w6 <- c('Arkansas', 'Florida')
 
 states <- states_full |>
@@ -400,25 +456,17 @@ fred_pop_by_state |>
   knitr::kable()
 ```
 
-| year | state_abbrev | NAME       | population |
-|-----:|:-------------|:-----------|-----------:|
-| 1900 | AL           | Alabama    |    1830000 |
-| 1900 | AK           | Alaska     |         NA |
-| 1900 | AZ           | Arizona    |     124000 |
-| 1900 | AR           | Arkansas   |    1314000 |
-| 1900 | CA           | California |    1490000 |
-| 1900 | CO           | Colorado   |     543000 |
-
 ## Output
 
 ``` r
 setwd(data_dir)
-usethis::use_data(pres_results, overwrite=TRUE)
-usethis::use_data(pres_by_county, overwrite=TRUE)
 usethis::use_data(pres_by_cd, overwrite=TRUE)
-usethis::use_data(pres_by_state, overwrite=TRUE)
+## usethis::use_data(pres_by_state, overwrite=TRUE)
 
-usethis::use_data(fred_pop_by_state, overwrite=TRUE)
+usethis::use_data(pres_by_county, overwrite=TRUE)
+usethis::use_data(pres_results, overwrite=TRUE)
+
+## usethis::use_data(fred_pop_by_state, overwrite=TRUE)
 
 usethis::use_data(xsf_HexCDv30wm, overwrite=TRUE)
 usethis::use_data(xsf_HexSTv30wm, overwrite=TRUE)

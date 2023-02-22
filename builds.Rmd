@@ -140,7 +140,7 @@ pres_by_cd <- gsheet::gsheet2tbl(uro) |>
          party_win = ifelse(biden > trump, 
                             'democrat', 
                             'republican'),
-         house_rep_party = ifelse(party == '\\(D\\)', 
+         house_rep_party = ifelse(party == '(D)', 
                                   'democrat', 
                                   'republican')) |> 
   
@@ -339,7 +339,7 @@ pres_by_state <- states_correct1 |>
 
 colnames(pres_by_state) <- colnames(pres_by_state) |> tolower() 
 ```
-
+  
 
 
 
@@ -424,11 +424,12 @@ fred_pop_by_state |>
 
 ```{r eval=TRUE, message=FALSE, warning=FALSE, include=TRUE}
 setwd(data_dir)
+usethis::use_data(pres_by_cd, overwrite=TRUE)
 ## usethis::use_data(pres_by_state, overwrite=TRUE)
 
 usethis::use_data(pres_by_county, overwrite=TRUE)
 usethis::use_data(pres_results, overwrite=TRUE)
-usethis::use_data(pres_by_cd, overwrite=TRUE)
+
 
 usethis::use_data(fred_pop_by_state, overwrite=TRUE)
 

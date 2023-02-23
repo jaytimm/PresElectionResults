@@ -6,6 +6,8 @@ library(dplyr)
 
 ## Presidential Election Results – Britannica
 
+<https://www.britannica.com/topic/United-States-Presidential-Election-Results-1788863>
+
 > Sources: Electoral and popular vote totals based on data from the
 > Office of the Clerk of the U.S. House of Representatives; the United
 > States Office of the Federal Register; the Federal Election
@@ -110,6 +112,8 @@ pres_by_county <- county |>
 
 ## Presidential election results by congressional district (2020) – Daily Kos
 
+<https://docs.google.com/spreadsheets/d/1CKngqOp8fzU22JOlypoxNsxL6KSAH920Whc-rd7ebuM/edit?skip_itp2_check=true&pli=1#gid=1871835782>
+
 > Per 2022 district boundaries
 
 ``` r
@@ -161,7 +165,7 @@ hm1 <- Rvoteview::download_metadata(type = 'members',
   mutate(last_n = n()) |> ungroup()
 ```
 
-    ## [1] "/tmp/Rtmp5F1UuU/H118_members.csv"
+    ## [1] "/tmp/RtmplRp0EK/H118_members.csv"
 
 ``` r
 pbd <- pres_by_cd00 |>
@@ -196,6 +200,10 @@ pres_by_cd <- pbd0 |>
 ```
 
 ## Presidential election results by state (1864-) – Wikipedia
+
+Eg:
+
+<https://en.wikipedia.org/wiki/United_States_presidential_elections_in_Virginia>
 
 ### Table details by state
 

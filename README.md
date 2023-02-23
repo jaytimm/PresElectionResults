@@ -1,6 +1,9 @@
 # PresElectionResults
 
-A brief reference package to US Presidential Elections.
+A data package for US Presidential election results. All build details
+are available
+[here](https://github.com/jaytimm/PresElectionResults/blob/master/builds.md),
+and are fully reproducible.
 
 -   [Installation](#installation)
 -   [Presidential Election Results via
@@ -24,7 +27,6 @@ library(dplyr)
 ```
 
 ``` r
-library(devtools)
 devtools::install_github("jaytimm/PresElectionResults")
 ```
 
@@ -103,7 +105,7 @@ PresElectionResults::xsf_HexCDv30wm |>
   geom_sf(aes(fill = state),
           color = 'white') +
 
-  ggsflabel::geom_sf_text(data = PresElectionResults::xsf_HexSTv30wm,
+  geom_sf_text(data = PresElectionResults::xsf_HexSTv30wm,
                           aes(label = state_abbrev),
                           size = 3,
                           color='black') +
@@ -133,7 +135,8 @@ PresElectionResults::xsf_TileOutv10 %>%
           show.legend = F, 
           color="gray", 
           lwd=.5) +
-  ggsflabel::geom_sf_text(data = PresElectionResults::xsf_TileInv10,
+  
+  geom_sf_text(data = PresElectionResults::xsf_TileInv10,
                           aes(label = state_abbrev),
                           size = 3,
                           color='black') +

@@ -165,7 +165,7 @@ hm1 <- Rvoteview::download_metadata(type = 'members',
   mutate(last_n = n()) |> ungroup()
 ```
 
-    ## [1] "/tmp/RtmplRp0EK/H118_members.csv"
+    ## [1] "/tmp/RtmpeLbOa7/H118_members.csv"
 
 ``` r
 pbd <- pres_by_cd00 |>
@@ -241,6 +241,12 @@ states <- states_full |>
                           NAME %in% w3c ~ list(list(1,9,10,10)),
                           NAME %in% w3d ~ list(list(1,8,11,12))),
           
+          l3 = case_when (NAME %in% c(w3a, w6, w4b) ~ list(list(1,11, 12, 13)),
+                          !NAME %in% c(w3a, w3c, w3d, w6, w4b) ~ list(list(1,8, 9, 10)),
+                          NAME %in% w3c ~ list(list(1,1,1,1)),
+                          NAME %in% w3d ~ list(list(1,1,1,1))
+                          ),
+          
           ns = case_when (NAME %in% c(w3a, w3b, w3c, w3d) ~ 3,
                           NAME %in% c(w4a, w4b) ~ 4,
                           NAME %in% c(w5) ~ 5,
@@ -279,8 +285,10 @@ for (i in 1:nrow(states)) {
     colnames(x) <- c('year', 'candidate', 'votes', 'vote_share')
     y <- states_correct[[i]][, states$l2[i] |> unlist()]
     colnames(y) <- c('year', 'candidate', 'votes', 'vote_share')
+    z <- states_correct[[i]][, states$l3[i] |> unlist()]
+    colnames(z) <- c('year', 'candidate', 'votes', 'vote_share')
     
-    states_correct[[i]] <- rbind(x, y) |>
+    states_correct[[i]] <- rbind(x, y, z) |>
       mutate(year = gsub("\\D+", "", year),
              year = as.integer(substr(year, 1,4)),
              vote_share = as.character(vote_share)
@@ -299,7 +307,11 @@ states_correct1 <- states_correct |>
 
   filter(candidate != 'TBD',
          nchar(candidate) > 5,
-         !is.na(year))
+         !is.na(year)) |>
+  
+  ## correct hubert humphrey in florida 1972
+  mutate(candidate = ifelse(state_name == 'Florida' & year == 1972 & candidate == 'Hubert Humphrey',
+                            'George McGovern', candidate))
 ```
 
 ### Resolve wiki and britannica candidate names
@@ -341,6 +353,7 @@ pres_by_state <- states_correct1 |>
   
   ## na.omit() |> 
   left_join(cross, by = c('candidate' = 'wiki')) |>
+  
   left_join(pres_results |> select(year:party) |>
               mutate(party = ifelse(party %in% 'Democratic', 'Democrat', party)), 
             by = c('brit' = 'candidate',
@@ -468,9 +481,8 @@ fred_pop_by_state |>
 
 ``` r
 setwd(data_dir)
+#usethis::use_data(pres_by_state, overwrite=TRUE)
 usethis::use_data(pres_by_cd, overwrite=TRUE)
-## usethis::use_data(pres_by_state, overwrite=TRUE)
-
 usethis::use_data(pres_by_county, overwrite=TRUE)
 usethis::use_data(pres_results, overwrite=TRUE)
 

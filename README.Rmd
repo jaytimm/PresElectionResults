@@ -21,7 +21,9 @@ source("/home/jtimm/pCloudDrive/GitHub/packages/render_toc.R")
 
 # PresElectionResults
 
-A data package for US Presidential election results.  All build details are available [here](https://github.com/jaytimm/PresElectionResults/blob/master/builds.md), and are fully reproducible.
+A data package for US Presidential election results.  
+
+> All build details are available [here](https://github.com/jaytimm/PresElectionResults/blob/master/builds.md), and are fully reproducible.
 
 ```{r echo=FALSE}
 render_toc("/home/jtimm/pCloudDrive/GitHub/packages/PresElectionResults/README.Rmd",

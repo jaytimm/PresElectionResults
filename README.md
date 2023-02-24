@@ -1,9 +1,10 @@
 # PresElectionResults
 
-A data package for US Presidential election results. All build details
-are available
-[here](https://github.com/jaytimm/PresElectionResults/blob/master/builds.md),
-and are fully reproducible.
+A data package for US Presidential election results.
+
+> All build details are available
+> [here](https://github.com/jaytimm/PresElectionResults/blob/master/builds.md),
+> and are fully reproducible.
 
 -   [Installation](#installation)
 -   [Presidential Election Results via

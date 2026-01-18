@@ -157,10 +157,11 @@ pres_by_county <- county |>
 setwd(dataraw_dir)
 house_data <- read.delim('1976-2024-house.tab', sep = ',', stringsAsFactors = FALSE) |>
   janitor::clean_names() |>
+  filter(year == 2024) |>
+  
   filter(office == 'US HOUSE',
          stage == 'GEN',
-         writein == FALSE,
-         party %in% c('DEMOCRAT', 'REPUBLICAN')) |>
+         writein == FALSE) |>
   group_by(year, state_po, district) |>
   # Get winner (highest vote getter) for each year/state/district
   mutate(winner_votes = max(candidatevotes, na.rm = TRUE)) |>
@@ -175,6 +176,9 @@ house_data <- read.delim('1976-2024-house.tab', sep = ',', stringsAsFactors = FA
     house_rep = stringr::str_to_title(tolower(candidate)),
     house_rep_party = tolower(party)
   ) |>
+  mutate(
+    house_rep_party = ifelse(house_rep_party == 'democratic-farmer-labor', 'democrat', house_rep_party)
+  ) |>
   select(year, state_abbrev, district_code, house_rep, house_rep_party) |>
   # Create last name and normalized name for ICPSR matching
   mutate(
@@ -183,7 +187,7 @@ house_data <- read.delim('1976-2024-house.tab', sep = ',', stringsAsFactors = FA
   ) |>
   group_by(year, last) |>
   mutate(last_n = n()) |>
-  ungroup()
+  ungroup() 
 ```
 
 
@@ -246,7 +250,7 @@ pres_by_cd00 <- read.csv('2024 Pres by CD - Main.csv', check.names = FALSE) |>
 # Download house member metadata for 118th Congress (2024)
 hm1 <- Rvoteview::download_metadata(type = 'members',
                                     chamber = 'house',
-                                    congress = '118') |>
+                                    congress = '119') |>
   mutate(bioname = stringi::stri_trans_general(bioname, id = "Latin-ASCII"),
          nn_vv = gsub(', Jr\\.', '', bioname),
          nn_vv = gsub('(.*)(, )(.*$)', '\\3 \\1', nn_vv),

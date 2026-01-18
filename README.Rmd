@@ -54,22 +54,6 @@ PresElectionResults::pres_results |>
 ```
 
 
-## Presidential election results by county (2000-2020) via MIT Election Data and Science Lab (MEDSL)
-
-```{r}
-PresElectionResults::pres_by_county |>
-  head() |> knitr::kable()
-```
-
-
-## Presidential election results by congressional district (2020) via Daily Kos
-
-```{r}
-PresElectionResults::pres_by_cd |>
-  head() |> knitr::kable()
-```
-
-
 ## Presidential election results by state (1864-) via Wikipedia
 
 ```{r}
@@ -78,8 +62,24 @@ PresElectionResults::pres_by_state |>
 ```
 
 
+## Presidential election results by county (2000-2024) via MIT Election Data and Science Lab (MEDSL)
 
-## Equal-area simple feature geometries via Daily Kos
+```{r}
+PresElectionResults::pres_by_county |>
+  head() |> knitr::kable()
+```
+
+
+## Presidential election results by congressional district (2024)
+
+```{r}
+PresElectionResults::pres_by_cd |>
+  head() |> knitr::kable()
+```
+
+
+
+## Equal-area simple feature geometries via The Downballot
 
 ```{r fig.height=6.5, message=FALSE, warning=FALSE}
 # devtools::install_github("yutannihilation/ggsflabel")
@@ -103,7 +103,7 @@ PresElectionResults::xsf_HexCDv30wm |>
         axis.title.y=element_blank(),
         legend.position = 'none') +
 labs(title = "Equal-area US Congressional District geometry",
-     caption = "Source: DailyKos")
+     caption = "Source: The Downballot")
 ```
 
 
@@ -133,7 +133,7 @@ PresElectionResults::xsf_TileOutv10 %>%
         axis.title.y=element_blank(),
         legend.position = 'none') +
 labs(title = "Equal-area US State geometry",
-     caption = "Source: DailyKos")
+     caption = "Source: The Downballot")
 ```
 
 

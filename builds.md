@@ -17,11 +17,34 @@ library(dplyr)
 ``` r
 url99 <- 'https://www.britannica.com/topic/United-States-Presidential-Election-Results-1788863'
 
-ecs <- url99 |>
-   xml2::read_html() |>
-    rvest::html_node(
-      xpath = '//*[@class="md-raw-html"]/div/table/tbody') |>
-    rvest::html_table(fill = TRUE) 
+# Try multiple selectors to find the table
+page <- url99 |> xml2::read_html()
+
+# Try different XPath selectors in order of specificity
+ecs_node <- rvest::html_node(page, xpath = '//*[@class="md-raw-html"]/div/table/tbody')
+
+# If that doesn't work, try without tbody
+if (inherits(ecs_node, "xml_missing")) {
+  ecs_node <- rvest::html_node(page, xpath = '//*[@class="md-raw-html"]/div/table')
+}
+
+if (inherits(ecs_node, "xml_missing")) {
+  ecs_node <- rvest::html_node(page, xpath = '//table/tbody')
+}
+
+if (inherits(ecs_node, "xml_missing")) {
+  # Try finding all tables and take the first one (likely the main table)
+  all_tables <- rvest::html_nodes(page, css = 'table')
+  if (length(all_tables) > 0) {
+    ecs_node <- all_tables[[1]]
+  }
+}
+
+if (inherits(ecs_node, "xml_missing")) {
+  stop("Could not find the presidential election results table on Britannica page. The page structure may have changed. Please inspect the page manually.")
+}
+
+ecs <- rvest::html_table(ecs_node, fill = TRUE) 
 
 colnames(ecs) <- c('year', 
                    'candidate', 
@@ -76,14 +99,14 @@ pres_results <- ecs |>
          !candidate %in% 'not voted')
 ```
 
-## Presidential election results by county (2000-2020) – MIT Election Data and Science Lab (MEDSL)
+## Presidential election results by county (2000-2024) – MIT Election Data and Science Lab (MEDSL)
 
 <https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/VOQCHQ>
 
 ``` r
 library(dplyr)
 setwd(dataraw_dir)
-county <- read.csv('countypres_2000-2020.csv')
+county <- read.delim('countypres_2000-2024.tab', sep = '\t')
 
 pres_by_county <- county |>
   filter(!is.na(candidatevotes)) |>
@@ -110,51 +133,105 @@ pres_by_county <- county |>
   select(1, 3, 4, 12, 8:11) 
 ```
 
-## Presidential election results by congressional district (2020) – Daily Kos
-
-<https://docs.google.com/spreadsheets/d/1CKngqOp8fzU22JOlypoxNsxL6KSAH920Whc-rd7ebuM/edit?skip_itp2_check=true&pli=1#gid=1871835782>
-
-> Per 2022 district boundaries
+### Extract house rep names from 1976-2024-house.tab
 
 ``` r
-uro <- 'https://docs.google.com/spreadsheets/d/1CKngqOp8fzU22JOlypoxNsxL6KSAH920Whc-rd7ebuM/edit?skip_itp2_check=true&pli=1#gid=1871835782'
-
-pres_by_cd00 <- gsheet::gsheet2tbl(uro) |> 
+# Read house election data to extract winning house reps
+setwd(dataraw_dir)
+house_data <- read.delim('1976-2024-house.tab', sep = ',', stringsAsFactors = FALSE) |>
   janitor::clean_names() |>
-  mutate(winner = ifelse(biden > trump, 
-                         'Joe Biden', 
-                         'Donald Trump'),
-         party_win = ifelse(biden > trump, 
-                            'democrat', 
-                            'republican'),
-         house_rep_party = ifelse(party == '(D)', 
-                                  'democrat', 
-                                  'republican')) |> 
+  filter(office == 'US HOUSE',
+         stage == 'GEN',
+         writein == FALSE,
+         party %in% c('DEMOCRAT', 'REPUBLICAN')) |>
+  group_by(year, state_po, district) |>
+  # Get winner (highest vote getter) for each year/state/district
+  mutate(winner_votes = max(candidatevotes, na.rm = TRUE)) |>
+  filter(candidatevotes == winner_votes) |>
+  # Handle ties by taking first (should be rare)
+  slice(1) |>
+  ungroup() |>
+  mutate(
+    state_abbrev = state_po,
+    district_code = ifelse(district == 'AL', '00', 
+                           stringr::str_pad(as.character(district), width = 2, side = 'left', pad = '0')),
+    house_rep = stringr::str_to_title(tolower(candidate)),
+    house_rep_party = tolower(party)
+  ) |>
+  select(year, state_abbrev, district_code, house_rep, house_rep_party) |>
+  # Create last name and normalized name for ICPSR matching
+  mutate(
+    last = gsub('^.* ', '', house_rep) |> toupper(),
+    nn_kos = house_rep |> tolower() |> trimws()
+  ) |>
+  group_by(year, last) |>
+  mutate(last_n = n()) |>
+  ungroup()
+```
+
+### 2024 Presidential results by CD
+
+<https://docs.google.com/spreadsheets/d/1ZHx5E0-5vuXxcZShBgsAl_vwAntkkanGqYQp0owNjoQ/edit?gid=0#gid=0>
+
+``` r
+setwd(dataraw_dir)
+pres_by_cd00 <- read.csv('2024 Pres by CD - Main.csv', check.names = FALSE) |> 
+  janitor::clean_names() |>
+  mutate(
+    # Extract percentages from Harris % and Trump % columns (remove % sign)
+    harris_pct = as.numeric(gsub('%', '', harris_percent)),
+    trump_pct = as.numeric(gsub('%', '', trump_percent)),
+    winner = ifelse(winner == 'Harris', 
+                    'Kamala Harris', 
+                    'Donald Trump'),
+    party_win = ifelse(harris_pct > trump_pct, 
+                       'democrat', 
+                       'republican'),
+    # Add NA for house rep info since not in 2024 file
+    house_rep = NA_character_,
+    house_rep_party = NA_character_
+  ) |> 
   
-  rename(democrat = biden,
-         republican = trump,
-         house_rep = incumbent) |>
+  rename(democrat = harris_pct,
+         republican = trump_pct) |>
   
-  tidyr::separate(district, into = c('state_abbrev', 'district_code'), sep = '-') |>
+  tidyr::separate(cd, into = c('state_abbrev', 'district_code'), sep = '-') |>
   mutate(district_code = gsub('AL', '00', district_code)) |>
+  mutate(year = 2024) |>
+  # Merge with house rep data from 1976-2024-house.tab
+  left_join(house_data |> filter(year == 2024) |> 
+              select(year, state_abbrev, district_code, house_rep, house_rep_party, last, nn_kos, last_n),
+            by = c('year', 'state_abbrev', 'district_code')) |>
+  # Use house rep from join if available (house_rep.x and house_rep_party.x are NA from initial mutate)
+  mutate(
+    house_rep = coalesce(house_rep.y, house_rep.x),
+    house_rep_party = coalesce(house_rep_party.y, house_rep_party.x),
+    # last, nn_kos, last_n only come from house_data (no .x versions, so they keep their names)
+    # Handle NAs for last_n
+    last_n = coalesce(last_n, 0L)
+  ) |>
   select(state_abbrev, district_code, 
          house_rep, house_rep_party,
          winner, party_win, 
-         democrat, republican) |>
-  
-  mutate(last = gsub('^.* ', '', house_rep) |> toupper(),
-         nn_kos = house_rep |> tolower() |> trimws()) |>
-  group_by(last) |>
-  mutate(last_n = n()) |> ungroup()
+         democrat, republican,
+         last, nn_kos, last_n) |>
+  ungroup()
 ```
+
+    ## Warning: There were 2 warnings in `mutate()`.
+    ## The first warning was:
+    ## ℹ In argument: `harris_pct = as.numeric(gsub("%", "", harris_percent))`.
+    ## Caused by warning:
+    ## ! NAs introduced by coercion
+    ## ℹ Run `dplyr::last_dplyr_warnings()` to see the 1 remaining warning.
 
 ### Add ICPSR info from VoteView
 
 ``` r
+# Download house member metadata for 118th Congress (2024)
 hm1 <- Rvoteview::download_metadata(type = 'members',
                                     chamber = 'house',
                                     congress = '118') |>
-  
   mutate(bioname = stringi::stri_trans_general(bioname, id = "Latin-ASCII"),
          nn_vv = gsub(', Jr\\.', '', bioname),
          nn_vv = gsub('(.*)(, )(.*$)', '\\3 \\1', nn_vv),
@@ -162,25 +239,27 @@ hm1 <- Rvoteview::download_metadata(type = 'members',
          nn_vv = gsub(' [A-Z]\\.', '', nn_vv) |> tolower() |> trimws(),
          last = gsub(',.*$', '', bioname) |> trimws()) |>
   group_by(last) |>
-  mutate(last_n = n()) |> ungroup()
+  mutate(last_n = n()) |>
+  ungroup()
 ```
 
-    ## [1] "/tmp/RtmpeLbOa7/H118_members.csv"
+    ## [1] "/tmp/Rtmpcjisou/H118_members.csv"
 
 ``` r
+# Match house reps to ICPSR codes (only if house_rep is available)
 pbd <- pres_by_cd00 |>
+  filter(!is.na(last)) |>
   left_join(hm1 |> filter(last_n == 1) |> select(nn_vv, last),
             by = 'last') |>
   select(nn_kos, nn_vv)
 
 kos <- pbd |> filter(is.na(nn_vv))
-         
+
 strReverse <- function(x) sapply(lapply(strsplit(x, NULL), rev), paste, collapse="")
 
 get_closest <- function(x, y) {
-  
   y[stringdist::stringdist(x |> strReverse(), 
-                         hm1$nn_vv |> strReverse(), 
+                         y |> strReverse(),
                          method = "jw") |>  which.min()]
 }
 
@@ -190,13 +269,17 @@ pbd0 <- pbd |>
                         get_closest(x = nn_kos, y = hm1$nn_vv),
                         nn_vv))
 
-pres_by_cd <- pbd0 |>
+pres_by_cd <- pres_by_cd00 |>
+  left_join(pbd0 |> select(nn_kos, nn_vv)) |>
   mutate(nn_vv = ifelse(nn_kos == 'chris smith', 'christopher henry smith', nn_vv),
          nn_vv = ifelse(nn_kos == 'sanford bishop', 'sanford dixon bishop', nn_vv),
          nn_vv = ifelse(nn_kos == 'hal rogers', 'harold dallas (hal) rogers', nn_vv)) |>
   left_join(hm1 |> select(nn_vv, icpsr)) |>
   inner_join(pres_by_cd00) |>
-  select(3:11)
+  select(state_abbrev, district_code, 
+         house_rep, house_rep_party,
+         winner, party_win, 
+         democrat, republican, icpsr)
 ```
 
 ## Presidential election results by state (1864-) – Wikipedia
@@ -228,30 +311,36 @@ w5 <- c('Nebraska')
 w4a <- c('Maine')
 w4b <- c('Utah', 'Wyoming')
 w6 <- c('Arkansas', 'Florida')
+w7 <- c('Wisconsin')  # Wisconsin has 21 columns, needs special handling
 
 states <- states_full |>
   
-  mutate (l1 = case_when (NAME %in% c(w3a, w6, w4b) ~ list(list(1,3,4,5)), #124
-                          !NAME %in% c(w3a, w3c, w3d, w6, w4b) ~ list(list(1,2,3,4)),
+  mutate (          l1 = case_when (NAME %in% c(w3a, w6, w4b) ~ list(list(1,3,4,5)), #124
+                          !NAME %in% c(w3a, w3c, w3d, w6, w4b, w7) ~ list(list(1,2,3,4)),
                           NAME %in% w3c ~ list(list(1,5,6,6)),
-                          NAME %in% w3d ~ list(list(1,2,5,6))),
+                          NAME %in% w3d ~ list(list(1,2,5,6)),
+                          NAME %in% w7 ~ list(list(1,3,4,5))),  # Wisconsin: Year, Winner candidate (col 3, skip empty col 2), votes, %
           
           l2 = case_when (NAME %in% c(w3a, w6, w4b) ~ list(list(1,7,8, 9)),
-                          !NAME %in% c(w3a, w3c, w3d, w6, w4b) ~ list(list(1,5,6,7)),
+                          !NAME %in% c(w3a, w3c, w3d, w6, w4b, w7) ~ list(list(1,5,6,7)),
                           NAME %in% w3c ~ list(list(1,9,10,10)),
-                          NAME %in% w3d ~ list(list(1,8,11,12))),
+                          NAME %in% w3d ~ list(list(1,8,11,12)),
+                          NAME %in% w7 ~ list(list(1,7,8,9))),  # Wisconsin: Year, Runner-up candidate (col 7, skip empty col 6), votes, %
           
           l3 = case_when (NAME %in% c(w3a, w6, w4b) ~ list(list(1,11, 12, 13)),
-                          !NAME %in% c(w3a, w3c, w3d, w6, w4b) ~ list(list(1,8, 9, 10)),
+                          !NAME %in% c(w3a, w3c, w3d, w6, w4b, w7) ~ list(list(1,8, 9, 10)),
                           NAME %in% w3c ~ list(list(1,1,1,1)),
-                          NAME %in% w3d ~ list(list(1,1,1,1))
+                          NAME %in% w3d ~ list(list(1,1,1,1)),
+                          NAME %in% w7 ~ list(list(1,10,11,12))  # Wisconsin: Year, Other candidate (col 10), votes, %
                           ),
           
-          ns = case_when (NAME %in% c(w3a, w3b, w3c, w3d) ~ 3,
+          ns = case_when (NAME %in% c(w3a, w3b, w3c) ~ 3,
+                          NAME %in% w3d ~ 54,  # California uses table 54 (wikitable), not 2
+                          NAME %in% w7 ~ 14,  # Wisconsin uses table 14 (third wikitable, 1864-present only)
                           NAME %in% c(w4a, w4b) ~ 4,
                           NAME %in% c(w5) ~ 5,
                           NAME %in% c(w6) ~ 6,
-                          !NAME %in% c(w3a, w3b, w3c, w3d, w4a, w4b, w5, w6) ~ 2)
+                          !NAME %in% c(w3a, w3b, w3c, w3d, w4a, w4b, w5, w6, w7) ~ 2)
   ) |>
   
   mutate(ns = ns) |>
@@ -271,29 +360,130 @@ states_correct <- list()
 
 for (i in 1:nrow(states)) {
   
-  states_correct[[i]] <- 
-    paste0(base_url, gsub(' ', '_', states$NAME[i])) |>
-    xml2::read_html() |>
-    rvest::html_node(
-      xpath = paste0('//*[@id="mw-content-text"]/div/table[', 
-                     states$ns[i],']')) |>
-    rvest::html_table(fill = TRUE) 
+  state_url <- paste0(base_url, gsub(' ', '_', states$NAME[i]))
+  state_page <- xml2::read_html(state_url)
   
-  if(nrow(states_correct[[i]]) > 2){
+  # Try primary selector first
+  table_node <- rvest::html_node(
+    state_page,
+    xpath = paste0('//*[@id="mw-content-text"]/div/table[', 
+                   states$ns[i],']'))
+  
+  # If that fails, try fallback selectors
+  if (inherits(table_node, "xml_missing")) {
+    # Try alternative XPath without specific ID
+    table_node <- rvest::html_node(
+      state_page,
+      xpath = paste0('//*[@id="mw-content-text"]/table[', 
+                     states$ns[i],']'))
+  }
+  
+  if (inherits(table_node, "xml_missing")) {
+    # Try finding all tables and take the ns-th one
+    all_tables <- rvest::html_nodes(state_page, xpath = '//*[@id="mw-content-text"]//table')
+    if (length(all_tables) >= states$ns[i]) {
+      table_node <- all_tables[[states$ns[i]]]
+    }
+  }
+  
+  # Check if we found a table before trying to parse it
+  if (inherits(table_node, "xml_missing")) {
+    warning(paste("Could not find table for state:", states$NAME[i], 
+                  "at table index", states$ns[i]))
+    states_correct[[i]] <- data.frame(year = integer(), 
+                                      candidate = character(),
+                                      votes = character(),  # character to match html_table output
+                                      vote_share = character(),
+                                      stringsAsFactors = FALSE)
+    next
+  }
+  
+  # Try to parse the table
+  tryCatch({
+    states_correct[[i]] <- rvest::html_table(table_node, fill = TRUE)
     
-    x <- states_correct[[i]][, states$l1[i] |> unlist()]
-    colnames(x) <- c('year', 'candidate', 'votes', 'vote_share')
-    y <- states_correct[[i]][, states$l2[i] |> unlist()]
-    colnames(y) <- c('year', 'candidate', 'votes', 'vote_share')
-    z <- states_correct[[i]][, states$l3[i] |> unlist()]
-    colnames(z) <- c('year', 'candidate', 'votes', 'vote_share')
-    
-    states_correct[[i]] <- rbind(x, y, z) |>
-      mutate(year = gsub("\\D+", "", year),
-             year = as.integer(substr(year, 1,4)),
-             vote_share = as.character(vote_share)
-             )
-  } else(states_correct[[i]] <- states_correct[[i]])
+    if(nrow(states_correct[[i]]) > 2){
+      
+      # Extract columns - handle errors if columns don't exist
+      l1_vals <- states$l1[i] |> unlist()
+      l2_vals <- states$l2[i] |> unlist()
+      
+      # Check if we have enough columns in the table
+      max_col_l1 <- max(l1_vals)
+      max_col_l2 <- max(l2_vals)
+      
+      if(max_col_l1 > ncol(states_correct[[i]]) || max_col_l2 > ncol(states_correct[[i]])) {
+        warning(paste("Not enough columns for", states$NAME[i], "- skipping"))
+        states_correct[[i]] <- data.frame(year = integer(), candidate = character(),
+                                          votes = character(), vote_share = character(),
+                                          stringsAsFactors = FALSE)
+        next
+      }
+      
+      # Extract l1 and l2 columns - these should always exist
+      x <- NULL
+      y <- NULL
+      
+      tryCatch({
+        x <- states_correct[[i]][, l1_vals, drop = FALSE]
+        colnames(x) <- c('year', 'candidate', 'votes', 'vote_share')
+        y <- states_correct[[i]][, l2_vals, drop = FALSE]
+        colnames(y) <- c('year', 'candidate', 'votes', 'vote_share')
+      }, error = function(e) {
+        warning(paste("Error extracting l1/l2 columns for", states$NAME[i], "-", e$message))
+        states_correct[[i]] <<- data.frame(year = integer(), candidate = character(),
+                                          votes = character(), vote_share = character(),
+                                          stringsAsFactors = FALSE)
+      })
+      
+      # If extraction failed, skip to next state
+      if(is.null(x) || is.null(y)) {
+        next
+      }
+      
+      # California's l3 is broken (1,1,1,1) - skip it
+      # Also skip l3 if not enough columns in the table (some rows may not have "Other" candidates)
+      l3_vals <- states$l3[i] |> unlist()
+      max_col_needed <- max(l3_vals)
+      
+      if(all(l3_vals == c(1,1,1,1))) {
+        states_correct[[i]] <- rbind(x, y)
+      } else if(max_col_needed > ncol(states_correct[[i]])) {
+        # Not enough columns for l3, skip it
+        states_correct[[i]] <- rbind(x, y)
+      } else {
+        # Try to extract l3, but handle errors if columns don't exist
+        tryCatch({
+          z <- states_correct[[i]][, l3_vals, drop = FALSE]
+          colnames(z) <- c('year', 'candidate', 'votes', 'vote_share')
+          states_correct[[i]] <- rbind(x, y, z)
+        }, error = function(e) {
+          # If l3 extraction fails, just use x and y
+          states_correct[[i]] <<- rbind(x, y)
+        })
+      }
+      
+      states_correct[[i]] <- states_correct[[i]] |>
+        mutate(
+          year = gsub("\\D+", "", year),
+          year = as.integer(substr(year, 1,4)),
+          # Handle cases where votes and percentage are combined (e.g., "86,110(56.58%)")
+          # Extract just the numeric part for votes
+          votes = gsub('\\(.*\\)|%', '', votes) |> trimws(),
+          vote_share = as.character(vote_share)
+        ) |>
+        # Filter out obviously invalid years (before 1788 or after 2024)
+        filter(year >= 1788, year <= 2024, !is.na(year))
+    }
+  }, error = function(e) {
+    warning(paste("Error processing table for state:", states$NAME[i], 
+                  "-", e$message))
+    states_correct[[i]] <<- data.frame(year = integer(), 
+                                      candidate = character(),
+                                      votes = character(),  # character to match html_table output
+                                      vote_share = character(),
+                                      stringsAsFactors = FALSE)
+  })
 } 
 
 names(states_correct) <- states$NAME
@@ -303,11 +493,19 @@ states_correct1 <- states_correct |>
   mutate(vote_share = gsub('(^.*\\()(.*)(\\)$)', '\\2', vote_share),
          vote_share =as.numeric(gsub('%', '', vote_share)),
          # wiki_party = gsub('(^.*\\()([A-Za-z.]*)(\\)$)', '\\2', candidate),
-         candidate = gsub('\\(.*\\)|\\[.*\\]', '', candidate) |> trimws()) |>
+         candidate = gsub('\\(.*\\)|\\[.*\\]| ‡', '', candidate) |> trimws()) |>
 
   filter(candidate != 'TBD',
          nchar(candidate) > 5,
          !is.na(year)) |>
+  
+  # Filter out metadata rows - these have newlines, election type names, or year lists in candidate
+  filter(!grepl("\n", candidate)) |>  # Candidate names don't have newlines
+  filter(!grepl("^(Presidential|Gubernatorial|State propositions|Mayoral|County|Board of|General|U\\.S\\.|Elections in|Secretary of|House of|Governor)", candidate, ignore.case = TRUE)) |>
+  filter(!grepl("^(Dem|Rep|Democratic|Republican) [0-9]{4}", candidate, ignore.case = TRUE)) |>
+  filter(!grepl("^[0-9]{4}–[0-9]{4}$", candidate)) |>  # Year ranges like "1910–1919"
+  filter(!(grepl("^[A-Z][a-z]+$", candidate) & nchar(candidate) < 15)) |>  # Single word city/place names
+  filter(!is.na(votes) & votes != "") |>  # Must have votes data
   
   ## correct hubert humphrey in florida 1972
   mutate(candidate = ifelse(state_name == 'Florida' & year == 1972 & candidate == 'Hubert Humphrey',
@@ -389,9 +587,9 @@ pres_by_state <- states_correct1 |>
 colnames(pres_by_state) <- colnames(pres_by_state) |> tolower() 
 ```
 
-## Equal-area simple feature geometries – Daily Kos
+## Equal-area simple feature geometries – The Downballot
 
-<https://docs.google.com/spreadsheets/d/1LrBXlqrtSZwyYOkpEEXFwQggvtR0bHHTxs9kq4kjOjw/edit#gid=0>
+<https://docs.google.com/spreadsheets/d/13XkF59JKzvw4SeSq5mbgIFrJfYjK4amg9JoQE5e9grQ/edit?gid=0#gid=0>
 
 ``` r
 fnames <- c('HexCDv30wm',
@@ -423,6 +621,7 @@ xsf_TileInv10 <- sfs$TileInv10 %>% select(5:7) %>%
 xsf_TileOutv10 <- sfs$TileOutv10 %>% select(5:7) %>%
   rename(state_abbrev = State, state = StateName)
 
+
 xsf_HexCDv30wm |> head()
 ```
 
@@ -444,7 +643,7 @@ xsf_HexCDv30wm |> head()
 <https://fred.stlouisfed.org/release/tables?rid=118&eid=259194&od=#>
 
 ``` r
-freds <- lapply(1900:2022, function(x){
+freds <- lapply(1900:2026, function(x){
   
   ur <- paste0('https://fred.stlouisfed.org/release/tables?rid=118&eid=259194&od=', x, '-01-01#')
   
@@ -477,19 +676,32 @@ fred_pop_by_state |>
   knitr::kable()
 ```
 
+| year | state_abbrev | NAME       | population |
+|-----:|:-------------|:-----------|-----------:|
+| 1900 | AL           | Alabama    |    1830000 |
+| 1900 | AK           | Alaska     |         NA |
+| 1900 | AZ           | Arizona    |     124000 |
+| 1900 | AR           | Arkansas   |    1314000 |
+| 1900 | CA           | California |    1490000 |
+| 1900 | CO           | Colorado   |     543000 |
+
 ## Output
 
 ``` r
 setwd(data_dir)
-#usethis::use_data(pres_by_state, overwrite=TRUE)
+usethis::use_data(pres_by_state, overwrite=TRUE)
 usethis::use_data(pres_by_cd, overwrite=TRUE)
 usethis::use_data(pres_by_county, overwrite=TRUE)
 usethis::use_data(pres_results, overwrite=TRUE)
 
-## usethis::use_data(fred_pop_by_state, overwrite=TRUE)
+usethis::use_data(fred_pop_by_state, overwrite=TRUE)
 
-usethis::use_data(xsf_HexCDv30wm, overwrite=TRUE)
-usethis::use_data(xsf_HexSTv30wm, overwrite=TRUE)
+# usethis::use_data(xsf_HexCDv30wm, overwrite=TRUE)
+# usethis::use_data(xsf_HexSTv30wm, overwrite=TRUE)
 usethis::use_data(xsf_TileInv10, overwrite=TRUE)
 usethis::use_data(xsf_TileOutv10, overwrite=TRUE)
+
+# if(exists('xsf_ElectoralCollege')) {
+#   usethis::use_data(xsf_ElectoralCollege, overwrite=TRUE)
+# }
 ```

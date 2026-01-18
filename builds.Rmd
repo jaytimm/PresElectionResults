@@ -317,7 +317,8 @@ w3a <- c('New Mexico',
          'Hawaii',
          'Connecticut',
          'New York',
-         'Washington')  # Connecticut, New York, and Washington use same column structure as w3a
+         'Washington',
+         'Oklahoma')  # Connecticut, New York, Washington, and Oklahoma use same column structure as w3a
 w3c <- c('Pennsylvania')
 w3d <- c('California')
 w5 <- c('Nebraska')
@@ -344,9 +345,10 @@ states <- states_full |>
           l3 = case_when (NAME == 'Connecticut' ~ list(list(1,10,11,12)),  # Connecticut: Year (col1), Other candidate (col10), votes (col11), % (col12)
                           NAME == 'New York' ~ list(list(1,10,11,12)),  # New York: Year (col1), Other candidate (col10), votes (col11), % (col12)
                           NAME == 'Washington' ~ list(list(1,10,11,12)),  # Washington: Year (col1), Other candidate (col10), votes (col11), % (col12)
+                          NAME == 'Oklahoma' ~ list(list(1,10,11,12)),  # Oklahoma: Year (col1), Other candidate (col10), votes (col11), % (col12)
                           NAME %in% c(w3a, w6, w4b) ~ list(list(1,11, 12, 13)),
                           NAME %in% w5 ~ list(list(1,12,13,14)),  # Nebraska: Year (col1), Third candidate (col12), votes (col13), % (col14)
-                          !NAME %in% c(w3a, w3c, w3d, w6, w4b, w5, w7, 'Connecticut', 'New York', 'Washington') ~ list(list(1,8, 9, 10)),
+                          !NAME %in% c(w3a, w3c, w3d, w6, w4b, w5, w7, 'Connecticut', 'New York', 'Washington', 'Oklahoma') ~ list(list(1,8, 9, 10)),
                           NAME %in% w3c ~ list(list(1,1,1,1)),
                           NAME %in% w3d ~ list(list(1,1,1,1)),
                           NAME %in% w7 ~ list(list(1,10,11,12))),
@@ -354,13 +356,14 @@ states <- states_full |>
           ns = case_when (NAME == 'Connecticut' ~ 7,  # Connecticut uses table 7 - must come BEFORE w3a check
                           NAME == 'New York' ~ 8,  # New York uses table 8 - must come BEFORE w3a check
                           NAME == 'Washington' ~ 3,  # Washington uses table 3 - must come BEFORE w3a check
+                          NAME == 'Oklahoma' ~ 3,  # Oklahoma uses table 3 - same structure as Washington
                           NAME %in% c(w3a, w3c) ~ 3,  # New Mexico group and Pennsylvania (Connecticut, New York, Washington excluded by above)
                           NAME %in% w3d ~ 54,  # California uses table 54 (wikitable), not 2
                           NAME %in% w7 ~ 14,  # Wisconsin uses table 14 (third wikitable, 1864-present only)
                           NAME %in% c(w4a, w4b) ~ 4,
                           NAME %in% c(w5) ~ 3,  # Nebraska uses table 3
                           NAME %in% c(w6) ~ 6,
-                          !NAME %in% c(w3a, w3c, w3d, w4a, w4b, w5, w6, w7, 'Connecticut', 'New York', 'Washington') ~ 2)
+                          !NAME %in% c(w3a, w3c, w3d, w4a, w4b, w5, w6, w7, 'Connecticut', 'New York', 'Washington', 'Oklahoma') ~ 2)
   ) |>
   
   mutate(ns = ns) |>

@@ -13,24 +13,11 @@ knitr::opts_chunk$set(
 ```
 
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-source("/home/jtimm/pCloudDrive/GitHub/packages/render_toc.R")
-```
-
-
 # PresElectionResults
 
 A data package for US Presidential election results.  
 
 > All build details are available [here](https://github.com/jaytimm/PresElectionResults/blob/master/builds.md), and are fully reproducible.
-
-```{r echo=FALSE}
-render_toc("/home/jtimm/pCloudDrive/GitHub/packages/PresElectionResults/README.Rmd",
-           toc_header_name = "PresElectionResults",
-           #base_level = NULL,
-           toc_depth = 3)
-```
 
 
 ## Installation
@@ -54,7 +41,7 @@ PresElectionResults::pres_results |>
 ```
 
 
-## Presidential election results by state (1864-) via Wikipedia
+## Presidential election results by state (1864-2024) via Wikipedia
 
 ```{r}
 PresElectionResults::pres_by_state |>
@@ -80,33 +67,6 @@ PresElectionResults::pres_by_cd |>
 
 
 ## Equal-area simple feature geometries via The Downballot
-
-```{r fig.height=6.5, message=FALSE, warning=FALSE}
-# devtools::install_github("yutannihilation/ggsflabel")
-library(sf)
-library(ggplot2)
-PresElectionResults::xsf_HexCDv30wm |> 
-  ggplot() + 
-  geom_sf(aes(fill = state),
-          color = 'white') +
-
-  geom_sf_text(data = PresElectionResults::xsf_HexSTv30wm,
-                          aes(label = state_abbrev),
-                          size = 3,
-                          color='black') +
-  
-  ## scale_fill_distiller(palette = "RdBu", direction=-1) +
-  theme_minimal()+
-  theme(axis.text.x=element_blank(),
-        axis.text.y=element_blank(),
-        axis.title.x=element_blank(),
-        axis.title.y=element_blank(),
-        legend.position = 'none') +
-labs(title = "Equal-area US Congressional District geometry",
-     caption = "Source: The Downballot")
-```
-
-
 
 ```{r fig.height=6.5, message=FALSE, warning=FALSE}
 library(sf)
@@ -139,7 +99,7 @@ labs(title = "Equal-area US State geometry",
 
 
 
-## FRED Historical Population Data
+## FRED Historical Population Data (1900-2026)
 
 ```{r}
 PresElectionResults::fred_pop_by_state |>

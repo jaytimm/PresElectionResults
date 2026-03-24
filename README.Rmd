@@ -49,13 +49,6 @@ PresElectionResults::pres_by_state |>
 ```
 
 
-## Presidential election results by county (2000-2024) via MIT Election Data and Science Lab (MEDSL)
-
-```{r}
-PresElectionResults::pres_by_county |>
-  head() |> knitr::kable()
-```
-
 
 ## Presidential election results by congressional district (2024)
 

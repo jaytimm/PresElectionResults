@@ -103,6 +103,18 @@ pres_results <- ecs |>
 
 <https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/VOQCHQ>
 
+**NOTE: The MEDSL county data has known quality issues.** Kansas 2024
+county-level FIPS codes appear to be scrambled – votes are present but
+assigned to the wrong counties, producing implausible margin swings of
+30-40pp. Similar issues may exist in other states/years and are not
+easily detectable without an independent source to cross-check against.
+For county-level analysis, consider
+[tonmcg/US_County_Level_Election_Results_08-24](https://github.com/tonmcg/US_County_Level_Election_Results_08-24)
+as an alternative.
+
+The county build is retained below for reference but should be used with
+caution.
+
 ``` r
 library(dplyr)
 setwd(dataraw_dir)
@@ -122,13 +134,9 @@ pres_by_county <- county |>
   mutate(totalvotes_actual = sum(candidatevotes)) |>
   ungroup() |>
   mutate(per = round(candidatevotes / totalvotes_actual * 100, 1)) |>
-  
   mutate(party = tolower(party),
-         #party = stringr::str_to_title(tolower(party)),
          county_name = stringr::str_to_title(tolower(county_name))) |>
-  
   group_by(year, state_po, county_name, county_fips) |>
-
   mutate(winner =  candidate[which.max(candidatevotes)],
          winner = stringr::str_to_title(tolower(winner)),
          party_win = party[which.max(candidatevotes)]) |>
@@ -136,7 +144,7 @@ pres_by_county <- county |>
   select(-candidate, -candidatevotes) |>
   filter(party %in% c('republican', 'democrat')) |>
   tidyr::spread(party, per) |>
-  rename(state_abbrev = state_po)|>
+  rename(state_abbrev = state_po) |>
   mutate(GEOID = stringr::str_pad(county_fips, 5, pad = "0")) |>
   select(year, state_abbrev, county_name, GEOID, winner, party_win, democrat, republican)
 ```
@@ -255,7 +263,7 @@ hm1 <- Rvoteview::download_metadata(type = 'members',
   ungroup()
 ```
 
-    ## [1] "/tmp/RtmpjOqGQG/H119_members.csv"
+    ## [1] "/tmp/RtmpeYV8mz/H119_members.csv"
 
 ``` r
 # Match house reps to ICPSR codes (only if house_rep is available)
@@ -715,7 +723,7 @@ fred_pop_by_state |>
 setwd(data_dir)
 usethis::use_data(pres_by_state, overwrite=TRUE)
 usethis::use_data(pres_by_cd, overwrite=TRUE)
-usethis::use_data(pres_by_county, overwrite=TRUE)
+#usethis::use_data(pres_by_county, overwrite=TRUE)
 usethis::use_data(pres_results, overwrite=TRUE)
 
 usethis::use_data(fred_pop_by_state, overwrite=TRUE)

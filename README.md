@@ -41,28 +41,12 @@ PresElectionResults::pres_by_state |>
 
 | year | state_abbrev | winner              | party_win  | democrat | other | republican |
 |-----:|:------------|:------------------|:----------|--------:|------:|----------:|
-| 1864 | CA           | Abraham Lincoln     | republican |    41.40 |    NA |      58.60 |
+| 1864 | CT           | Abraham Lincoln     | republican |    48.62 |    NA |      51.38 |
 | 1864 | DE           | George B. McClellan | democrat   |    51.80 |    NA |      48.20 |
 | 1864 | IA           | Abraham Lincoln     | republican |    36.92 |    NA |      63.08 |
 | 1864 | IL           | Abraham Lincoln     | republican |    45.60 |    NA |      54.40 |
 | 1864 | IN           | Abraham Lincoln     | republican |    46.50 |    NA |      53.50 |
 | 1864 | KS           | Abraham Lincoln     | republican |    18.30 |    NA |      81.70 |
-
-## Presidential election results by county (2000-2024) via MIT Election Data and Science Lab (MEDSL)
-
-``` r
-PresElectionResults::pres_by_county |>
-  head() |> knitr::kable()
-```
-
-| year | state_abbrev | county_name | GEOID | winner | party_win | democrat | republican |
-|----:|:----------|:----------|:-----|:------------|:---------|-------:|---------:|
-| 2000 | AL | Autauga | 01001 | George W. Bush | republican | 28.7 | 69.7 |
-| 2000 | AL | Baldwin | 01003 | George W. Bush | republican | 24.8 | 72.4 |
-| 2000 | AL | Barbour | 01005 | Al Gore | democrat | 49.9 | 49.0 |
-| 2000 | AL | Bibb | 01007 | George W. Bush | republican | 38.2 | 60.2 |
-| 2000 | AL | Blount | 01009 | George W. Bush | republican | 27.7 | 70.5 |
-| 2000 | AL | Bullock | 01011 | Al Gore | democrat | 69.2 | 29.2 |
 
 ## Presidential election results by congressional district (2024)
 
@@ -73,9 +57,9 @@ PresElectionResults::pres_by_cd |>
 
 | state_abbrev | district_code | house_rep | house_rep_party | winner | party_win | democrat | republican | icpsr |
 |:--------|:--------|:-----------|:---------|:--------|:-------|-----:|-------:|----:|
-| AK | 00 | Nick Begich | republican | Donald Trump | republican | 41.41 | 54.54 | 21178 |
+| AK | 00 | Nick Begich | republican | Donald Trump | republican | 41.41 | 54.54 | 22503 |
 | AL | 01 | Barry Moore | republican | Donald Trump | republican | 21.89 | 76.94 | 22140 |
-| AL | 02 | Shomari Figures | democrat | Kamala Harris | democrat | 53.52 | 45.31 | 21926 |
+| AL | 02 | Shomari Figures | democrat | Kamala Harris | democrat | 53.52 | 45.31 | 22515 |
 | AL | 03 | Mike Rogers | republican | Donald Trump | republican | 26.18 | 72.71 | 20301 |
 | AL | 04 | Robert B. Aderholt | republican | Donald Trump | republican | 15.96 | 83.02 | 29701 |
 | AL | 05 | Dale W. Strong | republican | Donald Trump | republican | 34.20 | 64.02 | 22366 |
@@ -110,7 +94,7 @@ labs(title = "Equal-area US State geometry",
      caption = "Source: The Downballot")
 ```
 
-![](figure-markdown_github/unnamed-chunk-8-1.png)
+![](figure-markdown_github/unnamed-chunk-7-1.png)
 
 ## FRED Historical Population Data (1900-2026)
 

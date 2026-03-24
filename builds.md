@@ -110,6 +110,8 @@ county <- read.delim('countypres_2000-2024.tab', sep = '\t')
 
 pres_by_county <- county |>
   filter(!is.na(candidatevotes)) |>
+  filter(!mode %in% c("EARLY VOTING")) |>
+  filter(!candidate %in% c("TOTAL VOTES CAST")) |>
   group_by_at(vars(all_of(colnames(county)[c(1:8,10)]))) |>
   summarize(candidatevotes = sum(candidatevotes),
             totalvotes = mean(totalvotes)) |> ungroup() |>
@@ -140,10 +142,11 @@ pres_by_county <- county |>
 setwd(dataraw_dir)
 house_data <- read.delim('1976-2024-house.tab', sep = ',', stringsAsFactors = FALSE) |>
   janitor::clean_names() |>
+  filter(year == 2024) |>
+  
   filter(office == 'US HOUSE',
          stage == 'GEN',
-         writein == FALSE,
-         party %in% c('DEMOCRAT', 'REPUBLICAN')) |>
+         writein == FALSE) |>
   group_by(year, state_po, district) |>
   # Get winner (highest vote getter) for each year/state/district
   mutate(winner_votes = max(candidatevotes, na.rm = TRUE)) |>
@@ -158,6 +161,9 @@ house_data <- read.delim('1976-2024-house.tab', sep = ',', stringsAsFactors = FA
     house_rep = stringr::str_to_title(tolower(candidate)),
     house_rep_party = tolower(party)
   ) |>
+  mutate(
+    house_rep_party = ifelse(house_rep_party == 'democratic-farmer-labor', 'democrat', house_rep_party)
+  ) |>
   select(year, state_abbrev, district_code, house_rep, house_rep_party) |>
   # Create last name and normalized name for ICPSR matching
   mutate(
@@ -166,7 +172,7 @@ house_data <- read.delim('1976-2024-house.tab', sep = ',', stringsAsFactors = FA
   ) |>
   group_by(year, last) |>
   mutate(last_n = n()) |>
-  ungroup()
+  ungroup() 
 ```
 
 ### 2024 Presidential results by CD
@@ -231,7 +237,7 @@ pres_by_cd00 <- read.csv('2024 Pres by CD - Main.csv', check.names = FALSE) |>
 # Download house member metadata for 118th Congress (2024)
 hm1 <- Rvoteview::download_metadata(type = 'members',
                                     chamber = 'house',
-                                    congress = '118') |>
+                                    congress = '119') |>
   mutate(bioname = stringi::stri_trans_general(bioname, id = "Latin-ASCII"),
          nn_vv = gsub(', Jr\\.', '', bioname),
          nn_vv = gsub('(.*)(, )(.*$)', '\\3 \\1', nn_vv),
@@ -243,7 +249,7 @@ hm1 <- Rvoteview::download_metadata(type = 'members',
   ungroup()
 ```
 
-    ## [1] "/tmp/Rtmpcjisou/H118_members.csv"
+    ## [1] "/tmp/RtmperL7Hm/H119_members.csv"
 
 ``` r
 # Match house reps to ICPSR codes (only if house_rep is available)
@@ -302,9 +308,11 @@ w3a <- c('New Mexico',
          'Alaska', 
          'Arizona', 
          'District of Columbia',
-         'Hawaii')
-
-w3b <- c('New York')
+         'Hawaii',
+         'Connecticut',
+         'New York',
+         'Washington',
+         'Oklahoma')  # Connecticut, New York, Washington, and Oklahoma use same column structure as w3a
 w3c <- c('Pennsylvania')
 w3d <- c('California')
 w5 <- c('Nebraska')
@@ -315,32 +323,41 @@ w7 <- c('Wisconsin')  # Wisconsin has 21 columns, needs special handling
 
 states <- states_full |>
   
-  mutate (          l1 = case_when (NAME %in% c(w3a, w6, w4b) ~ list(list(1,3,4,5)), #124
-                          !NAME %in% c(w3a, w3c, w3d, w6, w4b, w7) ~ list(list(1,2,3,4)),
+  mutate (          l1 = case_when (NAME %in% c(w3a, w6, w4b, w5) ~ list(list(1,3,4,5)), # Nebraska: Year (col1), Winner candidate (col3), votes (col4), % (col5)
+                          !NAME %in% c(w3a, w3c, w3d, w6, w4b, w5, w7) ~ list(list(1,2,3,4)),
                           NAME %in% w3c ~ list(list(1,5,6,6)),
                           NAME %in% w3d ~ list(list(1,2,5,6)),
-                          NAME %in% w7 ~ list(list(1,3,4,5))),  # Wisconsin: Year, Winner candidate (col 3, skip empty col 2), votes, %
+                          NAME %in% w7 ~ list(list(1,3,4,5))),
           
           l2 = case_when (NAME %in% c(w3a, w6, w4b) ~ list(list(1,7,8, 9)),
-                          !NAME %in% c(w3a, w3c, w3d, w6, w4b, w7) ~ list(list(1,5,6,7)),
+                          NAME %in% w5 ~ list(list(1,8,9,10)),  # Nebraska: Year (col1), Runner-up candidate (col8), votes (col9), % (col10)
+                          !NAME %in% c(w3a, w3c, w3d, w6, w4b, w5, w7) ~ list(list(1,5,6,7)),
                           NAME %in% w3c ~ list(list(1,9,10,10)),
                           NAME %in% w3d ~ list(list(1,8,11,12)),
-                          NAME %in% w7 ~ list(list(1,7,8,9))),  # Wisconsin: Year, Runner-up candidate (col 7, skip empty col 6), votes, %
+                          NAME %in% w7 ~ list(list(1,7,8,9))),
           
-          l3 = case_when (NAME %in% c(w3a, w6, w4b) ~ list(list(1,11, 12, 13)),
-                          !NAME %in% c(w3a, w3c, w3d, w6, w4b, w7) ~ list(list(1,8, 9, 10)),
+          l3 = case_when (NAME == 'Connecticut' ~ list(list(1,10,11,12)),  # Connecticut: Year (col1), Other candidate (col10), votes (col11), % (col12)
+                          NAME == 'New York' ~ list(list(1,10,11,12)),  # New York: Year (col1), Other candidate (col10), votes (col11), % (col12)
+                          NAME == 'Washington' ~ list(list(1,10,11,12)),  # Washington: Year (col1), Other candidate (col10), votes (col11), % (col12)
+                          NAME == 'Oklahoma' ~ list(list(1,10,11,12)),  # Oklahoma: Year (col1), Other candidate (col10), votes (col11), % (col12)
+                          NAME %in% c(w3a, w6, w4b) ~ list(list(1,11, 12, 13)),
+                          NAME %in% w5 ~ list(list(1,12,13,14)),  # Nebraska: Year (col1), Third candidate (col12), votes (col13), % (col14)
+                          !NAME %in% c(w3a, w3c, w3d, w6, w4b, w5, w7, 'Connecticut', 'New York', 'Washington', 'Oklahoma') ~ list(list(1,8, 9, 10)),
                           NAME %in% w3c ~ list(list(1,1,1,1)),
                           NAME %in% w3d ~ list(list(1,1,1,1)),
-                          NAME %in% w7 ~ list(list(1,10,11,12))  # Wisconsin: Year, Other candidate (col 10), votes, %
-                          ),
+                          NAME %in% w7 ~ list(list(1,10,11,12))),
           
-          ns = case_when (NAME %in% c(w3a, w3b, w3c) ~ 3,
+          ns = case_when (NAME == 'Connecticut' ~ 7,  # Connecticut uses table 7 - must come BEFORE w3a check
+                          NAME == 'New York' ~ 8,  # New York uses table 8 - must come BEFORE w3a check
+                          NAME == 'Washington' ~ 3,  # Washington uses table 3 - must come BEFORE w3a check
+                          NAME == 'Oklahoma' ~ 3,  # Oklahoma uses table 3 - same structure as Washington
+                          NAME %in% c(w3a, w3c) ~ 3,  # New Mexico group and Pennsylvania (Connecticut, New York, Washington excluded by above)
                           NAME %in% w3d ~ 54,  # California uses table 54 (wikitable), not 2
                           NAME %in% w7 ~ 14,  # Wisconsin uses table 14 (third wikitable, 1864-present only)
                           NAME %in% c(w4a, w4b) ~ 4,
-                          NAME %in% c(w5) ~ 5,
+                          NAME %in% c(w5) ~ 3,  # Nebraska uses table 3
                           NAME %in% c(w6) ~ 6,
-                          !NAME %in% c(w3a, w3b, w3c, w3d, w4a, w4b, w5, w6, w7) ~ 2)
+                          !NAME %in% c(w3a, w3c, w3d, w4a, w4b, w5, w6, w7, 'Connecticut', 'New York', 'Washington', 'Oklahoma') ~ 2)
   ) |>
   
   mutate(ns = ns) |>
@@ -457,6 +474,7 @@ for (i in 1:nrow(states)) {
           z <- states_correct[[i]][, l3_vals, drop = FALSE]
           colnames(z) <- c('year', 'candidate', 'votes', 'vote_share')
           states_correct[[i]] <- rbind(x, y, z)
+url99 <- 'https://www.britannica.com/topic/United-States-Presidential-Election-Results-1788863'
         }, error = function(e) {
           # If l3 extraction fails, just use x and y
           states_correct[[i]] <<- rbind(x, y)

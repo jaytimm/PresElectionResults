@@ -125,6 +125,8 @@ county <- read.delim('countypres_2000-2024.tab', sep = '\t')
 
 pres_by_county <- county |>
   filter(!is.na(candidatevotes)) |>
+  filter(!mode %in% c("EARLY VOTING")) |>
+  filter(!candidate %in% c("TOTAL VOTES CAST")) |>
   group_by_at(vars(all_of(colnames(county)[c(1:8,10)]))) |>
   summarize(candidatevotes = sum(candidatevotes),
             totalvotes = mean(totalvotes)) |> ungroup() |>

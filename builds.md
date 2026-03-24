@@ -117,11 +117,11 @@ pres_by_county <- county |>
   ungroup() |>
   group_by_at(vars(all_of(colnames(county)[c(1:8,10)]))) |>
   summarize(candidatevotes = sum(candidatevotes),
-            totalvotes = mean(totalvotes)) |> ungroup() |>
+            totalvotes     = mean(totalvotes)) |> ungroup() |>
   group_by(year, state_po, county_name, county_fips) |>
   mutate(totalvotes_actual = sum(candidatevotes)) |>
   ungroup() |>
-  mutate(per = round(candidatevotes/totalvotes_actual*100, 1)) |>
+  mutate(per = round(candidatevotes / totalvotes_actual * 100, 1)) |>
   
   mutate(party = tolower(party),
          #party = stringr::str_to_title(tolower(party)),
@@ -138,7 +138,7 @@ pres_by_county <- county |>
   tidyr::spread(party, per) |>
   rename(state_abbrev = state_po)|>
   mutate(GEOID = stringr::str_pad(county_fips, 5, pad = "0")) |>
-  select(1, 3, 4, 12, 8:11) 
+  select(year, state_abbrev, county_name, GEOID, winner, party_win, democrat, republican)
 ```
 
 ### Extract house rep names from 1976-2024-house.tab
@@ -255,7 +255,7 @@ hm1 <- Rvoteview::download_metadata(type = 'members',
   ungroup()
 ```
 
-    ## [1] "/tmp/RtmptQO9Ca/H119_members.csv"
+    ## [1] "/tmp/RtmpjOqGQG/H119_members.csv"
 
 ``` r
 # Match house reps to ICPSR codes (only if house_rep is available)

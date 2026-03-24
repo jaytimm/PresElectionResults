@@ -263,7 +263,7 @@ hm1 <- Rvoteview::download_metadata(type = 'members',
   ungroup()
 ```
 
-    ## [1] "/tmp/Rtmp9OuELZ/H119_members.csv"
+    ## [1] "/tmp/RtmpaAcRcB/H119_members.csv"
 
 ``` r
 # Match house reps to ICPSR codes (only if house_rep is available)
@@ -366,7 +366,7 @@ states <- states_full |>
                           NAME == 'Washington' ~ 3,  # Washington uses table 3 - must come BEFORE w3a check
                           NAME == 'Oklahoma' ~ 3,  # Oklahoma uses table 3 - same structure as Washington
                           NAME %in% c(w3a, w3c) ~ 3,  # New Mexico group and Pennsylvania (Connecticut, New York, Washington excluded by above)
-                          NAME %in% w3d ~ 54,  # California uses table 54 (wikitable), not 2
+                          NAME %in% w3d ~ 3,   # California uses table 3 (updated page structure)
                           NAME %in% w7 ~ 14,  # Wisconsin uses table 14 (third wikitable, 1864-present only)
                           NAME %in% c(w4a, w4b) ~ 4,
                           NAME %in% c(w5) ~ 3,  # Nebraska uses table 3

@@ -109,13 +109,19 @@ setwd(dataraw_dir)
 county <- read.delim('countypres_2000-2024.tab', sep = '\t')
 
 pres_by_county <- county |>
-  filter(!is.na(candidatevotes)) |>
-  filter(!mode %in% c("EARLY VOTING")) |>
-  filter(!candidate %in% c("TOTAL VOTES CAST")) |>
+  filter(!is.na(candidatevotes),
+         !candidate %in% c("TOTAL VOTES CAST")) |>
+  group_by(year, state_po, county_name, county_fips, candidate, party) |>
+  mutate(has_total = any(mode %in% c("TOTAL", "TOTAL VOTES"))) |>
+  filter(!has_total | mode %in% c("TOTAL", "TOTAL VOTES")) |>
+  ungroup() |>
   group_by_at(vars(all_of(colnames(county)[c(1:8,10)]))) |>
   summarize(candidatevotes = sum(candidatevotes),
             totalvotes = mean(totalvotes)) |> ungroup() |>
-  mutate(per = round(candidatevotes/totalvotes*100, 1)) |>
+  group_by(year, state_po, county_name, county_fips) |>
+  mutate(totalvotes_actual = sum(candidatevotes)) |>
+  ungroup() |>
+  mutate(per = round(candidatevotes/totalvotes_actual*100, 1)) |>
   
   mutate(party = tolower(party),
          #party = stringr::str_to_title(tolower(party)),
@@ -249,7 +255,7 @@ hm1 <- Rvoteview::download_metadata(type = 'members',
   ungroup()
 ```
 
-    ## [1] "/tmp/RtmperL7Hm/H119_members.csv"
+    ## [1] "/tmp/RtmptQO9Ca/H119_members.csv"
 
 ``` r
 # Match house reps to ICPSR codes (only if house_rep is available)
